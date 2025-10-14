@@ -1,0 +1,213 @@
+{
+  "summary": {
+    "domain": "difiorebuilders.com",
+    "totalPages": 5,
+    "counts": {
+      "non200": 0,
+      "missingTitle": 0,
+      "longTitle": 0,
+      "missingMeta": 2,
+      "longMeta": 2,
+      "missingH1": 5,
+      "noindex": 0,
+      "missingCanonical": 5
+    },
+    "generatedAt": "2025-10-13T17:47:30.648Z"
+  },
+  "issues": {
+    "non200": [],
+    "missingTitle": [],
+    "longTitle": [],
+    "missingMeta": [
+      {
+        "url": "https://difiorebuilders.com/before-and-after",
+        "title": "Before and After",
+        "titleLength": 16,
+        "titlePx": 147,
+        "meta": "",
+        "metaLength": 0,
+        "metaPx": 0,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/our-projects",
+        "title": "Our Projects",
+        "titleLength": 12,
+        "titlePx": 111,
+        "meta": "",
+        "metaLength": 0,
+        "metaPx": 0,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      }
+    ],
+    "longMeta": [
+      {
+        "url": "https://difiorebuilders.com/services",
+        "title": "Services",
+        "titleLength": 8,
+        "titlePx": 76,
+        "meta": "At DiFiore Builders Inc., we offer a wide range of home improvement services at honest and fair prices for both, residential as well as commercial projects. From roofing and siding to additions to full house renovations, there is not a job we can't handle. We always strive to build lasting client relationships and provide top quality work from start to finish every time. Contact us to get a quote!",
+        "metaLength": 400,
+        "metaPx": 2387,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/our-story",
+        "title": "Our Story",
+        "titleLength": 9,
+        "titlePx": 83,
+        "meta": "A full-service general construction company established in 2003, DiFiore Builders Inc. provides quality work from the foundation to the roof of your home. With years of experience to rely on, we specialize in all aspects of building and remodeling -- kitchens, bathrooms, new additions, basements, decks, roofing and siding, and more. Plus, being a small, local team, you can expect nothing less than personalized care and attention to detail. Just know that we’re always happy to help when you need it and uphold our longstanding reputation as your one-call solution here in Tri-State Area. Get in touch anytime for a quote!",
+        "metaLength": 625,
+        "metaPx": 3800,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      }
+    ],
+    "missingH1": [
+      {
+        "url": "https://difiorebuilders.com/",
+        "title": "DiFiore Builders Inc.",
+        "titleLength": 21,
+        "titlePx": 176,
+        "meta": "Quality work from the foundation to the roof -- get in touch for an estimate on your next home-improvement project!",
+        "metaLength": 115,
+        "metaPx": 712,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/before-and-after",
+        "title": "Before and After",
+        "titleLength": 16,
+        "titlePx": 147,
+        "meta": "",
+        "metaLength": 0,
+        "metaPx": 0,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/services",
+        "title": "Services",
+        "titleLength": 8,
+        "titlePx": 76,
+        "meta": "At DiFiore Builders Inc., we offer a wide range of home improvement services at honest and fair prices for both, residential as well as commercial projects. From roofing and siding to additions to full house renovations, there is not a job we can't handle. We always strive to build lasting client relationships and provide top quality work from start to finish every time. Contact us to get a quote!",
+        "metaLength": 400,
+        "metaPx": 2387,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/our-projects",
+        "title": "Our Projects",
+        "titleLength": 12,
+        "titlePx": 111,
+        "meta": "",
+        "metaLength": 0,
+        "metaPx": 0,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/our-story",
+        "title": "Our Story",
+        "titleLength": 9,
+        "titlePx": 83,
+        "meta": "A full-service general construction company established in 2003, DiFiore Builders Inc. provides quality work from the foundation to the roof of your home. With years of experience to rely on, we specialize in all aspects of building and remodeling -- kitchens, bathrooms, new additions, basements, decks, roofing and siding, and more. Plus, being a small, local team, you can expect nothing less than personalized care and attention to detail. Just know that we’re always happy to help when you need it and uphold our longstanding reputation as your one-call solution here in Tri-State Area. Get in touch anytime for a quote!",
+        "metaLength": 625,
+        "metaPx": 3800,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      }
+    ],
+    "noindex": [],
+    "missingCanonical": [
+      {
+        "url": "https://difiorebuilders.com/",
+        "title": "DiFiore Builders Inc.",
+        "titleLength": 21,
+        "titlePx": 176,
+        "meta": "Quality work from the foundation to the roof -- get in touch for an estimate on your next home-improvement project!",
+        "metaLength": 115,
+        "metaPx": 712,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/before-and-after",
+        "title": "Before and After",
+        "titleLength": 16,
+        "titlePx": 147,
+        "meta": "",
+        "metaLength": 0,
+        "metaPx": 0,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/services",
+        "title": "Services",
+        "titleLength": 8,
+        "titlePx": 76,
+        "meta": "At DiFiore Builders Inc., we offer a wide range of home improvement services at honest and fair prices for both, residential as well as commercial projects. From roofing and siding to additions to full house renovations, there is not a job we can't handle. We always strive to build lasting client relationships and provide top quality work from start to finish every time. Contact us to get a quote!",
+        "metaLength": 400,
+        "metaPx": 2387,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/our-projects",
+        "title": "Our Projects",
+        "titleLength": 12,
+        "titlePx": 111,
+        "meta": "",
+        "metaLength": 0,
+        "metaPx": 0,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      },
+      {
+        "url": "https://difiorebuilders.com/our-story",
+        "title": "Our Story",
+        "titleLength": 9,
+        "titlePx": 83,
+        "meta": "A full-service general construction company established in 2003, DiFiore Builders Inc. provides quality work from the foundation to the roof of your home. With years of experience to rely on, we specialize in all aspects of building and remodeling -- kitchens, bathrooms, new additions, basements, decks, roofing and siding, and more. Plus, being a small, local team, you can expect nothing less than personalized care and attention to detail. Just know that we’re always happy to help when you need it and uphold our longstanding reputation as your one-call solution here in Tri-State Area. Get in touch anytime for a quote!",
+        "metaLength": 625,
+        "metaPx": 3800,
+        "h1": "",
+        "noindex": false,
+        "canonical": "",
+        "statusCode": 200
+      }
+    ]
+  }
+}

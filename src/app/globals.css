@@ -24,3 +24,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* reveal helpers for .in toggled via IO */
+.in\:opacity-100.in{opacity:1!important}
+.in\:\[transform\:none\]\.in{transform:none!important}
