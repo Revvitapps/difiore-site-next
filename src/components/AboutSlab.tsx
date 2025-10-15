@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useReveal } from "@/lib/hooks";
 
 export default function AboutSlab() {
@@ -34,13 +33,12 @@ export default function AboutSlab() {
 
         {/* photo */}
         <figure className="relative overflow-hidden rounded-2xl border border-white/10">
-          <Image
-            src="https://img1.wsimg.com/isteam/ip/111e2203-c8e6-4588-acfc-521f62348879/1caf07f0-8ccd-4239-a28b-6fbfef42a7dc.jpg/:/rs=w:1600"
+          <img
+            src="/difiore-leadership-team.jpg"
             alt="DiFiore Builders leadership team"
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 520px, 100vw"
-            priority={false}
+            className="h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
           <figcaption className="absolute inset-x-0 bottom-0 bg-zinc-950/55 p-3 text-sm text-zinc-200">
             Our leadership team — committed to personal service and quality craftsmanship.

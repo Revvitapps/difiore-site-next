@@ -1,40 +1,27 @@
 'use client';
-import { useReveal } from '@/lib/hooks';
+import { useReveal } from "@/lib/hooks";
 
-type Dir = 'left' | 'up' | 'right';
-
-export const pillars: Array<{ ico: string; title: string; blurb: string; dir: Dir }> = [
-  { ico: '🛡️', title: 'Integrity',  blurb: 'Honest estimates, transparent communication, workmanship we stand behind.', dir: 'left'  },
-  { ico: '💡', title: 'Innovation', blurb: 'Modern materials & smart detailing that elevate performance and style.',   dir: 'up'    },
-  { ico: '🏠', title: 'Impact',     blurb: 'Spaces that improve daily life and add lasting value to your home.',      dir: 'right' },
+const items = [
+  { ico: "🛡️", title: "Integrity", blurb: "Honest estimates, transparent communication, workmanship we stand behind." },
+  { ico: "💡", title: "Innovation", blurb: "Modern materials & smart detailing that elevate performance and style." },
+  { ico: "🏠", title: "Impact", blurb: "Spaces that improve daily life and add lasting value to your home." },
 ];
 
 export default function Pillars() {
   const ref = useReveal<HTMLDivElement>();
   return (
-    <section className="relative z-10 px-6 md:px-8 pt-8 pb-12">
-      <div ref={ref} className="mx-auto grid max-w-[1200px] grid-cols-1 gap-4 sm:grid-cols-3">
-        {pillars.map((p, i) => {
-          const motion =
-            p.dir === 'left'  ? '[transform:translateX(-24px)]' :
-            p.dir === 'right' ? '[transform:translateX(24px)]'  :
-                                '[transform:translateY(20px)]';
-          return (
-            <article
-              key={p.title}
-              style={{ transitionDelay: `${i * 120}ms` }}
-              className={`opacity-0 ${motion} in:opacity-100 in:[transform:none] transition-[transform,opacity] duration-700 ease-out rounded-[14px] border border-white/10 bg-[rgba(10,18,30,.42)] p-3`}
-            >
-              <div className="flex items-start gap-3">
-                <span className="text-xl select-none">{p.ico}</span>
-                <div className="min-w-0">
-                  <h3 className="text-[15px] font-semibold text-white">{p.title}</h3>
-                  <p className="mt-1 text-[13px] leading-snug text-zinc-300">{p.blurb}</p>
-                </div>
-              </div>
-            </article>
-          );
-        })}
+    <section className="px-4 py-10">
+      <div
+        ref={ref}
+        className="mx-auto grid max-w-6xl grid-cols-1 gap-4 opacity-0 transition-all duration-700 ease-out [transform:translateY(12px)] in:opacity-100 in:[transform:none] md:grid-cols-3"
+      >
+        {items.map((p) => (
+          <article key={p.title} className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5 backdrop-blur">
+            <div className="text-2xl">{p.ico}</div>
+            <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
+            <p className="mt-1 text-sm text-zinc-300">{p.blurb}</p>
+          </article>
+        ))}
       </div>
     </section>
   );

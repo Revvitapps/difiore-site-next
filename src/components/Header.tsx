@@ -1,34 +1,35 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { site } from '@/lib/site';
-
-const navLinks = site.nav.filter((link) => link.href !== '/');
+import Link from "next/link";
+import { site } from "@/lib/site";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#040913]/90 backdrop-blur">
-      <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-5 py-3 sm:px-8">
-        <Link href="/" className="flex items-center gap-3 text-white/95">
-          <Image src="/difiore-logo.png" alt="DiFiore Builders" width={42} height={42} priority className="h-[42px] w-[42px]" />
-          <span className="text-[17px] font-semibold tracking-tight">DiFiore Builders</span>
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/70 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <Link href="/" className="flex items-center gap-2">
+          <img
+            src="/difiore-logo.png"
+            alt="DiFiore Builders"
+            className="h-8 w-auto"
+          />
+          <span className="font-semibold tracking-tight">{site.name}</span>
         </Link>
-
-        <nav className="hidden items-center gap-5 text-sm font-medium text-white/80 md:flex">
-          {navLinks.map((item) => (
-            <Link key={item.href} href={item.href} className="transition hover:text-white">
-              {item.label}
+        <nav className="hidden gap-6 md:flex">
+          {site.nav.map((n) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              className="text-sm text-zinc-300 hover:text-white"
+            >
+              {n.label}
             </Link>
           ))}
-        </nav>
-
-        <div className="flex items-center gap-2">
           <Link
             href="/project-calculator"
-            className="inline-flex items-center rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+            className="rounded-md bg-amber-500 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-amber-400"
           >
             Project Calculator
           </Link>
-        </div>
+        </nav>
       </div>
     </header>
   );
