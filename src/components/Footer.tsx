@@ -1,30 +1,39 @@
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
+import { site } from '@/lib/site';
+
+const footerNav = site.nav.filter((item) => item.href !== '/');
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-zinc-950">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <img
-              src="https://img1.wsimg.com/isteam/ip/111e2203-c8e6-4588-acfc-521f62348879/blob-f4d6c03.png/:/rs=h:40"
-              alt="DiFiore Builders"
-              className="h-8 w-auto"
-            />
-            <strong className="tracking-tight">DiFiore Builders</strong>
-          </div>
-          <p className="text-sm text-zinc-400">
-            “Quality work from the foundation to the Roof”
+    <footer className="border-t border-white/10 bg-[#040913]">
+      <div className="mx-auto flex max-w-[1180px] flex-col gap-6 px-5 py-10 text-sm text-white/70 sm:px-8 md:flex-row md:items-start md:justify-between">
+        <div className="space-y-2 text-white/80">
+          <Link href="/" className="flex items-center gap-3 text-white">
+            <Image src="/difiore-logo.png" alt="DiFiore Builders" width={38} height={38} className="h-[38px] w-[38px]" />
+            <span className="text-[16px] font-semibold tracking-tight">DiFiore Builders</span>
+          </Link>
+          <p>“Quality work from the foundation to the roof.”</p>
+          <p className="text-xs text-white/55">
+            Serving the greater Tri-State Area with additions, renovations, roofing, siding, and more.
           </p>
         </div>
-        <nav className="flex gap-6 text-sm text-zinc-300">
-          <Link href="/our-story" className="hover:text-white">Our Story</Link>
-          <Link href="/our-projects" className="hover:text-white">Past Projects</Link>
-          <Link href="/project-calculator" className="hover:text-white">Project Calculator</Link>
+
+        <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/70">
+          {footerNav.map((item) => (
+            <Link key={item.href} href={item.href} className="transition hover:text-white">
+              {item.label}
+            </Link>
+          ))}
+          <Link href="/project-calculator" className="transition hover:text-white">
+            Project Calculator
+          </Link>
         </nav>
-        <p className="text-xs text-zinc-500">
-          © {new Date().getFullYear()} DiFiore Builders. Licensed &amp; Insured.
-        </p>
+
+        <div className="text-xs text-white/55">
+          <p>© {new Date().getFullYear()} DiFiore Builders. Licensed &amp; insured.</p>
+          <p>General Contractor • Residential &amp; Commercial</p>
+        </div>
       </div>
     </footer>
   );
