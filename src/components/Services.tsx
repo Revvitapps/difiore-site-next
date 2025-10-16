@@ -1,22 +1,69 @@
+import ServiceHero from '@/components/ServiceHero';
+
+/* Image lists (from /public) */
+export const ROOFING_IMAGES = [
+  '/difiore-services-showcase-3style-roof.png',
+  '/difiore-services-showcase-roofing-gutter.webp',
+  '/difiore-services-showcase-roofing-materials-.webp',
+  '/difiore-services-showcase-Roofing.webp',
+];
+
+export const ADDITIONS_IMAGES = [
+  '/difiore-services-showcase-addition-showcase.jpeg',
+  '/difiore-services-showcase-additions-familyroom-1.JPG',
+  '/difiore-services-showcase-additions-playroom1.JPG',
+  '/difiore-services-showcase-decking-pool.jpeg', // moved here
+];
+
+export const BATHROOMS_IMAGES = [
+  '/difiore-services-showcase-bathroom-shower-walkin-fulltile.JPG',
+  '/difiore-services-showcase-bathroom-shower-walkin-fulltile2.JPG',
+];
+
+export const KITCHENS_IMAGES = [
+  '/difiore-services-showcase-kitchen-closeup.webp',
+  '/difiore-services-showcase-kitchen-whole.webp',
+];
+
 export default function Services() {
-  const items = [
-    { title: "Roofing & Siding", blurb: "Weather-tight systems, clean lines, long-term performance." },
-    { title: "Additions", blurb: "New space that looks like it was always there." },
-    { title: "Kitchens & Renovations", blurb: "Smart layouts, durable materials, beautiful details." },
-    { title: "New Builds & General Construction", blurb: "From plans to punch list — streamlined process." },
-  ];
   return (
-    <section className="px-6 md:px-8 py-16">
-      <div className="mx-auto max-w-[1200px]">
-        <h2 className="text-2xl font-semibold">Our Services</h2>
-        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-          {items.map((s) => (
-            <article key={s.title} className="rounded-xl border border-white/10 bg-zinc-900/60 p-5">
-              <h3 className="font-semibold">{s.title}</h3>
-              <p className="mt-2 text-sm text-zinc-300">{s.blurb}</p>
-            </article>
-          ))}
-        </div>
+    <section className="px-4 pb-20 pt-8">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8">
+        <ServiceHero
+          id="roofing-siding"
+          title="Roofing & Siding"
+          images={ROOFING_IMAGES}
+          blurb="Durable roofing systems and clean, tight siding installs—done right the first time."
+          meta={['Asphalt', 'Metal', 'Gutters']}
+          cta={{ href: '/project-calculator', label: 'Get Roofing Estimate' }}
+        />
+
+        <ServiceHero
+          id="additions"
+          title="Additions & Basements"
+          images={ADDITIONS_IMAGES}
+          blurb="Add square footage with smart framing, insulation, and finishes that feel original to your home."
+          meta={['Family Rooms', 'Basements', 'Decks']}
+          cta={{ href: '/project-calculator', label: 'Plan My Addition' }}
+        />
+
+        <ServiceHero
+          id="bathrooms"
+          title="Bathrooms"
+          images={BATHROOMS_IMAGES}
+          blurb="From walk-in showers to full tile suites—bright, watertight, and easy to maintain."
+          meta={['Walk-In Showers', 'Tile']}
+          cta={{ href: '/project-calculator', label: 'Bathroom Quote' }}
+        />
+
+        <ServiceHero
+          id="kitchens"
+          title="Kitchens"
+          images={KITCHENS_IMAGES}
+          blurb="Hard-working layouts, durable surfaces, and clean detailing that make every day easier."
+          meta={['Cabinetry', 'Stone', 'Lighting']}
+          cta={{ href: '/project-calculator', label: 'Kitchen Quote' }}
+        />
       </div>
     </section>
   );

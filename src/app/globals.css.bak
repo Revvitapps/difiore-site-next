@@ -41,9 +41,6 @@ body {
 .in\:opacity-100.in { opacity: 1 !important; }
 .in\:\[transform\:none\].in { transform: none !important; }
 
-.in\:opacity-100.in { opacity: 1 !important; }
-.in\:\[transform\:none\].in { transform: none !important; }
-
-/* Reveal helpers for the JS-added `.in` class */
+* Reveal helpers for the JS-added `.in` class */
 .in\:opacity-100.in { opacity: 1 !important; }
 .in\:\[transform\:none\].in { transform: none !important; }
