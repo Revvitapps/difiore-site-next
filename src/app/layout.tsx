@@ -1,3 +1,4 @@
+import AgentFloat from "@/components/AgentFloat";
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -16,7 +17,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main className="min-h-[60vh]">{children}</main>
         <Footer />
-      </body>
+        <AgentFloat />
+</body>
     </html>
   );
 }
