@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import TrustedBadges from "@/components/TrustedBadges";
 // If you want Google reviews above the accreditations here too, just uncomment:
 // import Reviews from "@/components/Reviews";
 
@@ -90,6 +91,7 @@ export default function OurStoryPage() {
       {/* <Reviews /> */}
 
      
+      <TrustedBadges />
 </>
   );
 }
