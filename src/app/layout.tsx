@@ -19,7 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="min-h-[60vh]">{children}</main>
 
         {/* Global prefooter */}
-        <TrustedBadges />
 
         <Footer />
         <AgentFloat />
