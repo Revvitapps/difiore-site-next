@@ -12,3 +12,37 @@ img{content-visibility:auto}
 /* Reveal helpers for IntersectionObserver */
 .in\:opacity-100.in { opacity: 1 !important; }
 .in\:\[transform\:none\].in { transform: none !important; }
+
+/* ===== Google Reviews (rvv) theme tokens ===== */
+:root{
+  --rvv-radius: 18px;
+  --rvv-bubble: rgba(12,15,20,.75);
+  --rvv-ink: #e8f0fb;
+  --rvv-bdr: rgba(11,173,211,.55);
+  --rvv-bdr-soft: rgba(255,255,255,.14);
+  --rvv-shadow: 0 24px 80px rgba(3,9,20,.55);
+}
+
+/* ===== Bubble (card) — brighter, defined, aligned ===== */
+.rvv-bubble{
+  position:relative; display:flex; flex-direction:column; height:100%;
+  background:var(--rvv-bubble); border-radius:var(--rvv-radius);
+  box-shadow:var(--rvv-shadow);
+  border:1px solid var(--rvv-bdr-soft);
+  overflow:hidden;
+}
+/* Neon edge */
+.rvv-bubble::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(180deg, rgba(11,173,211,.32), rgba(11,173,211,0)) border-box;
+  mask:linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask:linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  mask-composite:exclude; -webkit-mask-composite:xor;
+  border:1px solid var(--rvv-bdr);
+  opacity:.75;
+}
+.rvv-surface{ padding:22px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); }
+
+/* Hide native scrollbar for rails (still scrollable) */
+.no-scrollbar::-webkit-scrollbar{ display:none; }
+.no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }

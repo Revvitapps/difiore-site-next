@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Reviews from "@/components/Reviews";
 import Hero from "@/components/Hero";
 import Pillars from "@/components/Pillars";
 import AboutSlab from "@/components/AboutSlab";
@@ -19,6 +20,7 @@ export default function Page() {
       <AboutSlab />
       <ServicesIntro />
       <Services />
+      <Reviews />
     </>
   );
 }
