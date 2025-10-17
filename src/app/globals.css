@@ -1,49 +1,14 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* reveal helpers for .in toggled via IO */
+:root{--background:#0b1220;--foreground:#fafafa;--font-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji";--font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+@theme inline{--color-background:var(--background);--color-foreground:var(--foreground);--font-sans:var(--font-sans);--font-mono:var(--font-mono)}
+@media (prefers-color-scheme: dark){:root{--background:#0b1220;--foreground:#fafafa}}
+html,body,:root{height:100%}
+body{background:var(--background);color:var(--foreground)}
+img{content-visibility:auto}
+/* Reveal helpers */
 .in\:opacity-100.in{opacity:1!important}
-.in\:\[transform\:none\]\.in{transform:none!important}
+.in\:\[transform\:none\].in{transform:none!important}
 
-/* Reveal helpers */
-.in\:opacity-100.in { opacity: 1 !important; }
-.in\:\[transform\:none\].in { transform: none !important; }
-
-/* Reveal helpers */
-.in\:opacity-100.in { opacity: 1 !important; }
-.in\:\[transform\:none\].in { transform: none !important; }
-
-/* Reveal helpers for the JS-added `.in` class */
-.in\:opacity-100.in { opacity: 1 !important; }
-.in\:\[transform\:none\].in { transform: none !important; }
-
-.in\:opacity-100.in { opacity: 1 !important; }
-.in\:\[transform\:none\].in { transform: none !important; }
-
-/* Reveal helpers for the JS-added `.in` class */
+/* Reveal helpers for IntersectionObserver */
 .in\:opacity-100.in { opacity: 1 !important; }
 .in\:\[transform\:none\].in { transform: none !important; }

@@ -16,7 +16,7 @@ export default function Hero() {
       />
 
       {/* Quote in the sky, white, larger, no pill */}
-<div className="absolute top-[8vh] right-[3%] md:right-[2%] lg:right-[0%] z-10">
+<div className="absolute top-[8vh] right-[3%] md:right-[2%] lg:right-[5%] z-10">
   <span className="block text-white text-[clamp(18px,2.2vw,28px)] font-semibold drop-shadow-[0_4px_16px_rgba(0,0,0,.45)] whitespace-nowrap">
     “Quality work from the foundation to the Roof”
   </span>
