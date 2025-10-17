@@ -20,7 +20,7 @@ export default function TrustedBadges() {
             href="https://www.bbb.org/us/pa/chadds-ford/profile/general-contractor/difiore-builders-inc-0241-191952896#accreditation"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,.08)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,.12)]"
+            className="group block rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,.08)] transition-none "
             aria-label="View DiFiore Builders on BBB (Accredited Business)"
           >
             <div className="grid grid-cols-[220px_1fr] items-center gap-4">
@@ -48,7 +48,7 @@ export default function TrustedBadges() {
             href="https://www.houzz.com/professionals/general-contractors/difiore-builders-inc-pfvwus-pf~1479707423"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,.08)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,.12)]"
+            className="group block rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,.08)] transition-none "
             aria-label="View DiFiore Builders on Houzz"
           >
             <div className="grid grid-cols-[220px_1fr] items-center gap-4">

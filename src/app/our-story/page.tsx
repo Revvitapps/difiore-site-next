@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Accreditations from "@/components/Accreditations";
-import TrustedBadges from "@/components/TrustedBadges";
 // If you want Google reviews above the accreditations here too, just uncomment:
 // import Reviews from "@/components/Reviews";
 
@@ -91,8 +89,7 @@ export default function OurStoryPage() {
       {/* Optional reviews prefooter here */}
       {/* <Reviews /> */}
 
-      {/* Trusted & Verified (BBB + Houzz) — great as a prefooter */}
-      <TrustedBadges />
+     
 </>
   );
 }
