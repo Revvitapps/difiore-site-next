@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import TrustedBadges from "@/components/TrustedBadges";
 import Reviews from "@/components/Reviews";
 import Hero from "@/components/Hero";
 import Pillars from "@/components/Pillars";
