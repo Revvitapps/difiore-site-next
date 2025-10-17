@@ -1,7 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function GET() {
-  // If you flip NEXT_PUBLIC_REVIEWS_MOCK=0 later, wire Google Places here.
-  // Returning an empty payload is fine while in mock mode on the client.
-  return NextResponse.json({ rating: 5.0, count: 13, reviews: [] }, { status: 200 });
+  // placeholder: client can call this. When ready, swap this
+  // to call Google Places / Business Profile (server-side) with your API key.
+  return NextResponse.json({
+    rating: 5.0,
+    count: 13,
+    reviews: [
+      { id: "m1", name: "John D.", rating: 5, text: "Great job, very responsive!" },
+      { id: "m2", name: "Sarah P.", rating: 5, text: "Beautiful workmanship." }
+    ]
+  });
 }
