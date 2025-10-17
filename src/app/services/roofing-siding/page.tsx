@@ -1,23 +1,12 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
+export const metadata = {
   title: "Roofing & Siding",
-  description: "Weather-tight systems, clean lines, and long-term performance.",
-  alternates: { canonical: "/services/roofing-siding" },
+  description: "Asphalt & metal roofs, vinyl & fiber-cement siding, repairs & replacements.",
 };
-
-export default function RoofingSidingPage() {
+export default function Page() {
   return (
-    <section className="px-4 py-12 md:py-16">
-      <div className="mx-auto max-w-4xl">
-        <h1 className="font-serif text-[clamp(30px,3.6vw,44px)] font-extrabold tracking-tight">
-          Roofing &amp; Siding
-        </h1>
-        <p className="mt-3 text-zinc-300">
-          Full tear-offs &amp; re-roofs • Premium underlayments &amp; flashing • Color-matched trim &amp; accessories
-        </p>
-        {/* TODO: drop in rotating hero + pills like home section, tuned for this service */}
-      </div>
+    <section className="mx-auto max-w-4xl px-4 py-12 text-center">
+      <h1 className="font-serif text-[clamp(28px,3.6vw,44px)] font-extrabold">Roofing &amp; Siding</h1>
+      <p className="mt-3 text-zinc-300">Details & showcase coming next.</p>
     </section>
   );
 }
