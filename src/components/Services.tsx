@@ -201,7 +201,7 @@ function ServiceBand({ data }: { data: Band }) {
 /* ---------- PUBLIC COMPONENT ---------- */
 export default function Services() {
   return (
-    <section aria-label="Services" className="relative space-y-16 md:space-y-24 pb-24 md:pb-32">
+    <section aria-label="Services" className="relative pb-16 space-y-16 md:space-y-24 pb-24 md:pb-32">
       {BANDS.map((b) => (
         <ServiceBand key={b.id} data={b} />
       ))}
