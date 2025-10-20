@@ -10,7 +10,7 @@ type Band = {
   tagline: string[];
   desc: string;
   features: string[];
-  bg: string[];
+  bg: string[]; // rotating background images
   ctaPrimary: { href: string; label: string };
   ctaSecondary?: { href: string; label: string };
 };
@@ -47,7 +47,7 @@ const BANDS: Band[] = [
       "/difiore-services-showcase-additions-playroom1.JPG",
       "/difiore-services-showcase-additions-familyroom-1.JPG",
       "/difiore-services-showcase-addition-showcase.jpeg",
-      "/difiore-services-showcase-decking-pool.jpeg",
+      "/difiore-os-after-bl.jpeg",
     ],
     ctaPrimary: { href: "/project-calculator", label: "Plan My Addition" },
     ctaSecondary: { href: "/our-projects", label: "See Projects" },
@@ -88,11 +88,13 @@ const BANDS: Band[] = [
   },
 ];
 
-/* ---------- ONE BAND (bottom card; rotating bg; capped height) ---------- */
+/* ---------- ONE BAND (bottom-anchored card + rotating bg) ---------- */
 function ServiceBand({ data }: { data: Band }) {
+  // rotation state
   const [idx, setIdx] = useState(0);
   const timer = useRef<number | null>(null);
 
+  // start rotation after mount to avoid SSR hydration mismatches
   useEffect(() => {
     if (data.bg.length < 2) return;
     timer.current = window.setInterval(() => {
@@ -103,6 +105,7 @@ function ServiceBand({ data }: { data: Band }) {
     };
   }, [data.bg.length]);
 
+  // preload the next image so the swap looks smoother
   const nextSrc = useMemo(
     () => (data.bg.length > 1 ? data.bg[(idx + 1) % data.bg.length] : null),
     [data.bg, idx]
@@ -118,15 +121,10 @@ function ServiceBand({ data }: { data: Band }) {
   return (
     <section
       id={data.id}
-      className="
-        relative isolate overflow-hidden
-        flex items-end
-        min-h-[52svh] md:min-h-[60svh] lg:min-h-[68svh]
-        max-h-[820px]
-      "
+      className="relative isolate min-h-[64svh] overflow-hidden"
       aria-label={data.title}
     >
-      {/* background */}
+      {/* full-bleed background */}
       <div
         className="absolute inset-0 -z-10 bg-cover bg-center transition-opacity duration-500"
         style={{ backgroundImage: `url('${bgSrc}')` }}
@@ -135,62 +133,64 @@ function ServiceBand({ data }: { data: Band }) {
       {/* tint */}
       <div aria-hidden className="absolute inset-0 -z-10 bg-[rgba(8,16,28,.40)]" />
 
-      {/* bottom card */}
-      <div className="w-full mx-auto mb-10 md:mb-16 px-4">
-        <div
-          className="mx-auto w-full max-w-[1800px]
-                     rounded-2xl border border-white/15 bg-[rgba(10,20,36,.60)]
-                     p-6 md:p-4 shadow-[0_24px_80px_rgba(3,9,20,.55)]"
-        >
-          {/* tagline chips */}
-          <div className="flex flex-wrap justify-center gap-2">
-            {data.tagline.map((t) => (
-              <span
-                key={t}
-                className="rounded-full bg-amber-500/95 px-3 py-1 text-[12px] font-semibold text-zinc-900 shadow"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
+      {/* track: fill height, push card to bottom */}
+      <div className="mx-auto max-w-[1800px] h-full px-0 flex items-end">
+        {/* bottom offset (tweak these to move the card up/down) */}
+        <div className="w-full mx-auto mb-12 md:mb-16 px-1">
+          <div
+            className="mx-auto w-full max-w-[1800px] rounded-2xl border border-white/15
+                       bg-[rgba(10,20,36,.60)] p-6 md:p-4 shadow-[0_24px_80px_rgba(3,9,20,.55)]"
+          >
+            {/* Tagline chips */}
+            <div className="flex flex-wrap justify-center gap-2">
+              {data.tagline.map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full bg-amber-500/95 px-3 py-1 text-[12px] font-semibold text-zinc-900 shadow"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
 
-          {/* title */}
-          <h3 className="mt-3 text-center font-serif text-[clamp(28px,3.6vw,44px)] font-extrabold leading-tight tracking-tight text-white">
-            {data.title}
-          </h3>
+            {/* Title */}
+            <h3 className="mt-3 text-center font-serif text-[clamp(28px,3.6vw,44px)] font-extrabold leading-tight tracking-tight text-white">
+              {data.title}
+            </h3>
 
-          {/* subtext */}
-          <p className="mt-2 text-center text-[15px] text-white/90">{data.desc}</p>
+            {/* Subtext */}
+            <p className="mt-2 text-center text-[15px] text-white/90">{data.desc}</p>
 
-          {/* feature pills */}
-          <div className="mt-3 grid gap-3 sm:grid-cols-3">
-            {data.features.map((f) => (
-              <div
-                key={f}
-                className="rounded-full border border-white/30 bg-white/10
-                           px-4 py-2 text-center text-[13px] text-zinc-100 backdrop-blur"
-              >
-                {f}
-              </div>
-            ))}
-          </div>
+            {/* Feature pills (rounded) */}
+            <div className="mt-3 grid gap-3 sm:grid-cols-3">
+              {data.features.map((f) => (
+                <div
+                  key={f}
+                  className="rounded-full border border-white/30 bg-white/10 px-4 py-2
+                             text-center text-[13px] text-zinc-100 backdrop-blur"
+                >
+                  {f}
+                </div>
+              ))}
+            </div>
 
-          {/* CTAs */}
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link
-              href={data.ctaPrimary.href}
-              className="rounded-full bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
-            >
-              {data.ctaPrimary.label}
-            </Link>
-            {data.ctaSecondary && (
+            {/* CTAs */}
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Link
-                href={data.ctaSecondary.href}
-                className="rounded-full border border-white/50 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
+                href={data.ctaPrimary.href}
+                className="rounded-full bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
               >
-                {data.ctaSecondary.label}
+                {data.ctaPrimary.label}
               </Link>
-            )}
+              {data.ctaSecondary && (
+                <Link
+                  href={data.ctaSecondary.href}
+                  className="rounded-full border border-white/50 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
+                >
+                  {data.ctaSecondary.label}
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -201,7 +201,7 @@ function ServiceBand({ data }: { data: Band }) {
 /* ---------- PUBLIC COMPONENT ---------- */
 export default function Services() {
   return (
-    <section aria-label="Services" className="relative pb-16 space-y-16 md:space-y-24 pb-24 md:pb-32">
+    <section aria-label="Services" className="relative space-y-16 md:space-y-24">
       {BANDS.map((b) => (
         <ServiceBand key={b.id} data={b} />
       ))}
