@@ -1,81 +1,108 @@
-"use client";
-import { useReveal } from "@/lib/hooks";
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   id: string;
   title: string;
-  bgUrl: string;
-  meta: string[];
-  bullets: string[];
-  primary: { href: string; label: string };
-  secondary?: { href: string; label: string };
+  blurb?: string;
+  images: string[];              // e.g. ['/foo.webp', '/bar.jpg']
+  cta?: { href: string; label: string };
+  meta?: string[];               // small “pills” (optional)
 };
 
 export default function ServiceHero({
-  id, title, bgUrl, meta, bullets, primary, secondary
+  id,
+  title,
+  blurb,
+  images,
+  cta = { href: '/project-calculator', label: 'Plan My Project' },
+  meta = [],
 }: Props) {
-  const ref = useReveal<HTMLElement>();
+  const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const timerRef = useRef<number | null>(null);
+
+  // Rotate images every 6s (pause on hover / focus)
+  useEffect(() => {
+    if (paused || images.length <= 1) return;
+    timerRef.current = window.setInterval(() => {
+      setIdx((i) => (i + 1) % images.length);
+    }, 6000);
+    return () => {
+      if (timerRef.current) window.clearInterval(timerRef.current);
+    };
+  }, [paused, images.length]);
+
   return (
-    <section id={id} ref={ref} className="relative overflow-hidden">
-      {/* background */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-cover bg-center opacity-60 transition-opacity duration-700 in:opacity-80"
-        style={{ backgroundImage: `url(${bgUrl})` }}
-      />
-      {/* tint */}
-      <div aria-hidden="true" className="absolute inset-0 bg-zinc-900/50" />
+    <section
+      id={id}
+      className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/60 shadow-2xl backdrop-blur"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      {/* Image stack */}
+      <div className="relative h-[320px] w-full sm:h-[420px] md:h-[480px]">
+        {images.map((src, i) => (
+          <Image
+            key={src + i}
+            src={src}
+            alt={`${title} showcase ${i + 1}`}
+            fill
+            sizes="(max-width: 768px) 100vw, 1200px"
+            priority={i === 0}
+            className={[
+              'absolute inset-0 object-cover transition-opacity duration-700',
+              i === idx ? 'opacity-100' : 'opacity-0',
+            ].join(' ')}
+          />
+        ))}
 
-      {/* content */}
-      <div className="relative mx-auto max-w-6xl px-4 py-16 md:py-24">
-        <h3 className="text-center text-3xl font-extrabold tracking-tight drop-shadow md:text-4xl">
-          {title}
-        </h3>
+        {/* soft tint so text pops */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/50"
+        />
+      </div>
 
-        {/* meta pills */}
-        <div className="mt-4 flex flex-wrap justify-center gap-3">
-          {meta.map((m) => (
-            <span
-              key={m}
-              className="rounded-full border border-white/20 bg-zinc-900/60 px-3 py-1 text-sm text-zinc-100 backdrop-blur"
-            >
-              {m}
-            </span>
-          ))}
-        </div>
-
-        <p className="mx-auto mt-6 max-w-3xl text-center text-zinc-200">
-          Weather-tight systems, clean lines, and long-term performance.
-        </p>
-
-        {/* bullets */}
-        <ul className="mx-auto mt-6 flex max-w-4xl flex-wrap justify-center gap-3 text-sm text-zinc-100">
-          {bullets.map((b) => (
-            <li
-              key={b}
-              className="rounded-full border border-white/15 bg-zinc-900/60 px-3 py-1 backdrop-blur"
-            >
-              {b}
-            </li>
-          ))}
-        </ul>
-
-        {/* CTAs */}
-        <div className="mt-8 flex justify-center gap-4">
-          <a
-            href={primary.href}
-            className="rounded-md bg-amber-500 px-4 py-2 text-zinc-900 font-medium hover:bg-amber-400"
-          >
-            {primary.label}
-          </a>
-          {secondary && (
-            <a
-              href={secondary.href}
-              className="rounded-md border border-white/20 bg-zinc-900/60 px-4 py-2 text-zinc-100 hover:bg-zinc-900/70"
-            >
-              {secondary.label}
-            </a>
+      {/* Content card */}
+      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+        <div className="mx-auto max-w-5xl rounded-xl bg-[rgba(8,18,34,.78)] p-4 shadow-[0_18px_55px_rgba(3,9,20,.55)] ring-1 ring-white/10">
+          {meta.length > 0 && (
+            <div className="mb-3 flex flex-wrap gap-2">
+              {meta.map((m) => (
+                <span
+                  key={m}
+                  className="rounded-full border border-amber-400/40 bg-amber-100/90 px-3 py-1 text-[12px] font-semibold text-amber-900"
+                >
+                  {m}
+                </span>
+              ))}
+            </div>
           )}
+
+          <h3 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+            {title}
+          </h3>
+
+          {blurb && (
+            <p className="mt-2 text-[15px] leading-relaxed text-zinc-100/90">
+              {blurb}
+            </p>
+          )}
+
+          <div className="mt-4">
+            <Link
+              href={cta.href}
+              className="inline-block rounded-md bg-amber-500 px-4 py-2 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+            >
+              {cta.label}
+            </Link>
+          </div>
         </div>
       </div>
     </section>

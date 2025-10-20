@@ -1,39 +1,28 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { site } from '@/lib/site';
-
-const footerNav = site.nav.filter((item) => item.href !== '/');
+"use client";
+import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#040913]">
-      <div className="mx-auto flex max-w-[1180px] flex-col gap-6 px-5 py-10 text-sm text-white/70 sm:px-8 md:flex-row md:items-start md:justify-between">
-        <div className="space-y-2 text-white/80">
-          <Link href="/" className="flex items-center gap-3 text-white">
-            <Image src="/difiore-logo.png" alt="DiFiore Builders" width={38} height={38} className="h-[38px] w-[38px]" />
-            <span className="text-[16px] font-semibold tracking-tight">DiFiore Builders</span>
-          </Link>
-          <p>“Quality work from the foundation to the roof.”</p>
-          <p className="text-xs text-white/55">
-            Serving the greater Tri-State Area with additions, renovations, roofing, siding, and more.
-          </p>
-        </div>
+    <footer className="relative z-20 isolate border-t border-white/15 bg-zinc-950/95 text-white">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-8 md:grid-cols-[1fr_auto_auto] md:items-center">
+        {/* Logo → home */}
+        <Link href="/" className="flex items-center gap-3">
+          <img src="/difiore-logo.png" alt="DiFiore Builders" className="h-8 w-auto" />
+          <span className="font-semibold tracking-tight">DiFiore Builders</span>
+        </Link>
 
-        <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/70">
-          {footerNav.map((item) => (
-            <Link key={item.href} href={item.href} className="transition hover:text-white">
-              {item.label}
-            </Link>
-          ))}
-          <Link href="/project-calculator" className="transition hover:text-white">
-            Project Calculator
-          </Link>
+        {/* Nav */}
+        <nav className="flex flex-wrap gap-6 text-sm">
+          <Link href="/our-story" className="text-zinc-300 hover:text-white">Our Story</Link>
+          <Link href="/our-projects" className="text-zinc-300 hover:text-white">Past Projects</Link>
+          <Link href="/before-and-after" className="text-zinc-300 hover:text-white">Before &amp; After</Link>
+          <Link href="/project-calculator" className="text-zinc-300 hover:text-white">Project Calculator</Link>
         </nav>
 
-        <div className="text-xs text-white/55">
-          <p>© {new Date().getFullYear()} DiFiore Builders. Licensed &amp; insured.</p>
-          <p>General Contractor • Residential &amp; Commercial</p>
-        </div>
+        {/* Copyright */}
+        <p className="text-right text-xs text-zinc-400 md:justify-self-end">
+          © {new Date().getFullYear()} DiFiore Builders. Licensed &amp; Insured.
+        </p>
       </div>
     </footer>
   );
