@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TrustedBadges from "@/components/TrustedBadges";
 import { Analytics } from '@vercel/analytics/react';
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -30,6 +31,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-zinc-950 text-zinc-100 antialiased">
         <Header />
         <main className="min-h-[60vh]">{children}</main>
+<Script
+  src="https://www.googletagmanager.com/gtag/js?id=G-364C0XZKH3"
+  strategy="afterInteractive"
+  async
+/>
+<Script id="gtag-init" strategy="afterInteractive">
+  {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-364C0XZKH3');
+  `}
+</Script>
 
         {/* Global prefooter */}
 
