@@ -41,32 +41,45 @@ export default function OurStoryPage() {
 
       {/* STORY CONTENT with side before/after stacks */}
       <section className="relative mx-auto max-w-6xl px-4 py-12 md:py-16">
-        {/* Side stacks — positioned around this block (hidden <lg) */}
+        {/* Side stacks (hidden <lg) */}
         <SideBeforeAfterPairs
-          leftTop={{
+          // knobs you can tweak later:
+          sepX={230}
+          sepY={0}
+          cardW={320}
+          cardH={280}
+          insetX={280}
+          insetY={160}
+          columnGap={72}
+          // images:
+          tl={{
             before: "/difiore-os-before-tl.JPG",
             after: "/difiore-os-after-tl.JPG",
-            alt: "Top-left before/after",
+            altBefore: "Top-left before",
+            altAfter: "Top-left after",
           }}
-          leftBottom={{
+          bl={{
             before: "/difiore-os-before-bl.jpeg",
             after: "/difiore-os-after-bl.jpeg",
-            alt: "Bottom-left before/after",
+            altBefore: "Bottom-left before",
+            altAfter: "Bottom-left after",
           }}
-          rightTop={{
+          tr={{
             before: "/difiore-services-showcase-newbuild.jpg",
             after: "/difiore-os-newbuild-after-tr.png",
-            alt: "Top-right before/after",
+            altBefore: "Top-right before",
+            altAfter: "Top-right after",
           }}
-          rightBottom={{
+          br={{
             before: "/difiore-os-before-br-front.jpeg",
             after: "/difiore-services-additions-secondstory2.jpeg",
-            alt: "Bottom-right before/after",
+            altBefore: "Bottom-right before",
+            altAfter: "Bottom-right after",
           }}
         />
 
         {/* Add horizontal padding on lg+ to make room for the stacks */}
-        <div className="mx-auto max-w-3xl text-center lg:max-w-none lg:pl-[300px] lg:pr-[300px] xl:pl-[340px] xl:pr-[340px]">
+        <div className="mx-auto max-w-3xl text-center lg:max-w-none lg:pl-[320px] lg:pr-[320px] xl:pl-[360px] xl:pr-[360px]">
           <h1 className="font-serif text-[clamp(32px,4vw,52px)] font-extrabold leading-tight tracking-tight">
             Our Story
           </h1>
@@ -119,18 +132,6 @@ export default function OurStoryPage() {
             </p>
           </div>
         </div>
-        <SideBeforeAfterPairs
-  sepX={230}   // ⟵ bump this number to pull the “after” farther away horizontally
-  sepY={0}    // ⟵ bump this number to pull the “after” farther away vertically
-  cardW={320}  // optional: bigger cards
-  cardH={280}  // optional: bigger cards
-  insetX={-236}
-  insetY={202}
-  tl={{ before: "/difiore-os-before-tl.JPG",               after: "/difiore-os-after-tl.JPG" }}
-  bl={{ before: "/difiore-os-before-bl.jpeg",              after: "/difiore-os-after-bl.jpeg" }}
-  tr={{ before: "/difiore-services-showcase-newbuild.jpg", after: "/difiore-os-newbuild-after-tr.png" }}
-  br={{ before: "/difiore-os-before-br-front.jpeg",        after: "/difiore-services-additions-secondstory2.jpeg" }}
-/>
       </section>
 
       <TrustedBadges />
