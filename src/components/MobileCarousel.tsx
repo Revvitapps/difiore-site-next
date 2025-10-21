@@ -1,21 +1,29 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from "react";
 
-export default function MobileCarousel({ images }: { images: string[] }) {
+type Props = { images: string[] };
+
+export default function MobileCarousel({ images }: Props) {
   const [i, setI] = useState(0);
-  const tRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (images.length <= 1) return;
-    tRef.current = window.setInterval(() => setI(v => (v + 1) % images.length), 6000);
-    return () => tRef.current && window.clearInterval(tRef.current);
+    if (images.length <= 1) {
+      return; // no timer; valid cleanup type (void)
+    }
+    const id = window.setInterval(() => {
+      setI((v) => (v + 1) % images.length);
+    }, 6000);
+
+    return () => {
+      window.clearInterval(id); // proper cleanup
+    };
   }, [images.length]);
 
   return (
     <div className="sm:hidden relative overflow-hidden rounded-xl border border-white/12">
       <img
         src={images[i]}
-        alt="Kitchen & Bathroom project"
+        alt="Project photo"
         className="w-full h-[58vw] max-h-[420px] object-cover"
         loading="lazy"
         decoding="async"
