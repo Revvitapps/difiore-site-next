@@ -16,6 +16,16 @@ const nextConfig = {
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
   },
   output: "standalone",
+
+  async redirects() {
+    return [
+      {
+        source: "/our-projects",
+        destination: "/before-and-after",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

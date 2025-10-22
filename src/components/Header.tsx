@@ -27,7 +27,6 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav role="navigation" aria-label="Main navigation" className="hidden items-center gap-6 md:flex">
           <Link href="/our-story" className="text-sm text-zinc-300 hover:text-white">Our Story</Link>
-          <Link href="/our-projects" className="text-sm text-zinc-300 hover:text-white">Our Projects</Link>
           <Link href="/before-and-after" className="text-sm text-zinc-300 hover:text-white">Before &amp; After</Link>
 
           {/* Services dropdown (hover/focus keeps it open) */}

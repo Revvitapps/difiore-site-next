@@ -24,7 +24,6 @@ export default function Footer() {
         {/* Nav */}
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-6 text-sm">
           <Link href="/our-story" className="text-zinc-300 hover:text-white">Our Story</Link>
-          <Link href="/our-projects" className="text-zinc-300 hover:text-white">Past Projects</Link>
           <Link href="/before-and-after" className="text-zinc-300 hover:text-white">Before &amp; After</Link>
           <Link href="/project-calculator" className="text-zinc-300 hover:text-white">Project Calculator</Link>
         </nav>
