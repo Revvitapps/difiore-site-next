@@ -1,13 +1,77 @@
 'use client';
 
 import React from 'react';
-import type { EstimatorState, ProjectType } from '../EstimatorForm';
-import { computeEstimate } from '../EstimatorForm';
+
+// ---------- Types shared with parent (local copy so TS is happy here) ----------
+export type ProjectType =
+  | 'roofing'
+  | 'deck'
+  | 'bathroom'
+  | 'kitchen'
+  | 'siding'
+  | 'addition'
+  | '';
+
+export interface AddressInfo {
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  stories?: string | number;
+}
+
+export interface EstimatorDetails {
+  // roofing
+  roofSqft?: number;
+  tearOff?: boolean;
+  material?: string;
+  complexity?: string;
+
+  // deck
+  deckSqft?: number;
+  railingFeet?: number;
+  stairs?: boolean;
+  railing?: string;
+
+  // bathroom
+  bathType?: string;
+  finishLevel?: string;
+  layoutChange?: string;
+  showerType?: string;
+  vanityLength?: number;
+
+  // kitchen
+  sizeSqft?: number;
+  appliancePackage?: string;
+  island?: boolean;
+
+  // siding / exterior
+  sidingSqft?: number;
+  stories?: string | number;
+  windowWrapCount?: number;
+
+  // addition / basement
+  addSqft?: number;
+  isBasement?: boolean;
+  bathroomCount?: number;
+  kitchenette?: boolean;
+}
+
+export interface EstimatorState {
+  project: ProjectType;
+  address: AddressInfo;
+  details: EstimatorDetails;
+  estimate?: {
+    low: number;
+    mid: number;
+    high: number;
+  };
+}
 
 interface StepDetailsProps {
   state: EstimatorState;
   setState: React.Dispatch<React.SetStateAction<EstimatorState>>;
-  est: ReturnType<typeof computeEstimate> | null;
+  est: { low: number; mid: number; high: number } | null;
   currency: (n: number | undefined) => string;
 }
 
@@ -15,9 +79,9 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
   const project = state.project as ProjectType | '';
 
   // helper to update nested "details"
-  function updateDetails<K extends keyof EstimatorState['details']>(
+  function updateDetails<K extends keyof EstimatorDetails>(
     key: K,
-    value: EstimatorState['details'][K]
+    value: EstimatorDetails[K]
   ) {
     setState((s) => ({
       ...s,
@@ -43,7 +107,12 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
               className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
               placeholder="2200"
               value={state.details.roofSqft ?? ''}
-              onChange={(e) => updateDetails('roofSqft', Number(e.target.value))}
+              onChange={(e) =>
+                updateDetails(
+                  'roofSqft',
+                  e.target.value === '' ? undefined : Number(e.target.value)
+                )
+              }
             />
             <p className="text-[11px] text-white/50">
               Whole roof surface area. We&apos;ll verify on site.
@@ -110,7 +179,12 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
               className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
               placeholder="300"
               value={state.details.deckSqft ?? ''}
-              onChange={(e) => updateDetails('deckSqft', Number(e.target.value))}
+              onChange={(e) =>
+                updateDetails(
+                  'deckSqft',
+                  e.target.value === '' ? undefined : Number(e.target.value)
+                )
+              }
             />
           </div>
 
@@ -123,7 +197,10 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
               placeholder="40"
               value={state.details.railingFeet ?? ''}
               onChange={(e) =>
-                updateDetails('railingFeet', Number(e.target.value))
+                updateDetails(
+                  'railingFeet',
+                  e.target.value === '' ? undefined : Number(e.target.value)
+                )
               }
             />
           </div>
@@ -156,9 +233,7 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
           </div>
 
           <div className="space-y-1 md:col-span-2">
-            <label className="text-sm text-white/70 block">
-              Railing Style
-            </label>
+            <label className="text-sm text-white/70 block">Railing Style</label>
             <select
               className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
               value={state.details.railing ?? 'basic'}
@@ -192,9 +267,7 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Finish Level
-            </label>
+            <label className="text-sm text-white/70 block">Finish Level</label>
             <select
               className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
               value={state.details.finishLevel ?? 'popular'}
@@ -243,7 +316,10 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
               placeholder="5"
               value={state.details.vanityLength ?? ''}
               onChange={(e) =>
-                updateDetails('vanityLength', Number(e.target.value))
+                updateDetails(
+                  'vanityLength',
+                  e.target.value === '' ? undefined : Number(e.target.value)
+                )
               }
             />
           </div>
@@ -264,14 +340,17 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
               className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
               placeholder="180"
               value={state.details.sizeSqft ?? ''}
-              onChange={(e) => updateDetails('sizeSqft', Number(e.target.value))}
+              onChange={(e) =>
+                updateDetails(
+                  'sizeSqft',
+                  e.target.value === '' ? undefined : Number(e.target.value)
+                )
+              }
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Finish Level
-            </label>
+            <label className="text-sm text-white/70 block">Finish Level</label>
             <select
               className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
               value={state.details.finishLevel ?? 'popular'}
@@ -284,9 +363,7 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Layout Change
-            </label>
+            <label className="text-sm text-white/70 block">Layout Change</label>
             <select
               className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
               value={state.details.layoutChange ?? 'minor'}
@@ -305,9 +382,7 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
             <select
               className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
               value={state.details.appliancePackage ?? 'mid'}
-              onChange={(e) =>
-                updateDetails('appliancePackage', e.target.value)
-              }
+              onChange={(e) => updateDetails('appliancePackage', e.target.value)}
             >
               <option value="basic">Basic / Builder Grade</option>
               <option value="mid">Mid-Range (most common)</option>
@@ -348,7 +423,10 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
               placeholder="2000"
               value={state.details.sidingSqft ?? ''}
               onChange={(e) =>
-                updateDetails('sidingSqft', Number(e.target.value))
+                updateDetails(
+                  'sidingSqft',
+                  e.target.value === '' ? undefined : Number(e.target.value)
+                )
               }
             />
           </div>
@@ -388,7 +466,10 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
               placeholder="6"
               value={state.details.windowWrapCount ?? ''}
               onChange={(e) =>
-                updateDetails('windowWrapCount', Number(e.target.value))
+                updateDetails(
+                  'windowWrapCount',
+                  e.target.value === '' ? undefined : Number(e.target.value)
+                )
               }
             />
           </div>
@@ -409,7 +490,12 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
               className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
               placeholder="600"
               value={state.details.addSqft ?? ''}
-              onChange={(e) => updateDetails('addSqft', Number(e.target.value))}
+              onChange={(e) =>
+                updateDetails(
+                  'addSqft',
+                  e.target.value === '' ? undefined : Number(e.target.value)
+                )
+              }
             />
             <p className="text-[11px] text-white/50">
               For basements, use finished area.
@@ -453,7 +539,10 @@ export function StepDetails({ state, setState, est, currency }: StepDetailsProps
               placeholder="1"
               value={state.details.bathroomCount ?? ''}
               onChange={(e) =>
-                updateDetails('bathroomCount', Number(e.target.value))
+                updateDetails(
+                  'bathroomCount',
+                  e.target.value === '' ? undefined : Number(e.target.value)
+                )
               }
             />
           </div>
