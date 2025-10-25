@@ -2,6 +2,61 @@
 
 import React, { useState } from 'react';
 
+// ----- estimate + helpers -----
+
+// rough placeholder math – replace with your real logic per project type
+function computeEstimate(
+  details: EstimatorState['details'],
+  project: EstimatorState['project']
+) {
+  const sqftNum = parseFloat(details.squareFeet || '0') || 0;
+
+  let basePerSqft = 0;
+  switch (project) {
+    case 'roofing':
+      basePerSqft = 9;
+      break;
+    case 'deck':
+      basePerSqft = 45;
+      break;
+    case 'bathroom':
+      basePerSqft = 250;
+      break;
+    case 'kitchen':
+      basePerSqft = 300;
+      break;
+    case 'siding':
+      basePerSqft = 15;
+      break;
+    case 'addition':
+      basePerSqft = 225;
+      break;
+    default:
+      basePerSqft = 0;
+  }
+
+  const mid = sqftNum * basePerSqft;
+  if (!mid || mid === 0) {
+    return null; // no estimate yet
+  }
+
+  return {
+    low: Math.round(mid * 0.85),
+    mid: Math.round(mid),
+    high: Math.round(mid * 1.25),
+  };
+}
+
+// simple currency formatter for the estimate preview card
+function currency(n: number) {
+  if (!n || Number.isNaN(n)) return '—';
+  return n.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  });
+}
+
 // ----- types -----
 export type ProjectType =
   | 'roofing'
@@ -115,7 +170,7 @@ function ProjectSelector({ state, setState }: SelectorProps) {
           What kind of project are you planning?
         </h2>
         <p className="text-sm text-zinc-400 mt-2">
-          Pick the one that’s the best fit. You'll answer a few quick details next.
+          Pick the one that’s the best fit. You&rsquo;ll answer a few quick details next.
         </p>
       </div>
 
@@ -152,9 +207,11 @@ function ProjectSelector({ state, setState }: SelectorProps) {
 type DetailsProps = {
   state: EstimatorState;
   setState: React.Dispatch<React.SetStateAction<EstimatorState>>;
+  est: { low: number; mid: number; high: number } | null;
+  currency: (n: number) => string;
 };
 
-function StepDetails({ state, setState }: DetailsProps) {
+function StepDetails({ state, setState, est, currency }: DetailsProps) {
   const d = state.details;
 
   function update<K extends keyof EstimatorState['details']>(
@@ -299,6 +356,53 @@ function StepDetails({ state, setState }: DetailsProps) {
         </label>
       )}
 
+      {/* Live estimate preview */}
+      <div className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.6)] p-4 text-[13px] text-zinc-200 shadow-[0_20px_60px_rgba(251,191,36,.15)]">
+        <div className="text-[12px] font-semibold text-amber-400/90 uppercase tracking-wide mb-3">
+          Rough Cost Range (not a formal quote)
+        </div>
+
+        {est ? (
+          <div className="grid grid-cols-3 gap-3 text-center">
+            <div className="rounded-lg bg-black/30 border border-white/10 p-3">
+              <div className="text-[11px] text-zinc-400 uppercase tracking-wide">
+                Conservative
+              </div>
+              <div className="text-white font-semibold text-sm leading-tight">
+                {currency(est.low)}
+              </div>
+            </div>
+
+            <div className="rounded-lg bg-black/30 border border-amber-400/40 shadow-[0_20px_60px_rgba(251,191,36,.35)] p-3">
+              <div className="text-[11px] text-amber-300 uppercase tracking-wide">
+                Most Likely
+              </div>
+              <div className="text-white font-semibold text-sm leading-tight">
+                {currency(est.mid)}
+              </div>
+            </div>
+
+            <div className="rounded-lg bg-black/30 border border-white/10 p-3">
+              <div className="text-[11px] text-zinc-400 uppercase tracking-wide">
+                Premium
+              </div>
+              <div className="text-white font-semibold text-sm leading-tight">
+                {currency(est.high)}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-zinc-500 text-[12px]">
+            Add square footage and scope and we’ll generate a ballpark.
+          </div>
+        )}
+
+        <div className="text-[11px] text-zinc-500 mt-3 leading-relaxed">
+          Final pricing depends on site conditions, finishes, layout changes,
+          permitting, etc. We confirm everything during an on-site visit.
+        </div>
+      </div>
+
       <div>
         <button
           type="button"
@@ -344,7 +448,7 @@ function ContactForm({ state, setState }: ContactProps) {
           Step 3 • How can we reach you?
         </p>
         <h2 className="text-white font-extrabold text-[clamp(20px,2vw,24px)] leading-tight">
-          We'll send your ballpark and follow up to schedule a visit
+          We&rsquo;ll send your ballpark and follow up to schedule a visit
         </h2>
       </div>
 
@@ -517,7 +621,7 @@ function ReviewSummary({
 
         {sent && !error && (
           <div className="text-emerald-400">
-            Thank you! We’ve received your request.
+            Thank you! We&rsquo;ve received your request.
           </div>
         )}
 
@@ -535,6 +639,9 @@ export default function EstimatorForm() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // live rolling estimate for Step 2 preview card
+  const estimateRangeOrNull = computeEstimate(state.details, state.project);
+
   async function handleSubmit() {
     try {
       setSending(true);
@@ -544,7 +651,7 @@ export default function EstimatorForm() {
       // await submitEstimate(state);
 
       setSent(true);
-    } catch (err) {
+    } catch (_err) {
       setError('Something went wrong sending your request.');
     } finally {
       setSending(false);
@@ -554,7 +661,14 @@ export default function EstimatorForm() {
   return (
     <section className="mx-auto max-w-3xl space-y-8 rounded-2xl border border-white/10 bg-[radial-gradient(circle_at_20%_20%,rgba(251,191,36,.12)_0%,rgba(0,0,0,0)_60%)] bg-[rgba(15,15,20,.8)] p-6 shadow-[0_40px_120px_rgba(0,0,0,.8)] ring-1 ring-white/5 backdrop-blur-xl">
       {state.step === 1 && <ProjectSelector state={state} setState={setState} />}
-      {state.step === 2 && <StepDetails state={state} setState={setState} />}
+      {state.step === 2 && (
+        <StepDetails
+          state={state}
+          setState={setState}
+          est={estimateRangeOrNull}
+          currency={currency}
+        />
+      )}
       {state.step === 3 && <ContactForm state={state} setState={setState} />}
       {state.step === 4 && (
         <ReviewSummary
