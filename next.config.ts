@@ -1,10 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverActions: true,
+    serverActions: {}, // ✅ fixed from boolean to object
   },
   images: {
-    domains: ["images.unsplash.com", "res.cloudinary.com"],
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+    ],
   },
   env: {
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
