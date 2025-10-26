@@ -2,64 +2,67 @@
 
 import React from 'react';
 
-// If TypeScript complains about the import from page.tsx, you can inline the EstimatorState type here.
-// For now we'll accept `any` for state to keep runtime unblocked.
-type Props = {
-  state: any;
-  setState: React.Dispatch<React.SetStateAction<any>>;
-  layoutClassName?: string;
-};
+export type ProjectKey =
+  | 'roofing'
+  | 'siding'
+  | 'windows'
+  | 'bathroom'
+  | 'kitchen'
+  | 'addition'
+  | 'basement'
+  | 'deck'
+  | 'other';
 
-export function ProjectSelector({ state, setState, layoutClassName }: Props) {
-  const projectOptions = [
-    { key: 'roofing', label: 'Roof / Gutters', emoji: '🏠' },
-    { key: 'siding', label: 'Siding / Exterior', emoji: '🧱' },
-    { key: 'deck', label: 'Deck / Outdoor', emoji: '🌿' },
-    { key: 'kitchen', label: 'Kitchen Remodel', emoji: '🍽️' },
-    { key: 'bathroom', label: 'Bathroom Remodel', emoji: '🚿' },
-    { key: 'addition', label: 'Addition / Basement', emoji: '➕' },
-  ] as const;
+interface ProjectSelectorProps {
+  value: ProjectKey | '';
+  onChange: (key: ProjectKey) => void;
+}
 
-  function pickProject(key: string) {
-    setState((prev) => ({
-      ...prev,
-      project: key,
-    }));
-  }
+const OPTIONS: { key: ProjectKey; label: string; blurb: string }[] = [
+  { key: 'roofing', label: 'Roofing', blurb: 'Leak, aging, storm damage' },
+  { key: 'siding', label: 'Siding', blurb: 'Replace / repair exterior' },
+  { key: 'windows', label: 'Windows', blurb: 'Drafty / failing windows' },
+  { key: 'bathroom', label: 'Bathroom', blurb: 'Full gut / remodel' },
+  { key: 'kitchen', label: 'Kitchen', blurb: 'New cabinets, layout, etc.' },
+  { key: 'addition', label: 'Addition', blurb: 'Add space / new level' },
+  { key: 'basement', label: 'Basement', blurb: 'Finish / refinish space' },
+  { key: 'deck', label: 'Deck / Porch', blurb: 'New build / rebuild' },
+  { key: 'other', label: 'Other', blurb: 'Tell us what you need' },
+];
 
+function ProjectSelector({ value, onChange }: ProjectSelectorProps) {
   return (
-    <div className="flex flex-col gap-4 text-white">
-      <p className="text-[13px] text-zinc-300">
-        What kind of work are you looking to get priced?
-      </p>
-
-      {/* grid of 6 pills */}
-      <div
-        className={
-          layoutClassName ??
-          'flex flex-wrap gap-2'
-        }
-      >
-        {projectOptions.map((opt) => {
-          const active = state.project === opt.key;
-          return (
-            <button
-              key={opt.key}
-              type="button"
-              onClick={() => pickProject(opt.key)}
-              className={[
-                'flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition',
-                active
-                  ? 'border-amber-400/60 bg-[rgba(251,191,36,.15)] text-amber-300 shadow-[0_20px_60px_rgba(251,191,36,.3)]'
-                  : 'border-white/15 bg-[rgba(20,20,28,.6)] text-white/80 hover:bg-[rgba(30,30,40,.7)] hover:text-white',
-              ].join(' ')}
-            >
-              <span className="text-lg">{opt.emoji}</span>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-white">
+      {OPTIONS.map((opt) => {
+        const active = opt.key === value;
+        return (
+          <button
+            key={opt.key}
+            type="button"
+            onClick={() => onChange(opt.key)}
+            className={[
+              'flex flex-col rounded-xl border px-4 py-4 text-left transition shadow-[0_20px_60px_rgba(251,191,36,0.15)]',
+              active
+                ? 'border-amber-400 bg-amber-500/10 text-amber-200 ring-1 ring-amber-400/40'
+                : 'border-white/10 bg-white/[0.03] text-white/80 hover:border-amber-400/60 hover:bg-amber-500/5 hover:text-white',
+            ].join(' ')}
+          >
+            <div className="text-sm font-semibold leading-tight flex items-center gap-2">
               <span>{opt.label}</span>
-            </button>
-          );
-        })}
-      </div>
+              {active && (
+                <span className="inline-block rounded-full bg-amber-400 text-zinc-900 text-[10px] font-bold px-2 py-[2px] leading-none">
+                  Selected
+                </span>
+              )}
+            </div>
+            <div className="text-[11px] text-white/50 mt-1 leading-snug">
+              {opt.blurb}
+            </div>
+          </button>
+        );
+      })}
     </div>
   );
 }
+
+export default ProjectSelector;
