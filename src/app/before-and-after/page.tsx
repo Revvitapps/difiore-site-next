@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
 
 export const metadata: Metadata = {
@@ -127,42 +128,42 @@ export default function BeforeAfterPage() {
           <div className="grid h-full w-full grid-cols-2 grid-rows-2">
             {/* Top Left */}
             <div className="relative">
-              <img
+              <Image
                 src="/difiore-os-before-bl.jpeg"
                 alt="Before — project"
-                className="absolute inset-0 h-full w-full object-cover scale-[1.06]"
-                loading="lazy"
-                decoding="async"
+                fill
+                className="object-cover scale-[1.06]"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
             {/* Top Right */}
             <div className="relative">
-              <img
+              <Image
                 src="/difiore-os-after-bl.jpeg"
                 alt="After — project"
-                className="absolute inset-0 h-full w-full object-cover scale-[1.06]"
-                loading="lazy"
-                decoding="async"
+                fill
+                className="object-cover scale-[1.06]"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
             {/* Bottom Left */}
             <div className="relative">
-              <img
+              <Image
                 src="/difiore-os-before-br-front.jpeg"
                 alt="Before — exterior front"
-                className="absolute inset-0 h-full w-full object-cover scale-[1.06]"
-                loading="lazy"
-                decoding="async"
+                fill
+                className="object-cover scale-[1.06]"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
             {/* Bottom Right */}
             <div className="relative">
-              <img
+              <Image
                 src="/difiore-services-additions-secondstory2.jpeg"
                 alt="After — second story addition"
-                className="absolute inset-0 h-full w-full object-cover scale-[1.06]"
-                loading="lazy"
-                decoding="async"
+                fill
+                className="object-cover scale-[1.06]"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
           </div>

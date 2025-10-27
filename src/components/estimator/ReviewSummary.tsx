@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import type { EstimatorStateLike } from '@/app/project-calculator/page';
+import type { EstimatorStateLike } from './types';
 
 // Define the shape we expect for the live estimate numbers
 type EstimateNumbers = {

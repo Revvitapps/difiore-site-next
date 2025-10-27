@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
 
 export const metadata: Metadata = {
@@ -98,34 +99,42 @@ export default function AdditionsBasementsPage() {
 
           {/* Mini gallery */}
           <figure className="grid grid-cols-2 gap-4 self-start">
-            <img
-              src="/difiore-services-showcase-additions-playroom1.JPG"
-              alt="Family room addition"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/difiore-services-showcase-additions-familyroom-1.JPG"
-              alt="Open living expansion"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/difiore-services-showcase-addition-showcase.jpeg"
-              alt="Exterior addition tie-in"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/difiore-services-showcase-decking-pool.jpeg"
-              alt="Decking and outdoor space"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
+            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
+              <Image
+                src="/difiore-services-showcase-additions-playroom1.JPG"
+                alt="Family room addition"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
+              <Image
+                src="/difiore-services-showcase-additions-familyroom-1.JPG"
+                alt="Open living expansion"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
+              <Image
+                src="/difiore-services-showcase-addition-showcase.jpeg"
+                alt="Exterior addition tie-in"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
+              <Image
+                src="/difiore-services-showcase-decking-pool.jpeg"
+                alt="Decking and outdoor space"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
           </figure>
         </div>
       </section>

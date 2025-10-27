@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
 
 export const metadata: Metadata = {
@@ -99,34 +100,42 @@ export default function KitchensBathroomsPage() {
 
           {/* Mini gallery */}
           <figure className="grid grid-cols-2 gap-4 self-start">
-            <img
-              src="/difiore-services-showcase-kitchen-whole.webp"
-              alt="Kitchen detail — stone, tile, and clean lines"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/difiore-services-kitchen-darkwood-stainless-appoliances.JPG"
-              alt="Bathroom refresh — tile, fixtures, and lighting"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/difiore-reviews-cindy-colvin.png"
-              alt="Full kitchen remodel — bright, functional, and durable"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/difiore-services -bathroom-shower1.JPG"
-              alt="Tile & stone craftsmanship"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
+            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
+              <Image
+                src="/difiore-services-showcase-kitchen-whole.webp"
+                alt="Kitchen detail — stone, tile, and clean lines"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
+              <Image
+                src="/difiore-services-kitchen-darkwood-stainless-appoliances.JPG"
+                alt="Bathroom refresh — tile, fixtures, and lighting"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
+              <Image
+                src="/difiore-reviews-cindy-colvin.png"
+                alt="Full kitchen remodel — bright, functional, and durable"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
+              <Image
+                src="/difiore-services -bathroom-shower1.JPG"
+                alt="Tile & stone craftsmanship"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
           </figure>
         </div>
       </section>

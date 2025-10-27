@@ -1,59 +1,7 @@
 'use client';
 
 import React from 'react';
-
-// ---- TYPES (must match page.tsx) ----
-export type ProjectKey =
-  | 'roofing'
-  | 'deck'
-  | 'bathroom'
-  | 'kitchen'
-  | 'siding'
-  | 'addition'
-  | 'windows';
-
-export type EstimatorDetails = {
-  squareFootage?: string;
-  scopeDescription?: string;
-
-  // roofing
-  roofType?: string;
-  roofComplexity?: string;
-  tearOff?: string;
-
-  // kitchen
-  cabinetsScope?: string;
-  applianceLevel?: string;
-
-  // bathroom
-  bathType?: string;
-  layoutChanges?: string;
-  showerType?: string;
-  finishLevel?: string;
-  vanityLengthFt?: string;
-
-  // siding / windows
-  sidingMaterial?: string;
-  windowCount?: string;
-};
-
-export type EstimatorStateLike = {
-  step: 1 | 2 | 3 | 4;
-  project: ProjectKey | null; // allow null, same as page.tsx
-  details: EstimatorDetails;
-  contact: {
-    firstName?: string;
-    lastName?: string;
-    phone?: string;
-    email?: string;
-  };
-  address: {
-    street?: string;
-    city?: string;
-    state?: string;
-    zip?: string;
-  };
-};
+import type { EstimatorStateLike } from './types';
 
 export interface ContactFormProps {
   state: EstimatorStateLike;

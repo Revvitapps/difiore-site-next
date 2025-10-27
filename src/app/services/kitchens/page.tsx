@@ -1,4 +1,3 @@
-import Link from "next/link";
 export default function Kitchens() {
   return (
     <section className="px-4 py-12">

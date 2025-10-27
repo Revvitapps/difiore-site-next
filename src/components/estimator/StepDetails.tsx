@@ -1,646 +1,330 @@
 'use client';
 
 import React from 'react';
+import type { EstimatorDetails, ProjectKey } from './types';
 
-// ---------- Types shared with parent (local copy so TS is happy here) ----------
-export type ProjectType =
-  | 'roofing'
-  | 'deck'
-  | 'bathroom'
-  | 'kitchen'
-  | 'siding'
-  | 'addition'
-  | '';
+type EstimatePreview = {
+  conservative: number;
+  likely: number;
+  premium: number;
+  breakdownLines?: string[];
+};
 
-export interface AddressInfo {
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  stories?: string | number;
-}
-
-export interface EstimatorDetails {
-  // roofing
-  roofSqft?: number;
-  tearOff?: boolean;
-  material?: string;
-  complexity?: string;
-
-  // deck
-  deckSqft?: number;
-  railingFeet?: number;
-  stairs?: boolean;
-  railing?: string;
-
-  // bathroom
-  bathType?: string;
-  finishLevel?: string;
-  layoutChange?: string;
-  showerType?: string;
-  vanityLength?: number;
-
-  // kitchen
-  sizeSqft?: number;
-  appliancePackage?: string;
-  island?: boolean;
-
-  // siding / exterior
-  sidingSqft?: number;
-  stories?: string | number;
-  windowWrapCount?: number;
-
-  // addition / basement
-  addSqft?: number;
-  isBasement?: boolean;
-  bathroomCount?: number;
-  kitchenette?: boolean;
-}
-
-export interface EstimatorState {
-  project: ProjectType;
-  address: AddressInfo;
+type StepDetailsProps = {
+  project: ProjectKey | null;
   details: EstimatorDetails;
-  estimate?: {
-    low: number;
-    mid: number;
-    high: number;
-  };
-}
-
-interface StepDetailsProps {
-  state: EstimatorState;
-  setState: React.Dispatch<React.SetStateAction<EstimatorState>>;
-  est: { low: number; mid: number; high: number } | null;
-  currency: (n: number | undefined) => string;
-}
-
-export function StepDetails({ state, setState, est, currency }: StepDetailsProps) {
-  const project = state.project as ProjectType | '';
-
-  // helper to update nested "details"
-  function updateDetails<K extends keyof EstimatorDetails>(
+  est: EstimatePreview | null;
+  onChange: <K extends keyof EstimatorDetails>(
     key: K,
     value: EstimatorDetails[K]
-  ) {
-    setState((s) => ({
-      ...s,
-      details: {
-        ...s.details,
-        [key]: value,
-      },
-    }));
-  }
+  ) => void;
+};
 
-  //
-  // per-project forms
-  //
-  function renderRoofing() {
+const money = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 0,
+});
+
+function TextInput({
+  label,
+  placeholder,
+  value,
+  onChange,
+}: {
+  label: string;
+  placeholder?: string;
+  value: string;
+  onChange: (next: string) => void;
+}) {
+  return (
+    <label className="flex flex-col gap-1 text-sm text-zinc-200">
+      <span className="text-[13px] font-semibold text-zinc-200">{label}</span>
+      <input
+        className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+      />
+    </label>
+  );
+}
+
+function SelectInput({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (next: string) => void;
+  options: { label: string; value: string }[];
+}) {
+  return (
+    <label className="flex flex-col gap-1 text-sm text-zinc-200">
+      <span className="text-[13px] font-semibold text-zinc-200">{label}</span>
+      <select
+        className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      >
+        <option value="">Select an option…</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+export default function StepDetails({
+  project,
+  details,
+  est,
+  onChange,
+}: StepDetailsProps) {
+  if (!project) {
     return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Approx Roof Square Footage
-            </label>
-            <input
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="2200"
-              value={state.details.roofSqft ?? ''}
-              onChange={(e) =>
-                updateDetails(
-                  'roofSqft',
-                  e.target.value === '' ? undefined : Number(e.target.value)
-                )
-              }
-            />
-            <p className="text-[11px] text-white/50">
-              Whole roof surface area. We&apos;ll verify on site.
-            </p>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Tear-Off Existing Roof?
-            </label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={String(state.details.tearOff ?? true)}
-              onChange={(e) =>
-                updateDetails('tearOff', e.target.value === 'true')
-              }
-            >
-              <option value="true">Yes, full tear-off</option>
-              <option value="false">No / layover</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Material</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.material ?? 'architectural'}
-              onChange={(e) => updateDetails('material', e.target.value)}
-            >
-              <option value="asphalt_3tab">3-Tab Asphalt (budget)</option>
-              <option value="architectural">Architectural Asphalt (most common)</option>
-              <option value="metal_standing">Standing Seam Metal</option>
-              <option value="cedar">Cedar Shake</option>
-              <option value="slate_synthetic">Synthetic Slate</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Roof Complexity</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.complexity ?? 'complex'}
-              onChange={(e) => updateDetails('complexity', e.target.value)}
-            >
-              <option value="simple">Simple (2 planes, low pitch)</option>
-              <option value="complex">Complex (hips/valleys)</option>
-              <option value="very_complex">Very Complex / Steep / Cut-up</option>
-            </select>
-          </div>
-        </div>
+      <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+        Choose a project type first and we’ll load the matching questions here.
       </div>
     );
   }
 
-  function renderDeck() {
-    return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Approx Deck Square Footage
-            </label>
-            <input
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="300"
-              value={state.details.deckSqft ?? ''}
-              onChange={(e) =>
-                updateDetails(
-                  'deckSqft',
-                  e.target.value === '' ? undefined : Number(e.target.value)
-                )
-              }
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Railing Linear Feet
-            </label>
-            <input
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="40"
-              value={state.details.railingFeet ?? ''}
-              onChange={(e) =>
-                updateDetails(
-                  'railingFeet',
-                  e.target.value === '' ? undefined : Number(e.target.value)
-                )
-              }
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Deck Surface</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.material ?? 'popular_comp'}
-              onChange={(e) => updateDetails('material', e.target.value)}
-            >
-              <option value="standard_pt">Pressure-Treated Wood</option>
-              <option value="popular_comp">Composite (most popular)</option>
-              <option value="premium_comp">Premium Composite</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Stairs?</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={String(state.details.stairs ?? true)}
-              onChange={(e) =>
-                updateDetails('stairs', e.target.value === 'true')
-              }
-            >
-              <option value="true">Yes, include stairs</option>
-              <option value="false">No stairs needed</option>
-            </select>
-          </div>
-
-          <div className="space-y-1 md:col-span-2">
-            <label className="text-sm text-white/70 block">Railing Style</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.railing ?? 'basic'}
-              onChange={(e) => updateDetails('railing', e.target.value)}
-            >
-              <option value="none">No Railing / Ground Level</option>
-              <option value="basic">Wood/Post (standard)</option>
-              <option value="metal">Metal / Cable / Premium</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function renderBathroom() {
-    return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Bathroom Type</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.bathType ?? 'guest_full'}
-              onChange={(e) => updateDetails('bathType', e.target.value)}
-            >
-              <option value="powder">Powder / Half Bath</option>
-              <option value="guest_full">Guest / Hall Full Bath</option>
-              <option value="primary">Primary / Master Bath</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Finish Level</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.finishLevel ?? 'popular'}
-              onChange={(e) => updateDetails('finishLevel', e.target.value)}
-            >
-              <option value="standard">Good / Value</option>
-              <option value="popular">Better / Most Popular</option>
-              <option value="premium">Best / Luxury</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Layout / Plumbing Move
-            </label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.layoutChange ?? 'minor'}
-              onChange={(e) => updateDetails('layoutChange', e.target.value)}
-            >
-              <option value="none">Keep layout</option>
-              <option value="minor">Minor changes</option>
-              <option value="major">Major rework</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Shower Type</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.showerType ?? 'tub_shower'}
-              onChange={(e) => updateDetails('showerType', e.target.value)}
-            >
-              <option value="tub_shower">Tub/Shower Combo</option>
-              <option value="walk_in_tile">Walk-in Tiled Shower</option>
-              <option value="curbless_tile">Curbless / Zero-Entry</option>
-            </select>
-          </div>
-
-          <div className="space-y-1 md:col-span-2">
-            <label className="text-sm text-white/70 block">
-              Vanity Length (feet)
-            </label>
-            <input
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="5"
-              value={state.details.vanityLength ?? ''}
-              onChange={(e) =>
-                updateDetails(
-                  'vanityLength',
-                  e.target.value === '' ? undefined : Number(e.target.value)
-                )
-              }
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function renderKitchen() {
-    return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Approx Kitchen Sq Ft
-            </label>
-            <input
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="180"
-              value={state.details.sizeSqft ?? ''}
-              onChange={(e) =>
-                updateDetails(
-                  'sizeSqft',
-                  e.target.value === '' ? undefined : Number(e.target.value)
-                )
-              }
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Finish Level</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.finishLevel ?? 'popular'}
-              onChange={(e) => updateDetails('finishLevel', e.target.value)}
-            >
-              <option value="standard">Standard (stock cabinets)</option>
-              <option value="popular">Popular (semi-custom)</option>
-              <option value="premium">Premium / Custom</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Layout Change</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.layoutChange ?? 'minor'}
-              onChange={(e) => updateDetails('layoutChange', e.target.value)}
-            >
-              <option value="keep">Keep same layout</option>
-              <option value="minor">Minor move of appliances</option>
-              <option value="major">Major walls/plumbing move</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Appliance Package
-            </label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.appliancePackage ?? 'mid'}
-              onChange={(e) => updateDetails('appliancePackage', e.target.value)}
-            >
-              <option value="basic">Basic / Builder Grade</option>
-              <option value="mid">Mid-Range (most common)</option>
-              <option value="pro">Pro / High-End</option>
-            </select>
-          </div>
-
-          <div className="space-y-1 md:col-span-2">
-            <label className="text-sm text-white/70 block">
-              Include Island?
-            </label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={String(state.details.island ?? false)}
-              onChange={(e) =>
-                updateDetails('island', e.target.value === 'true')
-              }
-            >
-              <option value="false">No Island</option>
-              <option value="true">Yes, Add/Upgrade Island</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function renderSiding() {
-    return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Exterior Sq Ft (walls)
-            </label>
-            <input
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="2000"
-              value={state.details.sidingSqft ?? ''}
-              onChange={(e) =>
-                updateDetails(
-                  'sidingSqft',
-                  e.target.value === '' ? undefined : Number(e.target.value)
-                )
-              }
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Material</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.material ?? 'vinyl'}
-              onChange={(e) => updateDetails('material', e.target.value)}
-            >
-              <option value="vinyl">Vinyl</option>
-              <option value="fiber_cement">Fiber Cement / Hardie</option>
-              <option value="cedar">Cedar</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Stories</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.stories ?? state.address.stories ?? '2'}
-              onChange={(e) => updateDetails('stories', e.target.value)}
-            >
-              <option value="1">1 Story</option>
-              <option value="2">2 Stories</option>
-              <option value="3">3+ Stories</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Windows/Doors to Re-trim / Flash
-            </label>
-            <input
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="6"
-              value={state.details.windowWrapCount ?? ''}
-              onChange={(e) =>
-                updateDetails(
-                  'windowWrapCount',
-                  e.target.value === '' ? undefined : Number(e.target.value)
-                )
-              }
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function renderAddition() {
-    return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Approx Added / Finished Sq Ft
-            </label>
-            <input
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="600"
-              value={state.details.addSqft ?? ''}
-              onChange={(e) =>
-                updateDetails(
-                  'addSqft',
-                  e.target.value === '' ? undefined : Number(e.target.value)
-                )
-              }
-            />
-            <p className="text-[11px] text-white/50">
-              For basements, use finished area.
-            </p>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              Space Type / Finish Level
-            </label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={state.details.finishLevel ?? 'standard'}
-              onChange={(e) => updateDetails('finishLevel', e.target.value)}
-            >
-              <option value="standard">Standard Living Space</option>
-              <option value="premium">High-End / Custom Trim</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">Is Basement?</label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={String(state.details.isBasement ?? false)}
-              onChange={(e) =>
-                updateDetails('isBasement', e.target.value === 'true')
-              }
-            >
-              <option value="false">No - New addition / bump out</option>
-              <option value="true">Yes - Basement Finish / Remodel</option>
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm text-white/70 block">
-              # of Bathrooms in Added Space
-            </label>
-            <input
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="1"
-              value={state.details.bathroomCount ?? ''}
-              onChange={(e) =>
-                updateDetails(
-                  'bathroomCount',
-                  e.target.value === '' ? undefined : Number(e.target.value)
-                )
-              }
-            />
-          </div>
-
-          <div className="space-y-1 md:col-span-2">
-            <label className="text-sm text-white/70 block">
-              Kitchenette / Wet Bar?
-            </label>
-            <select
-              className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400"
-              value={String(state.details.kitchenette ?? false)}
-              onChange={(e) =>
-                updateDetails('kitchenette', e.target.value === 'true')
-              }
-            >
-              <option value="false">No</option>
-              <option value="true">Yes, include kitchenette / bar</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // pick which inner form to render
-  function renderProjectForm() {
-    switch (project) {
-      case 'roofing':
-        return renderRoofing();
-      case 'deck':
-        return renderDeck();
-      case 'bathroom':
-        return renderBathroom();
-      case 'kitchen':
-        return renderKitchen();
-      case 'siding':
-        return renderSiding();
-      case 'addition':
-        return renderAddition();
-      default:
-        return (
-          <div className="text-white/70 text-sm">
-            Select a project type first so we know what to ask.
-          </div>
-        );
-    }
-  }
+  const update = <K extends keyof EstimatorDetails>(key: K) => {
+    return (val: EstimatorDetails[K]) => onChange(key, val);
+  };
 
   return (
-    <div className="space-y-6 text-white">
-      <div>
-        <div className="text-lg font-bold">Project Details</div>
-        <div className="text-sm text-white/70">
-          A few specifics so we can ballpark it.
-        </div>
-      </div>
+    <div className="space-y-6 text-zinc-200">
+      <div className="grid gap-4 md:grid-cols-3 text-sm">
+        <TextInput
+          label="Approx. Square Footage"
+          placeholder="e.g. 2400"
+          value={details.squareFootage ?? ''}
+          onChange={(val) => update('squareFootage')(val)}
+        />
 
-      {/* dynamic form */}
-      {renderProjectForm()}
+        {(project === 'deck' || project === 'addition') && (
+          <TextInput
+            label={
+              project === 'deck' ? 'Desired Dimensions' : 'New / Finished Sq Ft'
+            }
+            placeholder={
+              project === 'deck' ? "12'x20'" : 'e.g. 450'
+            }
+            value={details.scopeDescription ?? ''}
+            onChange={(val) => update('scopeDescription')(val)}
+          />
+        )}
 
-      {/* live estimate preview */}
-      <div className="rounded-xl border border-white/15 bg-white/5 p-4 text-sm text-white/80">
-        <div className="flex items-center justify-between">
-          <div className="font-semibold text-white">Your Estimate</div>
-          <div className="text-[11px] text-white/60">
-            Rough range. Final quote after site visit.
-          </div>
-        </div>
-
-        {est ? (
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-center">
-            <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-              <div className="text-white/60 text-[12px]">Conservative</div>
-              <div className="text-green-400 font-bold text-lg">
-                {currency(est.low)}
-              </div>
-            </div>
-            <div className="rounded-lg border border-amber-500 bg-amber-500/10 p-3 shadow-[0_24px_60px_rgba(255,200,0,.15)]">
-              <div className="text-amber-300 text-[12px] font-semibold">
-                Most Likely
-              </div>
-              <div className="text-amber-300 font-extrabold text-xl">
-                {currency(est.mid)}
-              </div>
-            </div>
-            <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-              <div className="text-white/60 text-[12px]">Premium</div>
-              <div className="text-orange-400 font-bold text-lg">
-                {currency(est.high)}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="mt-4 text-white/50 text-[13px]">
-            Fill in details to get a live range.
-          </div>
+        {(project === 'bathroom' ||
+          project === 'kitchen' ||
+          project === 'siding' ||
+          project === 'windows') && (
+          <TextInput
+            label="Quick Scope Summary"
+            placeholder={
+              project === 'bathroom'
+                ? 'Tile shower, double vanity, move toilet'
+                : project === 'kitchen'
+                ? 'Gut to studs, new layout, island'
+                : 'Whole home wrap / window package'
+            }
+            value={details.scopeDescription ?? ''}
+            onChange={(val) => update('scopeDescription')(val)}
+          />
         )}
       </div>
+
+      {project === 'roofing' && (
+        <div className="grid gap-4 md:grid-cols-3 text-sm">
+          <SelectInput
+            label="Existing Roof Removal"
+            value={details.tearOff ?? ''}
+            onChange={(val) => update('tearOff')(val as EstimatorDetails['tearOff'])}
+            options={[
+              { value: 'tearOff', label: 'Full tear-off' },
+              { value: 'overlay', label: 'Install over current layer' },
+            ]}
+          />
+          <SelectInput
+            label="Roof Material"
+            value={details.roofType ?? ''}
+            onChange={(val) => update('roofType')(val as EstimatorDetails['roofType'])}
+            options={[
+              { value: 'archAsp', label: 'Architectural Asphalt' },
+              { value: 'cedarShake', label: 'Cedar Shake' },
+              { value: 'slate', label: 'Natural Slate' },
+              { value: 'rubber', label: 'EPDM / Rubber' },
+            ]}
+          />
+          <SelectInput
+            label="Roof Complexity"
+            value={details.roofComplexity ?? ''}
+            onChange={(val) =>
+              update('roofComplexity')(val as EstimatorDetails['roofComplexity'])
+            }
+            options={[
+              { value: 'simple', label: 'Simple (few planes)' },
+              { value: 'complex', label: 'Complex (dormers / hips)' },
+              { value: 'veryComplex', label: 'Very complex (cut-up / steep)' },
+            ]}
+          />
+        </div>
+      )}
+
+      {project === 'bathroom' && (
+        <div className="grid gap-4 md:grid-cols-3 text-sm">
+          <SelectInput
+            label="Bath Type"
+            value={details.bathType ?? ''}
+            onChange={(val) => update('bathType')(val as EstimatorDetails['bathType'])}
+            options={[
+              { value: 'powder', label: 'Powder / half bath' },
+              { value: 'guestFull', label: 'Guest full bath' },
+              { value: 'primarySpa', label: 'Primary / spa bath' },
+            ]}
+          />
+          <SelectInput
+            label="Layout Changes"
+            value={details.layoutChanges ?? ''}
+            onChange={(val) =>
+              update('layoutChanges')(val as EstimatorDetails['layoutChanges'])
+            }
+            options={[
+              { value: 'sameLayout', label: 'Keep existing layout' },
+              { value: 'minor', label: 'Minor tweaks' },
+              { value: 'movePlumbing', label: 'Move plumbing walls' },
+            ]}
+          />
+          <SelectInput
+            label="Finish Level"
+            value={details.finishLevel ?? ''}
+            onChange={(val) =>
+              update('finishLevel')(val as EstimatorDetails['finishLevel'])
+            }
+            options={[
+              { value: 'basic', label: 'Builder basic' },
+              { value: 'popular', label: 'Most popular' },
+              { value: 'designer', label: 'Designer / high-end' },
+            ]}
+          />
+          <SelectInput
+            label="Shower Type"
+            value={details.showerType ?? ''}
+            onChange={(val) =>
+              update('showerType')(val as EstimatorDetails['showerType'])
+            }
+            options={[
+              { value: 'standard', label: 'Prefab / fiberglass' },
+              { value: 'tilePan', label: 'Tile surround w/ pan' },
+              { value: 'wetRoom', label: 'Curbless / wet room' },
+            ]}
+          />
+          <TextInput
+            label="Vanity Length (ft)"
+            placeholder="e.g. 6"
+            value={details.vanityLengthFt ?? ''}
+            onChange={(val) => update('vanityLengthFt')(val)}
+          />
+        </div>
+      )}
+
+      {project === 'kitchen' && (
+        <div className="grid gap-4 md:grid-cols-2 text-sm">
+          <SelectInput
+            label="Cabinet Scope"
+            value={details.cabinetsScope ?? ''}
+            onChange={(val) =>
+              update('cabinetsScope')(val as EstimatorDetails['cabinetsScope'])
+            }
+            options={[
+              { value: 'refresh', label: 'Refresh / paint existing' },
+              { value: 'replaceSameLayout', label: 'Replace in same layout' },
+              { value: 'fullGutMoveWalls', label: 'Full gut / move walls' },
+            ]}
+          />
+          <SelectInput
+            label="Appliance Package"
+            value={details.applianceLevel ?? ''}
+            onChange={(val) =>
+              update('applianceLevel')(val as EstimatorDetails['applianceLevel'])
+            }
+            options={[
+              { value: 'reuse', label: 'Reuse existing' },
+              { value: 'mid', label: 'Mid-grade upgrade' },
+              { value: 'highEnd', label: 'High-end / pro style' },
+            ]}
+          />
+        </div>
+      )}
+
+      {(project === 'siding' || project === 'windows') && (
+        <div className="grid gap-4 md:grid-cols-2 text-sm">
+          <SelectInput
+            label="Siding Material"
+            value={details.sidingMaterial ?? ''}
+            onChange={(val) =>
+              update('sidingMaterial')(val as EstimatorDetails['sidingMaterial'])
+            }
+            options={[
+              { value: 'vinyl', label: 'Vinyl' },
+              { value: 'cedar', label: 'Cedar' },
+              { value: 'fiberCement', label: 'Fiber cement' },
+            ]}
+          />
+          <TextInput
+            label="Number of Windows"
+            placeholder="e.g. 18"
+            value={details.windowCount ?? ''}
+            onChange={(val) => update('windowCount')(val)}
+          />
+        </div>
+      )}
+
+      {est ? (
+        <div className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.6)] p-4 text-[13px] text-zinc-200 shadow-[0_20px_60px_rgba(251,191,36,.15)]">
+          <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-400/90">
+            Rough Cost Range (not a formal quote)
+          </div>
+          <div className="mt-3 grid gap-3 text-center md:grid-cols-3">
+            <div className="rounded-lg border border-white/10 bg-black/30 p-3">
+              <div className="text-[11px] text-zinc-400 uppercase tracking-wide">
+                Conservative
+              </div>
+              <div className="text-white font-semibold">{money.format(est.conservative)}</div>
+            </div>
+            <div className="rounded-lg border border-amber-400/40 bg-black/30 p-3 shadow-[0_20px_60px_rgba(251,191,36,.35)]">
+              <div className="text-[11px] text-amber-300 uppercase tracking-wide">
+                Most Likely
+              </div>
+              <div className="text-white font-semibold">{money.format(est.likely)}</div>
+            </div>
+            <div className="rounded-lg border border-white/10 bg-black/30 p-3">
+              <div className="text-[11px] text-zinc-400 uppercase tracking-wide">Premium</div>
+              <div className="text-white font-semibold">{money.format(est.premium)}</div>
+            </div>
+          </div>
+          {est.breakdownLines?.length ? (
+            <div className="mt-3 text-[11px] text-zinc-500 leading-relaxed">
+              {est.breakdownLines.map((line, idx) => (
+                <div key={idx}>{line}</div>
+              ))}
+              <div className="mt-2 text-white/40">
+                Final quote requires a site visit (structure/utilities/permits).
+              </div>
+            </div>
+          ) : null}
+        </div>
+      ) : (
+        <div className="rounded-xl border border-dashed border-white/15 bg-[rgba(20,20,28,.3)] p-4 text-[12px] text-zinc-400">
+          Add square footage and scope details to see live numbers here.
+        </div>
+      )}
     </div>
   );
 }
