@@ -2,47 +2,68 @@
 
 import React from 'react';
 
-export interface EstimatorStateLike {
-  project: string;
-  details: {
-    squareFootage?: string;
-    stories?: string;
-    ageOfHome?: string;
-    urgency?: string;
-    additionalDetails?: string;
-  };
-  address: {
-    street?: string;
-    city?: string;
-    zip?: string;
-  };
+// ---- TYPES (must match page.tsx) ----
+export type ProjectKey =
+  | 'roofing'
+  | 'deck'
+  | 'bathroom'
+  | 'kitchen'
+  | 'siding'
+  | 'addition'
+  | 'windows';
+
+export type EstimatorDetails = {
+  squareFootage?: string;
+  scopeDescription?: string;
+
+  // roofing
+  roofType?: string;
+  roofComplexity?: string;
+  tearOff?: string;
+
+  // kitchen
+  cabinetsScope?: string;
+  applianceLevel?: string;
+
+  // bathroom
+  bathType?: string;
+  layoutChanges?: string;
+  showerType?: string;
+  finishLevel?: string;
+  vanityLengthFt?: string;
+
+  // siding / windows
+  sidingMaterial?: string;
+  windowCount?: string;
+};
+
+export type EstimatorStateLike = {
+  step: 1 | 2 | 3 | 4;
+  project: ProjectKey | null; // allow null, same as page.tsx
+  details: EstimatorDetails;
   contact: {
     firstName?: string;
     lastName?: string;
     phone?: string;
     email?: string;
-    timeline?: string;
-    notes?: string;
   };
-}
+  address: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+  };
+};
 
-interface ContactFormProps {
+export interface ContactFormProps {
   state: EstimatorStateLike;
   setState: React.Dispatch<React.SetStateAction<EstimatorStateLike>>;
+  onSubmit: () => Promise<void> | void;
   submitting: boolean;
-  onSubmit: () => void;
 }
 
-const ContactForm: React.FC<ContactFormProps> = ({
-  state,
-  setState,
-  submitting,
-  onSubmit,
-}) => {
-  // safe fallbacks so we don't explode
-  const contact = state.contact ?? {};
-  const address = state.address ?? {};
-
+function ContactForm({ state, setState, onSubmit, submitting }: ContactFormProps) {
+  // update contact sub-object
   function updateContact<K extends keyof EstimatorStateLike['contact']>(
     key: K,
     val: EstimatorStateLike['contact'][K]
@@ -56,6 +77,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
     }));
   }
 
+  // update address sub-object
   function updateAddress<K extends keyof EstimatorStateLike['address']>(
     key: K,
     val: EstimatorStateLike['address'][K]
@@ -71,122 +93,96 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
   return (
     <div className="space-y-4 text-white">
+      {/* intro copy */}
       <div>
         <div className="text-lg font-bold">Where can we send this?</div>
         <div className="text-sm text-white/70">
-          You&apos;ll get a quick call / text from DiFiore. No spam.
+          You&apos;ll get a call/text from DiFiore (real human, not spam).
         </div>
       </div>
 
+      {/* grid fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-        {/* First Name */}
+        {/* first name */}
         <div className="space-y-1">
           <label className="text-white/70 text-xs block">First Name</label>
           <input
             className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none placeholder-white/40 focus:ring-2 focus:ring-amber-400"
             placeholder="John"
-            value={contact.firstName ?? ''}
+            value={state.contact.firstName ?? ''}
             onChange={(e) => updateContact('firstName', e.target.value)}
           />
         </div>
 
-        {/* Last Name */}
+        {/* last name */}
         <div className="space-y-1">
           <label className="text-white/70 text-xs block">Last Name</label>
           <input
             className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none placeholder-white/40 focus:ring-2 focus:ring-amber-400"
             placeholder="Smith"
-            value={contact.lastName ?? ''}
+            value={state.contact.lastName ?? ''}
             onChange={(e) => updateContact('lastName', e.target.value)}
           />
         </div>
 
-        {/* Phone */}
+        {/* phone */}
         <div className="space-y-1">
           <label className="text-white/70 text-xs block">Phone</label>
           <input
             className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none placeholder-white/40 focus:ring-2 focus:ring-amber-400"
             placeholder="(555) 123-4567"
-            value={contact.phone ?? ''}
+            value={state.contact.phone ?? ''}
             onChange={(e) => updateContact('phone', e.target.value)}
           />
         </div>
 
-        {/* Email */}
+        {/* email */}
         <div className="space-y-1">
           <label className="text-white/70 text-xs block">Email</label>
           <input
             type="email"
             className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none placeholder-white/40 focus:ring-2 focus:ring-amber-400"
             placeholder="you@example.com"
-            value={contact.email ?? ''}
+            value={state.contact.email ?? ''}
             onChange={(e) => updateContact('email', e.target.value)}
           />
         </div>
 
-        {/* Address */}
+        {/* street */}
         <div className="space-y-1 md:col-span-2">
           <label className="text-white/70 text-xs block">Project Address</label>
           <input
             className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none placeholder-white/40 focus:ring-2 focus:ring-amber-400"
             placeholder="123 Main St"
-            value={address.street ?? ''}
+            value={state.address.street ?? ''}
             onChange={(e) => updateAddress('street', e.target.value)}
           />
         </div>
 
-        {/* City */}
+        {/* city */}
         <div className="space-y-1">
           <label className="text-white/70 text-xs block">City</label>
           <input
             className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none placeholder-white/40 focus:ring-2 focus:ring-amber-400"
             placeholder="Cranston"
-            value={address.city ?? ''}
+            value={state.address.city ?? ''}
             onChange={(e) => updateAddress('city', e.target.value)}
           />
         </div>
 
-        {/* ZIP */}
+        {/* zip */}
         <div className="space-y-1">
           <label className="text-white/70 text-xs block">ZIP</label>
           <input
             className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none placeholder-white/40 focus:ring-2 focus:ring-amber-400"
             placeholder="02816"
-            value={address.zip ?? ''}
+            value={state.address.zip ?? ''}
             onChange={(e) => updateAddress('zip', e.target.value)}
-          />
-        </div>
-
-        {/* Timeline */}
-        <div className="space-y-1">
-          <label className="text-white/70 text-xs block">Timeline</label>
-          <select
-            className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-amber-400 text-white/90"
-            value={contact.timeline ?? ''}
-            onChange={(e) => updateContact('timeline', e.target.value)}
-          >
-            <option value="">Select one…</option>
-            <option value="asap">Active issue / ASAP</option>
-            <option value="30">Within 30 days</option>
-            <option value="90">1–3 months</option>
-            <option value="planning">Just planning / budgeting</option>
-          </select>
-        </div>
-
-        {/* Notes */}
-        <div className="space-y-1 md:col-span-2">
-          <label className="text-white/70 text-xs block">
-            Anything we should know?
-          </label>
-          <textarea
-            className="w-full rounded-lg bg-white/5 border border-white/20 px-3 py-2 text-white outline-none placeholder-white/40 focus:ring-2 focus:ring-amber-400 min-h-[80px]"
-            placeholder="Leaking around chimney, shingles missing on back side, etc."
-            value={contact.notes ?? ''}
-            onChange={(e) => updateContact('notes', e.target.value)}
           />
         </div>
       </div>
 
+      {/* submit action */}
       <button
         type="button"
         disabled={submitting}
@@ -201,12 +197,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
         {submitting ? 'Sending…' : 'Get My Quote'}
       </button>
 
+      {/* legal */}
       <p className="text-[11px] text-white/50 text-center leading-relaxed">
         By tapping submit you agree a licensed DiFiore project manager may
         contact you about your project. No spam. No obligation.
       </p>
     </div>
   );
-};
+}
 
 export default ContactForm;

@@ -1,102 +1,93 @@
 'use client';
 
 import React from 'react';
-import type { EstimatorState } from '../EstimatorForm';
+import type { EstimatorStateLike } from '@/app/project-calculator/page';
 
-interface ReviewSummaryProps {
-  state: EstimatorState;
-  estimateRange: {
-    low?: number;
-    mid?: number;
-    high?: number;
-  } | null;
-  currency: (n: number | undefined) => string;
+// Define the shape we expect for the live estimate numbers
+type EstimateNumbers = {
+  conservative: number;
+  likely: number;
+  premium: number;
+  breakdownLines?: string[];
+};
+
+type ReviewSummaryProps = {
+  state: EstimatorStateLike;
+  est: EstimateNumbers;
+};
+
+function formatUsd(n: number) {
+  return n.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  });
 }
 
-export function ReviewSummary({ state, estimateRange, currency }: ReviewSummaryProps) {
+function ReviewSummary({ state, est }: ReviewSummaryProps) {
+  if (!state.project) {
+    return null;
+  }
+
   return (
-    <div className="space-y-4 text-white">
-      <div>
-        <div className="text-lg font-bold">Preview</div>
-        <div className="text-sm text-white/70">
-          This is what we&apos;ll send to DiFiore so they&apos;re ready when they call you.
+    <aside className="rounded-xl border border-white/10 bg-white/[0.03] ring-1 ring-white/5 p-5 text-white space-y-4 shadow-[0_30px_120px_rgba(0,0,0,.8)]">
+      <div className="text-[11px] uppercase tracking-wide font-semibold text-amber-300">
+        Your Estimate
+      </div>
+
+      <div className="text-lg font-bold">
+        {state.project.charAt(0).toUpperCase() + state.project.slice(1)}
+      </div>
+
+      {/* 3-tier cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-center text-[13px]">
+        {/* Conservative */}
+        <div className="rounded-lg border border-white/15 bg-black/30 p-3">
+          <div className="text-[10px] font-medium text-white/70">
+            Conservative
+          </div>
+          <div className="text-base font-bold text-green-400 mt-1">
+            {formatUsd(est.conservative)}
+          </div>
+        </div>
+
+        {/* Most Likely */}
+        <div className="rounded-lg border border-amber-400/40 bg-black/40 p-3 ring-2 ring-amber-400/60 shadow-[0_0_20px_rgba(251,191,36,.4)]">
+          <div className="text-[10px] font-medium text-white/70">
+            Most Likely
+          </div>
+          <div className="text-base font-extrabold text-amber-300 mt-1">
+            {formatUsd(est.likely)}
+          </div>
+        </div>
+
+        {/* Premium */}
+        <div className="rounded-lg border border-white/20 bg-black/30 p-3">
+          <div className="text-[10px] font-medium text-white/70">Premium</div>
+          <div className="text-base font-bold text-red-400 mt-1">
+            {formatUsd(est.premium)}
+          </div>
         </div>
       </div>
 
-      <div className="rounded-xl border border-white/15 bg-white/5 p-4 text-sm text-white/80 space-y-3">
-        <div className="flex justify-between text-white">
-          <span className="text-white/60">Project:</span>
-          <span className="font-semibold capitalize text-white">
-            {state.project || '—'}
-          </span>
-        </div>
-
-        <div className="text-[12px] leading-relaxed text-white/70 space-y-1">
-          <div>
-            <span className="text-white/60">Home size: </span>
-            <span className="text-white">
-              {state.details.squareFootage
-                ? `${state.details.squareFootage} sqft`
-                : '—'}
-              {state.details.stories
-                ? `, ${state.details.stories} story`
-                : ''}
-            </span>
-          </div>
-
-          <div>
-            <span className="text-white/60">Age of home: </span>
-            <span className="text-white">
-              {state.details.ageOfHome || '—'}
-            </span>
-          </div>
-
-          <div>
-            <span className="text-white/60">Urgency: </span>
-            <span className="text-white">
-              {state.details.urgency
-                ? state.details.urgency === 'asap'
-                  ? 'ASAP / active issue'
-                  : state.details.urgency === '30'
-                  ? 'Within 30 days'
-                  : state.details.urgency === '90'
-                  ? '1–3 months'
-                  : 'Just planning / budgeting'
-                : '—'}
-            </span>
-          </div>
-
-          <div>
-            <span className="text-white/60">Notes: </span>
-            <span className="text-white">
-              {state.details.additionalDetails?.trim() || '—'}
-            </span>
+      {/* breakdown */}
+      {est.breakdownLines?.length ? (
+        <div className="mt-2 text-[11px] text-white/50 leading-relaxed">
+          {est.breakdownLines.map((line, idx) => (
+            <div key={idx}>{line}</div>
+          ))}
+          <div className="mt-2 text-white/40">
+            Final quote requires a site visit (structure/utilities/permits).
           </div>
         </div>
+      ) : null}
 
-        <div className="pt-3 border-t border-white/10 text-[13px] text-white/70">
-          {estimateRange ? (
-            <div className="space-y-1">
-              <div className="flex justify-between">
-                <span className="text-white/60">Most Likely:</span>
-                <span className="text-amber-300 font-semibold">
-                  {currency(estimateRange.mid)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/60">Range:</span>
-                <span className="text-white">
-                  {currency(estimateRange.low)} – {currency(estimateRange.high)}
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="text-white/50">
-              Add some details to get a ballpark range.
-            </div>
-          )}
-        </div>
+      <div className="text-[11px] text-white/40 leading-relaxed border-t border-white/10 pt-3">
+        This is a real-world working number for Greater Rhode Island / MA /
+        CT labor and material as of 2024 — not a lowball internet number.
       </div>
-    </div>
+    </aside>
   );
 }
+
+export default ReviewSummary;
