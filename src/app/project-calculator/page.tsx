@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ProjectSelector from '@/components/estimator/ProjectSelector';
-import StepDetails from '@/components/estimator/StepDetails';
+import { StepDetails } from '@/components/estimator/StepDetails';
 import ContactForm from '@/components/estimator/ContactForm';
 
 // ---------- TYPES ----------
