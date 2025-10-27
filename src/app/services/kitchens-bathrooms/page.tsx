@@ -4,10 +4,12 @@ import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
 
 export const metadata: Metadata = {
-  title: "Kitchens & Bathrooms",
+  title: "Kitchen & Bathroom Remodeling | Cabinets, Tile, Layout Changes",
   description:
-    "Kitchens & Bathrooms by DiFiore Builders — smart layouts, durable materials, beautiful details. Cabinets, tile & stone, plumbing & electrical, lighting, and more.",
-  alternates: { canonical: "/services/kitchens-bathrooms" },
+    "Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. Full kitchen gut-and-redesigns, cabinet replacements, appliance upgrades, tile showers, and custom bathrooms delivered with high-quality craftsmanship at an agreed-upon price.",
+  alternates: {
+    canonical: "https://difiorebuilders.com/services/kitchens-bathrooms",
+  },
 };
 
 export default function KitchensBathroomsPage() {
@@ -40,6 +42,9 @@ export default function KitchensBathroomsPage() {
               Kitchens & Bathrooms
             </h1>
             <p className="mt-3 text-[15px] text-white/90">
+              Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
+            </p>
+            <p className="mt-2 text-[15px] text-white/80">
               Smart layouts, durable materials, and beautiful details — from fixture updates to full gut
               renovations, we handle everything with clean job sites and attentive service.
             </p>
@@ -58,6 +63,28 @@ export default function KitchensBathroomsPage() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="px-4">
+        <div className="mx-auto max-w-6xl">
+          <section className="max-w-3xl text-[14px] leading-relaxed text-white/70 space-y-4">
+            <p>
+              DiFiore Builders is a family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. We specialize in roofing, siding, additions, kitchens, bathrooms, decks, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price. We proudly support homeowners in Chadds Ford, Glen Mills, Garnet Valley, Kennett Township, Concord, West Chester, East Marlborough, West Marlborough, Pocopson, West Goshen, and London Grove, PA.
+            </p>
+            <p>
+              We handle full project scope — design input, permitting, structural framing, mechanicals, finishes, inspections, and cleanup. Whether it’s a full roof tear-off and replacement, Hardie/fiber-cement siding, a new deck or outdoor living space, a tile bathroom remodel, or adding livable square footage with a primary suite addition or a finished basement, you’re working directly with the builder — not a lead aggregator.
+            </p>
+            <p>
+              Want a ballpark before we visit?{' '}
+              <a
+                href="/project-calculator"
+                className="text-amber-300 hover:text-amber-200 font-semibold underline underline-offset-2"
+              >
+                Get a rough cost estimate →
+              </a>
+            </p>
+          </section>
         </div>
       </section>
 

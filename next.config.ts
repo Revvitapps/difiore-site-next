@@ -25,6 +25,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/services",
+        destination: "/services/roofing-siding",
+        permanent: true,
+      },
+      {
         source: "/our-projects",
         destination: "/before-and-after",
         permanent: true,

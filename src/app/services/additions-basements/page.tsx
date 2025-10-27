@@ -4,10 +4,12 @@ import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
 
 export const metadata: Metadata = {
-  title: "Additions & Basements",
+  title: "Home Additions, Finished Basements & Decks | DiFiore Builders",
   description:
-    "Primary suites, sunrooms, dormers, garages, basements — new space that feels original to your home.",
-  alternates: { canonical: "/services/additions-basements" },
+    "Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. Second-story additions, first-floor expansions, primary suites, finished basements, and outdoor living decks completed with high-quality craftsmanship at an agreed-upon price.",
+  alternates: {
+    canonical: "https://difiorebuilders.com/services/additions-basements",
+  },
 };
 
 const HERO = "/difiore-services-showcase-additions-playroom1.JPG";
@@ -42,6 +44,9 @@ export default function AdditionsBasementsPage() {
               Additions &amp; Basements
             </h1>
             <p className="mt-3 text-[15px] text-white/90">
+              Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
+            </p>
+            <p className="mt-2 text-[15px] text-white/80">
               New space that looks like it was always part of your home — from suites and sunrooms
               to dormers, garages, and fully finished basements.
             </p>
@@ -60,6 +65,28 @@ export default function AdditionsBasementsPage() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="px-4">
+        <div className="mx-auto max-w-6xl">
+          <section className="max-w-3xl text-[14px] leading-relaxed text-white/70 space-y-4">
+            <p>
+              DiFiore Builders is a family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. We specialize in roofing, siding, additions, kitchens, bathrooms, decks, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price. We proudly support homeowners in Chadds Ford, Glen Mills, Garnet Valley, Kennett Township, Concord, West Chester, East Marlborough, West Marlborough, Pocopson, West Goshen, and London Grove, PA.
+            </p>
+            <p>
+              We handle full project scope — design input, permitting, structural framing, mechanicals, finishes, inspections, and cleanup. Whether it’s a full roof tear-off and replacement, Hardie/fiber-cement siding, a new deck or outdoor living space, a tile bathroom remodel, or adding livable square footage with a primary suite addition or a finished basement, you’re working directly with the builder — not a lead aggregator.
+            </p>
+            <p>
+              Want a ballpark before we visit?{' '}
+              <a
+                href="/project-calculator"
+                className="text-amber-300 hover:text-amber-200 font-semibold underline underline-offset-2"
+              >
+                Get a rough cost estimate →
+              </a>
+            </p>
+          </section>
         </div>
       </section>
 

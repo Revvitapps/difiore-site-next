@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import TrustedBadges from "@/components/TrustedBadges";
-import SideBeforeAfterPairs from "@/components/SideBeforeAfterPairs";
+import OurStoryHeroClient from "@/components/OurStoryHeroClient";
 
 export const metadata: Metadata = {
-  title: "Our Story",
+  title: "Our Story | Family-Owned General Contractor Since 2003",
   description:
-    "DiFiore Builders is a third-generation, full-service general construction company serving the Tri-State area since 2003.",
-  alternates: { canonical: "/our-story" },
+    "Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. We specialize in roofing, siding, additions, kitchens, bathrooms, decks, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price.",
+  alternates: {
+    canonical: "https://difiorebuilders.com/our-story",
+  },
 };
 
 export default function OurStoryPage() {
@@ -41,42 +43,7 @@ export default function OurStoryPage() {
 
       {/* STORY CONTENT with side before/after stacks */}
       <section className="relative mx-auto max-w-6xl px-4 py-12 md:py-16">
-        {/* Side stacks (hidden <lg) */}
-        <SideBeforeAfterPairs
-          // knobs you can tweak later:
-          sepX={230}
-          sepY={0}
-          cardW={320}
-          cardH={280}
-          insetX={280}
-          insetY={160}
-          columnGap={72}
-          // images:
-          tl={{
-            before: "/difiore-os-before-tl.JPG",
-            after: "/difiore-os-after-tl.JPG",
-            altBefore: "Top-left before",
-            altAfter: "Top-left after",
-          }}
-          bl={{
-            before: "/difiore-os-before-bl.jpeg",
-            after: "/difiore-os-after-bl.jpeg",
-            altBefore: "Bottom-left before",
-            altAfter: "Bottom-left after",
-          }}
-          tr={{
-            before: "/difiore-services-showcase-newbuild.jpg",
-            after: "/difiore-os-newbuild-after-tr.png",
-            altBefore: "Top-right before",
-            altAfter: "Top-right after",
-          }}
-          br={{
-            before: "/difiore-os-before-br-front.jpeg",
-            after: "/difiore-services-additions-secondstory2.jpeg",
-            altBefore: "Bottom-right before",
-            altAfter: "Bottom-right after",
-          }}
-        />
+        <OurStoryHeroClient />
 
         {/* Add horizontal padding on lg+ to make room for the stacks */}
         <div className="mx-auto max-w-3xl text-center lg:max-w-none lg:pl-[320px] lg:pr-[320px] xl:pl-[360px] xl:pr-[360px]">
@@ -84,8 +51,26 @@ export default function OurStoryPage() {
             Our Story
           </h1>
           <p className="mt-2 text-[15px] text-white/85">
-            Trusted local builders since 2003 — serving Chadds Ford and the surrounding Tri-State Area.
+            Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
           </p>
+
+          <section className="mt-6 max-w-3xl text-[14px] leading-relaxed text-white/70 space-y-4 lg:mx-auto">
+            <p>
+              DiFiore Builders is a family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. We specialize in roofing, siding, additions, kitchens, bathrooms, decks, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price. We proudly support homeowners in Chadds Ford, Glen Mills, Garnet Valley, Kennett Township, Concord, West Chester, East Marlborough, West Marlborough, Pocopson, West Goshen, and London Grove, PA.
+            </p>
+            <p>
+              We handle full project scope — design input, permitting, structural framing, mechanicals, finishes, inspections, and cleanup. Whether it’s a full roof tear-off and replacement, Hardie/fiber-cement siding, a new deck or outdoor living space, a tile bathroom remodel, or adding livable square footage with a primary suite addition or a finished basement, you’re working directly with the builder — not a lead aggregator.
+            </p>
+            <p>
+              Want a ballpark before we visit?{' '}
+              <a
+                href="/project-calculator"
+                className="text-amber-300 hover:text-amber-200 font-semibold underline underline-offset-2"
+              >
+                Get a rough cost estimate →
+              </a>
+            </p>
+          </section>
 
           <h2 className="sr-only">Company background</h2>
           <div className="mt-6 space-y-6 text-[15px] leading-relaxed text-zinc-200 md:text-[16px]">
@@ -99,8 +84,9 @@ export default function OurStoryPage() {
 
             <p>
               That tradition lives on today through <strong>DiFiore Builders Inc.</strong>,
-              a full-service general construction company proudly serving Chadds Ford, PA,
-              and the surrounding Tri-State Area since 2003. What started with family values
+              a full-service general construction company proudly serving Chadds Ford, Glen Mills,
+              Garnet Valley, Kennett Township, Concord, West Chester, East &amp; West Marlborough,
+              Pocopson, West Goshen, and London Grove since 2003. What started with family values
               and a commitment to quality has grown into a trusted local business built on
               repeat customers and referrals—proof that relationships matter just as much as
               results.

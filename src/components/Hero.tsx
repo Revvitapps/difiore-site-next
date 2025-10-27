@@ -46,6 +46,9 @@ export default function Hero() {
             </div>
 
             <p className="mt-6 mx-auto max-w-[680px] text-[15px] text-white/90">
+              Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
+            </p>
+            <p className="mt-2 mx-auto max-w-[680px] text-[15px] text-white/80">
               See what’s possible on your budget in minutes.
             </p>
             <p className="text-[13px] text-white/70">
