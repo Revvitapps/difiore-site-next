@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type Pair = { before: string; after: string; alt?: string };
 
 export default function BeforeAfterStacks({
@@ -59,18 +61,19 @@ function CornerPair({
         <figure
           className={`
             absolute -left-2 -top-2 ${tiltBefore}
-            h-36 w-36 rounded-xl overflow-hidden border border-white/20
+            relative h-36 w-36 overflow-hidden rounded-xl border border-white/20
             shadow-[0_18px_50px_rgba(3,9,20,.55)]
             sm:h-40 sm:w-40 md:h-44 md:w-44
           `}
           aria-hidden
         >
-          <img
+          <Image
             src={pair.before}
             alt={pair.alt || "Before"}
-            className="h-full w-full object-cover"
-            loading="lazy"
-            decoding="async"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 40vw, 176px"
+            priority={false}
           />
         </figure>
 
@@ -78,18 +81,19 @@ function CornerPair({
         <figure
           className={`
             relative ${tiltAfter}
-            h-36 w-36 rounded-xl overflow-hidden border border-white/20
+            h-36 w-36 overflow-hidden rounded-xl border border-white/20
             shadow-[0_18px_50px_rgba(3,9,20,.55)]
             sm:h-40 sm:w-40 md:h-44 md:w-44
           `}
           aria-hidden
         >
-          <img
+          <Image
             src={pair.after}
             alt={pair.alt || "After"}
-            className="h-full w-full object-cover"
-            loading="lazy"
-            decoding="async"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 40vw, 176px"
+            priority={false}
           />
         </figure>
       </div>

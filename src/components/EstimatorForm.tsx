@@ -651,7 +651,8 @@ export default function EstimatorForm() {
       // await submitEstimate(state);
 
       setSent(true);
-    } catch (_err) {
+    } catch (err) {
+      console.error('Estimator submission failed', err);
       setError('Something went wrong sending your request.');
     } finally {
       setSending(false);

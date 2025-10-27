@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type Props = { images: string[] };
 
@@ -21,13 +22,15 @@ export default function MobileCarousel({ images }: Props) {
 
   return (
     <div className="sm:hidden relative overflow-hidden rounded-xl border border-white/12">
-      <img
-        src={images[i]}
-        alt="Project photo"
-        className="w-full h-[58vw] max-h-[420px] object-cover"
-        loading="lazy"
-        decoding="async"
-      />
+      <div className="relative h-[58vw] max-h-[420px] w-full">
+        <Image
+          src={images[i]}
+          alt="Project photo"
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+      </div>
       <div className="absolute bottom-2 inset-x-0 flex justify-center gap-1.5">
         {images.map((_, idx) => (
           <button

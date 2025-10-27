@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Accreditations() {
   return (
@@ -25,12 +26,12 @@ export default function Accreditations() {
           >
             <div className="rvv-surface p-4 grid grid-cols-[160px_1fr] sm:grid-cols-[180px_1fr] items-center gap-4 h-full">
               <div className="grid place-items-center p-2">
-                <img
-                  src="https://m.bbb.org/terminuscontent/dist/img/business-profile/accreditation/AB-seal-horz.svg?tx=f_svg,w_240"
+                <Image
+                  src="https://m.bbb.org/terminuscontent/dist/img/business-profile/accreditation/AB-seal-horz.svg?tx=f_svg,w_320"
                   alt="BBB Accredited Business"
-                  className="max-w-[160px] w-full h-auto"
-                  loading="lazy"
-                  decoding="async"
+                  width={240}
+                  height={120}
+                  className="h-auto max-w-[160px] w-full"
                 />
               </div>
               <div className="min-w-0">
@@ -54,12 +55,12 @@ export default function Accreditations() {
           >
             <div className="rvv-surface p-4 grid grid-cols-[160px_1fr] sm:grid-cols-[180px_1fr] items-center gap-4 h-full">
               <div className="grid place-items-center p-2">
-                <img
+                <Image
                   src="https://img1.wsimg.com/isteam/ip/111e2203-c8e6-4588-acfc-521f62348879/houzz1.png"
                   alt="Houzz"
-                  className="max-w-[160px] w-full h-auto"
-                  loading="lazy"
-                  decoding="async"
+                  width={240}
+                  height={120}
+                  className="h-auto max-w-[160px] w-full"
                 />
               </div>
               <div className="min-w-0">

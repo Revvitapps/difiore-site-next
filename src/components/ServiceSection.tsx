@@ -28,12 +28,17 @@ export default function ServiceSection({
 
   useEffect(() => {
     if (safeImages.length < 2) return;
-    timerRef.current && window.clearInterval(timerRef.current);
+    if (timerRef.current) {
+      window.clearInterval(timerRef.current);
+    }
     timerRef.current = window.setInterval(() => {
       setIdx((i) => (i + 1) % safeImages.length);
     }, intervalMs);
     return () => {
-      if (timerRef.current) window.clearInterval(timerRef.current);
+      if (timerRef.current) {
+        window.clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     };
   }, [safeImages, intervalMs]);
 

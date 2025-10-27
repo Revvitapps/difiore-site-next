@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
 
 export const metadata: Metadata = {
@@ -107,14 +108,19 @@ export default function NewBuildsGCPage() {
           {/* Mini gallery */}
           <figure className="grid grid-cols-2 gap-4 self-start">
             {GALLERY.map((src, i) => (
-              <img
+              <div
                 key={src + i}
-                src={src}
-                alt="New build progress"
-                className="h-48 w-full rounded-xl object-cover border border-white/15"
-                loading="lazy"
-                decoding="async"
-              />
+                className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15"
+              >
+                <Image
+                  src={src}
+                  alt="New build progress"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={i === 0}
+                />
+              </div>
             ))}
           </figure>
         </div>

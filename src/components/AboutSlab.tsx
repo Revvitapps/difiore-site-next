@@ -1,8 +1,10 @@
 'use client';
 
+import Image from "next/image";
+
 export default function AboutSlab() {
   return (
-<section id="about" className="relative z-0 px-4 py-16 md:py-24 mb-24 mb-24 mb-24">
+    <section id="about" className="relative z-0 px-4 py-16 md:py-24 mb-24">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-[1.2fr_1fr]">
         {/* glass panel copy */}
         <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6 shadow-2xl backdrop-blur">
@@ -28,12 +30,13 @@ export default function AboutSlab() {
 
         {/* photo */}
         <figure className="relative overflow-hidden rounded-2xl border border-white/10">
-          <img
+          <Image
             src="/difiore-leadership-team.jpg"
             alt="DiFiore Builders leadership team"
-            className="h-full w-full object-cover"
-            loading="lazy"
-            decoding="async"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            priority={false}
           />
           <figcaption className="absolute inset-x-0 bottom-0 bg-zinc-950/55 p-3 text-sm text-zinc-200">
             Our leadership team — committed to personal service and quality craftsmanship.

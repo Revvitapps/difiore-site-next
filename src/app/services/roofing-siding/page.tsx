@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
 
 export const metadata: Metadata = {
@@ -99,34 +100,38 @@ export default function RoofingSidingPage() {
 
           {/* Mini gallery */}
           <figure className="grid grid-cols-2 gap-4 self-start">
-            <img
-              src="/difiore-services-showcase-3style-roof.png"
-              alt="Clean roofing lines and materials"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/difiore-services-showcase-roofing-gutter.webp"
-              alt="Roofing & gutter integration"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/difiore-services-showcase-roofing-gutter.webp"
-              alt="Detailing at eaves and trim"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/difiore-services-showcase-3style-roof.png"
-              alt="Roof planes and color-matched accessories"
-              className="h-48 w-full rounded-xl object-cover border border-white/15"
-              loading="lazy"
-              decoding="async"
-            />
+            {[
+              {
+                src: "/difiore-services-showcase-3style-roof.png",
+                alt: "Clean roofing lines and materials",
+              },
+              {
+                src: "/difiore-services-showcase-roofing-gutter.webp",
+                alt: "Roofing & gutter integration",
+              },
+              {
+                src: "/difiore-services-showcase-roofing-gutter.webp",
+                alt: "Detailing at eaves and trim",
+              },
+              {
+                src: "/difiore-services-showcase-3style-roof.png",
+                alt: "Roof planes and color-matched accessories",
+              },
+            ].map((item, idx) => (
+              <div
+                key={`${item.src}-${idx}`}
+                className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15"
+              >
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={idx === 0}
+                />
+              </div>
+            ))}
           </figure>
         </div>
       </section>

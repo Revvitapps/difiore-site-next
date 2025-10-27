@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export default function TrustedBadges() {
   return (
     <section aria-label="Trusted & Verified" className="relative z-10 px-4 py-12 md:py-16">
@@ -25,11 +27,12 @@ export default function TrustedBadges() {
           >
             <div className="grid grid-cols-[220px_1fr] items-center gap-4">
               <div className="grid place-items-center">
-                <img
+                <Image
                   src="https://m.bbb.org/terminuscontent/dist/img/business-profile/accreditation/AB-seal-horz.svg?tx=f_svg,w_640"
                   alt="BBB Accredited Business"
-                  className="h-24 w-auto"  /* nice and visible */
-                  loading="lazy"
+                  width={260}
+                  height={96}
+                  className="h-24 w-auto"
                 />
               </div>
               <div className="min-w-0">
@@ -53,11 +56,12 @@ export default function TrustedBadges() {
           >
             <div className="grid grid-cols-[220px_1fr] items-center gap-4">
               <div className="grid place-items-center">
-                <img
+                <Image
                   src="https://img1.wsimg.com/isteam/ip/111e2203-c8e6-4588-acfc-521f62348879/houzz1.png"
                   alt="Houzz"
+                  width={200}
+                  height={200}
                   className="h-24 w-auto"
-                  loading="lazy"
                 />
               </div>
               <div className="min-w-0">

@@ -16,10 +16,13 @@ export default function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2">
-          <img
+          <Image
             src="/difiore-logo.png"
             alt="DiFiore Builders"
+            width={120}
+            height={32}
             className="h-8 w-auto"
+            priority
           />
           <span className="font-semibold tracking-tight">DiFiore Builders</span>
         </Link>
