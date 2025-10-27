@@ -1,5 +1,7 @@
 // src/components/SideBeforeAfterPairs.tsx
 import React from "react";
+import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 
 type Pair = {
   before: string;
@@ -41,15 +43,16 @@ function Card({
 }) {
   return (
     <figure
-      className="overflow-hidden rounded-xl border border-white/15 shadow-[0_12px_40px_rgba(3,9,20,.45)]"
+      className="relative overflow-hidden rounded-xl border border-white/15 shadow-[0_12px_40px_rgba(3,9,20,.45)]"
       style={{ width: w, height: h, transform: `rotate(${rotate}deg)` }}
     >
-      <img
+      <Image
         src={src}
         alt={alt}
-        className="h-full w-full object-cover"
-        loading="lazy"
-        decoding="async"
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 50vw, 320px"
+        priority={false}
       />
     </figure>
   );
@@ -72,6 +75,8 @@ function Stack({
   rotateBefore?: number;
   rotateAfter?: number;
 }) {
+  const shouldReduceMotion = useReducedMotion();
+
   if (!pair) return null;
 
   const wrapW = w + Math.max(0, dx);
@@ -83,8 +88,13 @@ function Stack({
       style={{ width: wrapW, height: wrapH }}
       aria-label="Before and after"
     >
-      {/* BEFORE */}
-      <div className="absolute top-0 left-0">
+      <motion.div
+        className="absolute top-0 left-0"
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+        whileInView={shouldReduceMotion ? {} : { opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+      >
         <Card
           src={pair.before}
           alt={pair.altBefore ?? "Before"}
@@ -92,9 +102,15 @@ function Stack({
           h={h}
           rotate={rotateBefore}
         />
-      </div>
-      {/* AFTER (offset by dx, dy) */}
-      <div className="absolute" style={{ left: dx, top: dy }}>
+      </motion.div>
+      <motion.div
+        className="absolute"
+        style={{ left: dx, top: dy }}
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
+        whileInView={shouldReduceMotion ? {} : { opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
         <Card
           src={pair.after}
           alt={pair.altAfter ?? "After"}
@@ -102,7 +118,7 @@ function Stack({
           h={h}
           rotate={rotateAfter}
         />
-      </div>
+      </motion.div>
     </div>
   );
 }

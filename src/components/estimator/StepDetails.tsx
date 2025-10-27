@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import type { EstimatorDetails, ProjectKey } from './types';
 
-type EstimatePreview = {
+type EstimateSnapshot = {
   conservative: number;
   likely: number;
   premium: number;
@@ -13,11 +14,16 @@ type EstimatePreview = {
 type StepDetailsProps = {
   project: ProjectKey | null;
   details: EstimatorDetails;
-  est: EstimatePreview | null;
-  onChange: <K extends keyof EstimatorDetails>(
-    key: K,
-    value: EstimatorDetails[K]
-  ) => void;
+  estimate: EstimateSnapshot | null;
+  onChange: <K extends keyof EstimatorDetails>(key: K, value: EstimatorDetails[K]) => void;
+};
+
+type FieldConfig = {
+  key: keyof EstimatorDetails;
+  label: string;
+  type: 'text' | 'number' | 'select';
+  placeholder?: string;
+  options?: { value: string; label: string }[];
 };
 
 const money = new Intl.NumberFormat('en-US', {
@@ -26,31 +32,165 @@ const money = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
 });
 
-function TextInput({
+const PROJECT_FIELDS: Partial<Record<ProjectKey, FieldConfig[]>> = {
+  kitchen: [
+    {
+      key: 'cabinetsScope',
+      label: 'Cabinet Scope',
+      type: 'select',
+      options: [
+        { value: 'refresh', label: 'Refresh / paint existing' },
+        { value: 'replaceSameLayout', label: 'Replace in same layout' },
+        { value: 'fullGutMoveWalls', label: 'Full gut / move walls' },
+      ],
+    },
+    {
+      key: 'applianceLevel',
+      label: 'Appliance Package',
+      type: 'select',
+      options: [
+        { value: 'reuse', label: 'Reuse existing' },
+        { value: 'mid', label: 'Mid-grade upgrade' },
+        { value: 'highEnd', label: 'High-end / pro series' },
+      ],
+    },
+  ],
+  bathroom: [
+    {
+      key: 'bathType',
+      label: 'Bathroom Type',
+      type: 'select',
+      options: [
+        { value: 'powder', label: 'Powder / half bath' },
+        { value: 'guestFull', label: 'Guest full bath' },
+        { value: 'primarySpa', label: 'Primary / spa bath' },
+      ],
+    },
+  ],
+  roofing: [
+    {
+      key: 'roofType',
+      label: 'Roof Material',
+      type: 'select',
+      options: [
+        { value: 'archAsp', label: 'Architectural Asphalt' },
+        { value: 'cedarShake', label: 'Cedar Shake' },
+        { value: 'slate', label: 'Slate' },
+        { value: 'rubber', label: 'EPDM / Rubber' },
+      ],
+    },
+    {
+      key: 'roofComplexity',
+      label: 'Roof Complexity',
+      type: 'select',
+      options: [
+        { value: 'simple', label: 'Simple (gable / few planes)' },
+        { value: 'complex', label: 'Complex (hips / dormers)' },
+        { value: 'veryComplex', label: 'Very complex (cut-up / steep)' },
+      ],
+    },
+    {
+      key: 'tearOff',
+      label: 'Tear Off Existing Layers?',
+      type: 'select',
+      options: [
+        { value: 'tearOff', label: 'Yes, full tear-off' },
+        { value: 'overlay', label: 'No, overlay existing' },
+      ],
+    },
+  ],
+  siding: [
+    {
+      key: 'sidingMaterial',
+      label: 'Siding Material',
+      type: 'select',
+      options: [
+        { value: 'vinyl', label: 'Vinyl' },
+        { value: 'fiberCement', label: 'Fiber cement' },
+        { value: 'cedar', label: 'Cedar' },
+      ],
+    },
+  ],
+  windows: [
+    {
+      key: 'windowCount',
+      label: 'Number of Windows',
+      type: 'number',
+      placeholder: 'e.g. 12',
+    },
+  ],
+};
+
+function fieldPlaceholder(key: keyof EstimatorDetails, project: ProjectKey | null) {
+  if (key === 'squareFootage') {
+    switch (project) {
+      case 'roofing':
+        return 'Roof or living sqft (e.g. 2200)';
+      case 'deck':
+        return 'Deck square feet (e.g. 320)';
+      case 'addition':
+        return 'New finished sqft (e.g. 450)';
+      default:
+        return 'e.g. 200';
+    }
+  }
+
+  if (key === 'scopeDescription') {
+    switch (project) {
+      case 'kitchen':
+        return 'Gut to studs, new layout, island...';
+      case 'bathroom':
+        return 'Tile shower, new vanity, move plumbing...';
+      case 'deck':
+        return 'Composite, wrap-around, covered porch...';
+      case 'addition':
+        return 'Primary suite over garage, finish basement...';
+      case 'roofing':
+        return 'Shingle color, leaks, layers...';
+      default:
+        return 'Tell us a little about the scope...';
+    }
+  }
+
+  return undefined;
+}
+
+function ControlLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="text-[12px] font-semibold uppercase tracking-wide text-white/60">
+      {children}
+    </span>
+  );
+}
+
+function TextControl({
   label,
-  placeholder,
   value,
+  placeholder,
+  type = 'text',
   onChange,
 }: {
   label: string;
-  placeholder?: string;
   value: string;
-  onChange: (next: string) => void;
+  placeholder?: string;
+  type?: 'text' | 'number';
+  onChange: (val: string) => void;
 }) {
   return (
-    <label className="flex flex-col gap-1 text-sm text-zinc-200">
-      <span className="text-[13px] font-semibold text-zinc-200">{label}</span>
+    <label className="flex flex-col gap-2">
+      <ControlLabel>{label}</ControlLabel>
       <input
-        className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
+        type={type}
         value={value}
-        onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
+        onChange={(event) => onChange(event.target.value)}
+        className="rounded-xl border border-white/10 bg-[rgba(15,15,25,.75)] px-4 py-3 text-[14px] text-white/90 outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-300/60 placeholder:text-white/35"
       />
     </label>
   );
 }
 
-function SelectInput({
+function SelectControl({
   label,
   value,
   onChange,
@@ -58,16 +198,16 @@ function SelectInput({
 }: {
   label: string;
   value: string;
-  onChange: (next: string) => void;
-  options: { label: string; value: string }[];
+  onChange: (val: string) => void;
+  options: { value: string; label: string }[];
 }) {
   return (
-    <label className="flex flex-col gap-1 text-sm text-zinc-200">
-      <span className="text-[13px] font-semibold text-zinc-200">{label}</span>
+    <label className="flex flex-col gap-2">
+      <ControlLabel>{label}</ControlLabel>
       <select
-        className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        className="rounded-xl border border-white/10 bg-[rgba(15,15,25,.75)] px-4 py-3 text-[14px] text-white/90 outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-300/60"
       >
         <option value="">Select an option…</option>
         {options.map((opt) => (
@@ -80,251 +220,125 @@ function SelectInput({
   );
 }
 
-export default function StepDetails({
-  project,
-  details,
-  est,
-  onChange,
-}: StepDetailsProps) {
+export default function StepDetails({ project, details, estimate, onChange }: StepDetailsProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   if (!project) {
     return (
-      <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
-        Choose a project type first and we’ll load the matching questions here.
+      <div className="rounded-2xl border border-white/10 bg-[rgba(12,14,22,.7)] p-6 text-sm text-white/70">
+        Pick a project type first to load tailored questions and live pricing.
       </div>
     );
   }
 
-  const update = <K extends keyof EstimatorDetails>(key: K) => {
-    return (val: EstimatorDetails[K]) => onChange(key, val);
-  };
+  const projectFields = PROJECT_FIELDS[project] ?? [];
 
   return (
-    <div className="space-y-6 text-zinc-200">
-      <div className="grid gap-4 md:grid-cols-3 text-sm">
-        <TextInput
-          label="Approx. Square Footage"
-          placeholder="e.g. 2400"
-          value={details.squareFootage ?? ''}
-          onChange={(val) => update('squareFootage')(val)}
-        />
+    <div className="space-y-6 text-white">
+      <div className="rounded-2xl border border-white/10 bg-[rgba(12,14,22,.7)] p-6 backdrop-blur-md">
+        <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">
+          Step 2 • Scope &amp; Details
+        </div>
+        <h3 className="mt-2 text-2xl font-bold">Tell us a little more</h3>
+        <p className="mt-2 text-sm text-white/60">
+          We’ll use this to generate your live estimate below.
+        </p>
 
-        {(project === 'deck' || project === 'addition') && (
-          <TextInput
-            label={
-              project === 'deck' ? 'Desired Dimensions' : 'New / Finished Sq Ft'
-            }
-            placeholder={
-              project === 'deck' ? "12'x20'" : 'e.g. 450'
-            }
-            value={details.scopeDescription ?? ''}
-            onChange={(val) => update('scopeDescription')(val)}
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <TextControl
+            label="Approx. Square Footage"
+            value={details.squareFootage ?? ''}
+            placeholder={fieldPlaceholder('squareFootage', project)}
+            type="number"
+            onChange={(val) => onChange('squareFootage', val)}
           />
-        )}
-
-        {(project === 'bathroom' ||
-          project === 'kitchen' ||
-          project === 'siding' ||
-          project === 'windows') && (
-          <TextInput
+          <TextControl
             label="Quick Scope Summary"
-            placeholder={
-              project === 'bathroom'
-                ? 'Tile shower, double vanity, move toilet'
-                : project === 'kitchen'
-                ? 'Gut to studs, new layout, island'
-                : 'Whole home wrap / window package'
-            }
             value={details.scopeDescription ?? ''}
-            onChange={(val) => update('scopeDescription')(val)}
+            placeholder={fieldPlaceholder('scopeDescription', project)}
+            onChange={(val) => onChange('scopeDescription', val)}
           />
-        )}
+        </div>
+
+        {projectFields.length ? (
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            {projectFields.map((field) => {
+              const value = (details[field.key] ?? '') as string;
+              if (field.type === 'select' && field.options) {
+                return (
+                  <SelectControl
+                    key={field.key}
+                    label={field.label}
+                    value={value}
+                    onChange={(val) => onChange(field.key, val)}
+                    options={field.options}
+                  />
+                );
+              }
+
+              return (
+                <TextControl
+                  key={field.key}
+                  label={field.label}
+                  value={value}
+                  placeholder={field.placeholder}
+                  type={field.type === 'number' ? 'number' : 'text'}
+                  onChange={(val) => onChange(field.key, val)}
+                />
+              );
+            })}
+          </div>
+        ) : null}
       </div>
 
-      {project === 'roofing' && (
-        <div className="grid gap-4 md:grid-cols-3 text-sm">
-          <SelectInput
-            label="Existing Roof Removal"
-            value={details.tearOff ?? ''}
-            onChange={(val) => update('tearOff')(val as EstimatorDetails['tearOff'])}
-            options={[
-              { value: 'tearOff', label: 'Full tear-off' },
-              { value: 'overlay', label: 'Install over current layer' },
-            ]}
-          />
-          <SelectInput
-            label="Roof Material"
-            value={details.roofType ?? ''}
-            onChange={(val) => update('roofType')(val as EstimatorDetails['roofType'])}
-            options={[
-              { value: 'archAsp', label: 'Architectural Asphalt' },
-              { value: 'cedarShake', label: 'Cedar Shake' },
-              { value: 'slate', label: 'Natural Slate' },
-              { value: 'rubber', label: 'EPDM / Rubber' },
-            ]}
-          />
-          <SelectInput
-            label="Roof Complexity"
-            value={details.roofComplexity ?? ''}
-            onChange={(val) =>
-              update('roofComplexity')(val as EstimatorDetails['roofComplexity'])
-            }
-            options={[
-              { value: 'simple', label: 'Simple (few planes)' },
-              { value: 'complex', label: 'Complex (dormers / hips)' },
-              { value: 'veryComplex', label: 'Very complex (cut-up / steep)' },
-            ]}
-          />
+      <div className="rounded-2xl border border-white/10 bg-[radial-gradient(circle_at_20%_20%,rgba(251,191,36,.12)_0%,rgba(8,10,18,.85)_55%)] p-6 text-white shadow-[0_40px_120px_rgba(0,0,0,.45)] ring-1 ring-white/5">
+        <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">
+          Rough Cost Range (not a formal quote)
         </div>
-      )}
 
-      {project === 'bathroom' && (
-        <div className="grid gap-4 md:grid-cols-3 text-sm">
-          <SelectInput
-            label="Bath Type"
-            value={details.bathType ?? ''}
-            onChange={(val) => update('bathType')(val as EstimatorDetails['bathType'])}
-            options={[
-              { value: 'powder', label: 'Powder / half bath' },
-              { value: 'guestFull', label: 'Guest full bath' },
-              { value: 'primarySpa', label: 'Primary / spa bath' },
-            ]}
-          />
-          <SelectInput
-            label="Layout Changes"
-            value={details.layoutChanges ?? ''}
-            onChange={(val) =>
-              update('layoutChanges')(val as EstimatorDetails['layoutChanges'])
-            }
-            options={[
-              { value: 'sameLayout', label: 'Keep existing layout' },
-              { value: 'minor', label: 'Minor tweaks' },
-              { value: 'movePlumbing', label: 'Move plumbing walls' },
-            ]}
-          />
-          <SelectInput
-            label="Finish Level"
-            value={details.finishLevel ?? ''}
-            onChange={(val) =>
-              update('finishLevel')(val as EstimatorDetails['finishLevel'])
-            }
-            options={[
-              { value: 'basic', label: 'Builder basic' },
-              { value: 'popular', label: 'Most popular' },
-              { value: 'designer', label: 'Designer / high-end' },
-            ]}
-          />
-          <SelectInput
-            label="Shower Type"
-            value={details.showerType ?? ''}
-            onChange={(val) =>
-              update('showerType')(val as EstimatorDetails['showerType'])
-            }
-            options={[
-              { value: 'standard', label: 'Prefab / fiberglass' },
-              { value: 'tilePan', label: 'Tile surround w/ pan' },
-              { value: 'wetRoom', label: 'Curbless / wet room' },
-            ]}
-          />
-          <TextInput
-            label="Vanity Length (ft)"
-            placeholder="e.g. 6"
-            value={details.vanityLengthFt ?? ''}
-            onChange={(val) => update('vanityLengthFt')(val)}
-          />
-        </div>
-      )}
-
-      {project === 'kitchen' && (
-        <div className="grid gap-4 md:grid-cols-2 text-sm">
-          <SelectInput
-            label="Cabinet Scope"
-            value={details.cabinetsScope ?? ''}
-            onChange={(val) =>
-              update('cabinetsScope')(val as EstimatorDetails['cabinetsScope'])
-            }
-            options={[
-              { value: 'refresh', label: 'Refresh / paint existing' },
-              { value: 'replaceSameLayout', label: 'Replace in same layout' },
-              { value: 'fullGutMoveWalls', label: 'Full gut / move walls' },
-            ]}
-          />
-          <SelectInput
-            label="Appliance Package"
-            value={details.applianceLevel ?? ''}
-            onChange={(val) =>
-              update('applianceLevel')(val as EstimatorDetails['applianceLevel'])
-            }
-            options={[
-              { value: 'reuse', label: 'Reuse existing' },
-              { value: 'mid', label: 'Mid-grade upgrade' },
-              { value: 'highEnd', label: 'High-end / pro style' },
-            ]}
-          />
-        </div>
-      )}
-
-      {(project === 'siding' || project === 'windows') && (
-        <div className="grid gap-4 md:grid-cols-2 text-sm">
-          <SelectInput
-            label="Siding Material"
-            value={details.sidingMaterial ?? ''}
-            onChange={(val) =>
-              update('sidingMaterial')(val as EstimatorDetails['sidingMaterial'])
-            }
-            options={[
-              { value: 'vinyl', label: 'Vinyl' },
-              { value: 'cedar', label: 'Cedar' },
-              { value: 'fiberCement', label: 'Fiber cement' },
-            ]}
-          />
-          <TextInput
-            label="Number of Windows"
-            placeholder="e.g. 18"
-            value={details.windowCount ?? ''}
-            onChange={(val) => update('windowCount')(val)}
-          />
-        </div>
-      )}
-
-      {est ? (
-        <div className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.6)] p-4 text-[13px] text-zinc-200 shadow-[0_20px_60px_rgba(251,191,36,.15)]">
-          <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-400/90">
-            Rough Cost Range (not a formal quote)
-          </div>
-          <div className="mt-3 grid gap-3 text-center md:grid-cols-3">
-            <div className="rounded-lg border border-white/10 bg-black/30 p-3">
-              <div className="text-[11px] text-zinc-400 uppercase tracking-wide">
-                Conservative
-              </div>
-              <div className="text-white font-semibold">{money.format(est.conservative)}</div>
-            </div>
-            <div className="rounded-lg border border-amber-400/40 bg-black/30 p-3 shadow-[0_20px_60px_rgba(251,191,36,.35)]">
-              <div className="text-[11px] text-amber-300 uppercase tracking-wide">
-                Most Likely
-              </div>
-              <div className="text-white font-semibold">{money.format(est.likely)}</div>
-            </div>
-            <div className="rounded-lg border border-white/10 bg-black/30 p-3">
-              <div className="text-[11px] text-zinc-400 uppercase tracking-wide">Premium</div>
-              <div className="text-white font-semibold">{money.format(est.premium)}</div>
-            </div>
-          </div>
-          {est.breakdownLines?.length ? (
-            <div className="mt-3 text-[11px] text-zinc-500 leading-relaxed">
-              {est.breakdownLines.map((line, idx) => (
-                <div key={idx}>{line}</div>
+        {estimate ? (
+          <>
+            <div className="mt-4 grid gap-3 text-center md:grid-cols-3">
+              {([
+                { label: 'Conservative', value: estimate.conservative, tone: 'text-emerald-400' },
+                { label: 'Most Likely', value: estimate.likely, tone: 'text-amber-300' },
+                { label: 'Premium', value: estimate.premium, tone: 'text-rose-300' },
+              ] as const).map((tier, idx) => (
+                <motion.div
+                  key={tier.label}
+                  className={[
+                    'rounded-xl border border-white/10 bg-black/30 p-4',
+                    idx === 1 ? 'ring-2 ring-amber-300/50 shadow-[0_20px_60px_rgba(251,191,36,.35)]' : '',
+                  ].join(' ')}
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
+                  animate={shouldReduceMotion ? {} : { opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: idx * 0.05 }}
+                >
+                  <div className="text-[11px] uppercase tracking-wide text-white/60">
+                    {tier.label}
+                  </div>
+                  <div className={`mt-2 text-lg font-semibold ${tier.tone}`}>
+                    {money.format(tier.value)}
+                  </div>
+                </motion.div>
               ))}
+            </div>
+
+            <div className="mt-4 text-[12px] text-white/55 leading-relaxed">
+              {estimate.breakdownLines?.length
+                ? estimate.breakdownLines.map((line, idx) => <div key={idx}>{line}</div>)
+                : 'Cabinets, counters, flooring, appliances'}
               <div className="mt-2 text-white/40">
-                Final quote requires a site visit (structure/utilities/permits).
+                Final quote requires a site visit (structure / utilities / permits).
               </div>
             </div>
-          ) : null}
-        </div>
-      ) : (
-        <div className="rounded-xl border border-dashed border-white/15 bg-[rgba(20,20,28,.3)] p-4 text-[12px] text-zinc-400">
-          Add square footage and scope details to see live numbers here.
-        </div>
-      )}
+          </>
+        ) : (
+          <div className="mt-4 text-sm text-white/60">
+            Add square footage and scope details to see live pricing.
+          </div>
+        )}
+      </div>
     </div>
   );
 }
