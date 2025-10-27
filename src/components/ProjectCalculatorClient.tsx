@@ -219,24 +219,6 @@ export default function ProjectCalculatorClient() {
           </p>
         </div>
 
-        <section className="max-w-3xl text-[14px] leading-relaxed text-white/70 space-y-4">
-          <p>
-            DiFiore Builders is a family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. We specialize in roofing, siding, additions, kitchens, bathrooms, decks, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price. We proudly support homeowners in Chadds Ford, Glen Mills, Garnet Valley, Kennett Township, Concord, West Chester, East Marlborough, West Marlborough, Pocopson, West Goshen, and London Grove, PA.
-          </p>
-          <p>
-            We handle full project scope — design input, permitting, structural framing, mechanicals, finishes, inspections, and cleanup. Whether it’s a full roof tear-off and replacement, Hardie/fiber-cement siding, a new deck or outdoor living space, a tile bathroom remodel, or adding livable square footage with a primary suite addition or a finished basement, you’re working directly with the builder — not a lead aggregator.
-          </p>
-          <p>
-            Want a ballpark before we visit?{' '}
-            <a
-              href="/project-calculator"
-              className="text-amber-300 hover:text-amber-200 font-semibold underline underline-offset-2"
-            >
-              Get a rough cost estimate →
-            </a>
-          </p>
-        </section>
-
         <section className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.6)] backdrop-blur-md ring-1 ring-white/5 shadow-[0_30px_120px_rgba(0,0,0,.8)] p-6 space-y-8">
           {/* STEP 1 */}
           {state.step === 1 && (
