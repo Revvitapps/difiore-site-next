@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative isolate min-h-[92svh] w-full overflow-hidden" aria-label="Hero">
+    <section className="relative isolate min-h-[84svh] w-full overflow-hidden" aria-label="Hero">
       <div className="pointer-events-none fixed inset-0 -z-20">
         <div className="relative h-full w-full">
           <div className="h-full w-full max-w-full overflow-hidden">
@@ -14,7 +14,7 @@ export default function Hero() {
               priority
               width={1200}
               height={800}
-              className="h-full w-full object-cover object-[50%_30%] md:object-[50%_18%] lg:object-[50%_12%]"
+              className="h-full w-full object-cover object-[center_top] md:object-[50%_18%] lg:object-[50%_12%]"
             />
           </div>
           <div aria-hidden className="absolute inset-0 bg-[rgba(6,12,20,0.32)]" />
@@ -28,7 +28,7 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1200px] px-6 md:px-8">
-        <div className="grid min-h-[92svh] place-items-center">
+        <div className="grid min-h-[84svh] place-items-center">
           <div className="w-full translate-y-[7vh] text-center">
             <h1 className="font-serif text-[clamp(40px,6vw,72px)] font-black leading-[1.04] tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,.45)]">
               The DiFiore Difference
