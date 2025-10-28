@@ -13,7 +13,7 @@ export default function Hero() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[50%_12%]"
+            className="object-cover object-[50%_30%] md:object-[50%_18%] lg:object-[50%_12%]"
           />
           <div aria-hidden className="absolute inset-0 bg-[rgba(6,12,20,0.32)]" />
         </div>

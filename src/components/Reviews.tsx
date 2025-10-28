@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { TouchEvent } from 'react';
 
 type Review = { id: string; name: string; rating: number; text: string };
 
@@ -58,6 +59,8 @@ export default function Reviews() {
   }, [itemsPerView, reviews.length]);
 
   const totalSlides = useMemo(() => Math.max(1, reviews.length - itemsPerView + 1), [reviews.length, itemsPerView]);
+  const touchStartX = useRef<number | null>(null);
+  const touchDeltaX = useRef<number>(0);
 
   const handlePrev = () => {
     setActiveIndex((prev) => {
@@ -75,6 +78,31 @@ export default function Reviews() {
       }
       return prev + 1;
     });
+  };
+
+  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length !== 1) return;
+    touchStartX.current = event.touches[0].clientX;
+    touchDeltaX.current = 0;
+  };
+
+  const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null) return;
+    touchDeltaX.current = event.touches[0].clientX - touchStartX.current;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null) return;
+    const delta = touchDeltaX.current;
+    if (Math.abs(delta) > 40) {
+      if (delta > 0) {
+        handlePrev();
+      } else {
+        handleNext();
+      }
+    }
+    touchStartX.current = null;
+    touchDeltaX.current = 0;
   };
 
   return (
@@ -112,7 +140,13 @@ export default function Reviews() {
             ←
           </button>
 
-          <div className="overflow-hidden">
+          <div
+            className="overflow-hidden"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchEnd}
+          >
             <div
               className="flex gap-4 transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${(activeIndex * 100) / itemsPerView}%)` }}
@@ -157,6 +191,25 @@ export default function Reviews() {
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
+          </div>
+
+          <div className="mt-6 flex items-center justify-center gap-4 sm:hidden">
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="rounded-full border border-white/20 bg-black/40 px-4 py-2 text-sm text-white hover:bg-black/60"
+              aria-label="Previous review"
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              className="rounded-full border border-white/20 bg-black/40 px-4 py-2 text-sm text-white hover:bg-black/60"
+              aria-label="Next review"
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

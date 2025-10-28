@@ -163,42 +163,42 @@ export default function Header() {
       <div
         id="mobile-menu"
         aria-hidden={!mobileOpen}
-        className={`md:hidden overflow-hidden border-t border-white/10 bg-[rgba(10,10,15,.95)] backdrop-blur-md transition-all duration-300 ease-out ${
-          mobileOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+        className={`relative z-50 overflow-hidden border-t border-white/10 bg-[rgba(18,24,36,.92)] shadow-xl backdrop-blur-md transition-all duration-300 ease-out md:hidden ${
+          mobileOpen ? "max-h-[420px] opacity-100" : "pointer-events-none max-h-0 opacity-0"
         }`}
       >
-        <div className="mx-auto max-w-6xl px-4 py-6 space-y-4">
+        <div className="mx-auto max-w-6xl space-y-4 px-4 py-6">
           <Link
             href="/before-and-after"
-            className="block text-base font-semibold text-white/90"
+            className="block text-base font-semibold text-white"
             onClick={() => setMobileOpen(false)}
           >
             Before &amp; After
           </Link>
           <Link
             href="/services/roofing-siding"
-            className="block text-base font-semibold text-white/90"
+            className="block text-base font-semibold text-white"
             onClick={() => setMobileOpen(false)}
           >
             Roofing &amp; Siding
           </Link>
           <Link
             href="/services/kitchens-bathrooms"
-            className="block text-base font-semibold text-white/90"
+            className="block text-base font-semibold text-white"
             onClick={() => setMobileOpen(false)}
           >
             Kitchens &amp; Bathrooms
           </Link>
           <Link
             href="/services/additions-basements"
-            className="block text-base font-semibold text-white/90"
+            className="block text-base font-semibold text-white"
             onClick={() => setMobileOpen(false)}
           >
             Additions &amp; Basements
           </Link>
           <Link
             href="/our-story"
-            className="block text-base font-semibold text-white/90"
+            className="block text-base font-semibold text-white"
             onClick={() => setMobileOpen(false)}
           >
             Our Story
