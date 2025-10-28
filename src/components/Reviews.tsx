@@ -148,26 +148,28 @@ export default function Reviews() {
             onTouchCancel={handleTouchEnd}
           >
             <div
-              className="flex gap-4 transition-transform duration-500 ease-out"
+              className="flex -mx-2 transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${(activeIndex * 100) / itemsPerView}%)` }}
               aria-live="polite"
             >
               {reviews.map((r) => (
-                <article
+                <div
                   key={r.id}
-                  className="rvv-bubble w-full shrink-0 rounded-2xl border border-white/15 bg-[rgba(12,15,20,.9)] shadow-[0_24px_60px_rgba(2,8,18,.45)]"
+                  className="w-full shrink-0 px-2"
                   style={{ flexBasis: `${100 / itemsPerView}%` }}
                 >
-                  <div className="rvv-surface h-full p-4">
-                    <div className="flex items-center justify-between">
-                      <strong className="truncate">{r.name}</strong>
-                      <span className="ml-3 text-amber-300" aria-label={`${r.rating} stars`}>
-                        {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
-                      </span>
+                  <article className="rvv-bubble h-full rounded-2xl border border-white/15 bg-[rgba(12,15,20,.9)] shadow-[0_24px_60px_rgba(2,8,18,.45)]">
+                    <div className="rvv-surface h-full p-4">
+                      <div className="flex items-center justify-between gap-4">
+                        <strong className="truncate">{r.name}</strong>
+                        <span className="ml-auto text-amber-300" aria-label={`${r.rating} stars`}>
+                          {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm text-zinc-200">{r.text}</p>
                     </div>
-                    <p className="mt-2 text-sm text-zinc-200">{r.text}</p>
-                  </div>
-                </article>
+                  </article>
+                </div>
               ))}
             </div>
           </div>

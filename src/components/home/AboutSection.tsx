@@ -55,7 +55,7 @@ export default function AboutSection() {
               ? undefined
               : { duration: 0.9, ease: "easeOut", delay: 0.08 }
           }
-          className="relative overflow-hidden rounded-2xl border border-white/10"
+          className="relative min-h-[240px] overflow-hidden rounded-2xl border border-white/10 sm:min-h-[280px] md:min-h-[320px]"
         >
           <Image
             src="/difiore-leadership-team.jpg"

@@ -39,7 +39,6 @@ export default function NewBuildsGCPage() {
       <HeroSection
         title="New Builds & General Construction"
         subtitle="From plans to punch list — a streamlined, accountable process covering structure, envelope, energy-smart assemblies, and coordination of licensed trades."
-        blurb=""
         imageSrc={HERO}
         chips={["Ground-Up", "Structural", "Sitework"]}
       >
