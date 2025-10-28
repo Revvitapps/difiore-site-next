@@ -7,14 +7,16 @@ export default function Hero() {
     <section className="relative isolate min-h-[92svh] w-full overflow-hidden" aria-label="Hero">
       <div className="pointer-events-none fixed inset-0 -z-20">
         <div className="relative h-full w-full">
-          <Image
-            src="/difiore-hero-spotlight-house.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[50%_30%] md:object-[50%_18%] lg:object-[50%_12%]"
-          />
+          <div className="h-full w-full max-w-full overflow-hidden">
+            <Image
+              src="/difiore-hero-spotlight-house.png"
+              alt="Exterior renovation by DiFiore Builders"
+              priority
+              width={1200}
+              height={800}
+              className="h-full w-full object-cover object-[50%_30%] md:object-[50%_18%] lg:object-[50%_12%]"
+            />
+          </div>
           <div aria-hidden className="absolute inset-0 bg-[rgba(6,12,20,0.32)]" />
         </div>
       </div>

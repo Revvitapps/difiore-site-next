@@ -34,6 +34,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <meta property="og:image" content="https://difiorebuilders.com/difiore-hero-spotlight-house.png" />
+        <meta property="og:image:alt" content="Exterior renovation by DiFiore Builders" />
+        <meta property="twitter:image" content="https://difiorebuilders.com/difiore-hero-spotlight-house.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </head>
       {/* No max-w on <main>; sections control their own width */}
       <body className="bg-zinc-950 text-zinc-100 antialiased">
         <Header />
