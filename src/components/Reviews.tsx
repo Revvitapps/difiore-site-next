@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type Review = { id: string; name: string; rating: number; text: string };
 
@@ -17,6 +17,8 @@ export default function Reviews() {
   const [reviews, setReviews] = useState<Review[]>(MOCK);
   const [avg, setAvg] = useState<number>(5.0);
   const [count, setCount] = useState<number>(MOCK.length);
+  const [itemsPerView, setItemsPerView] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     if (useMock) return;
@@ -32,6 +34,48 @@ export default function Reviews() {
       }
     })();
   }, [useMock]);
+
+  useEffect(() => {
+    const update = () => {
+      const width = window.innerWidth;
+      if (width >= 1280) {
+        setItemsPerView(3);
+      } else if (width >= 768) {
+        setItemsPerView(2);
+      } else {
+        setItemsPerView(1);
+      }
+    };
+
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  useEffect(() => {
+    const maxIndex = Math.max(0, reviews.length - itemsPerView);
+    setActiveIndex((idx) => Math.min(idx, maxIndex));
+  }, [itemsPerView, reviews.length]);
+
+  const totalSlides = useMemo(() => Math.max(1, reviews.length - itemsPerView + 1), [reviews.length, itemsPerView]);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => {
+      if (prev === 0) {
+        return totalSlides - 1;
+      }
+      return prev - 1;
+    });
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => {
+      if (prev >= totalSlides - 1) {
+        return 0;
+      }
+      return prev + 1;
+    });
+  };
 
   return (
     <section id="reviews" aria-label="Reviews" className="relative py-16 md:py-24">
@@ -57,17 +101,30 @@ export default function Reviews() {
           </div>
         </div>
 
-        {/* Mobile: snap-scrolling (1 full card at a time) */}
-        <div className="mt-8 md:hidden">
-          <div className="overflow-x-auto [-webkit-overflow-scrolling:touch] snap-x snap-mandatory scroll-px-4">
-            <div className="flex gap-4 px-4">
+        {/* Carousel */}
+        <div className="relative mt-10">
+          <button
+            type="button"
+            onClick={handlePrev}
+            className="absolute left-0 top-1/2 hidden -translate-y-1/2 rounded-full border border-white/20 bg-black/40 px-3 py-2 text-sm text-white hover:bg-black/60 md:block"
+            aria-label="Previous review"
+          >
+            ←
+          </button>
+
+          <div className="overflow-hidden">
+            <div
+              className="flex gap-4 transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(-${(activeIndex * 100) / itemsPerView}%)` }}
+              aria-live="polite"
+            >
               {reviews.map((r) => (
                 <article
                   key={r.id}
-                  className="snap-start w-[86vw] max-w-[360px] rvv-bubble rounded-2xl border border-white/15
-                             bg-[rgba(12,15,20,.9)] shadow-[0_24px_60px_rgba(2,8,18,.45)]"
+                  className="rvv-bubble w-full shrink-0 rounded-2xl border border-white/15 bg-[rgba(12,15,20,.9)] shadow-[0_24px_60px_rgba(2,8,18,.45)]"
+                  style={{ flexBasis: `${100 / itemsPerView}%` }}
                 >
-                  <div className="rvv-surface p-4">
+                  <div className="rvv-surface h-full p-4">
                     <div className="flex items-center justify-between">
                       <strong className="truncate">{r.name}</strong>
                       <span className="ml-3 text-amber-300" aria-label={`${r.rating} stars`}>
@@ -80,27 +137,27 @@ export default function Reviews() {
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Desktop: fixed grid (no partial cards) */}
-        <div className="mt-8 hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {reviews.map((r) => (
-            <article
-              key={r.id}
-              className="rvv-bubble rounded-2xl border border-white/15 bg-[rgba(12,15,20,.9)]
-                         shadow-[0_24px_60px_rgba(2,8,18,.45)]"
-            >
-              <div className="rvv-surface p-4 h-full">
-                <div className="flex items-center justify-between">
-                  <strong className="truncate">{r.name}</strong>
-                  <span className="ml-3 text-amber-300" aria-label={`${r.rating} stars`}>
-                    {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
-                  </span>
-                </div>
-                <p className="mt-2 text-sm text-zinc-200">{r.text}</p>
-              </div>
-            </article>
-          ))}
+          <button
+            type="button"
+            onClick={handleNext}
+            className="absolute right-0 top-1/2 hidden -translate-y-1/2 rounded-full border border-white/20 bg-black/40 px-3 py-2 text-sm text-white hover:bg-black/60 md:block"
+            aria-label="Next review"
+          >
+            →
+          </button>
+
+          <div className="mt-6 flex items-center justify-center gap-2">
+            {Array.from({ length: totalSlides }).map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActiveIndex(idx)}
+                className={`h-2.5 w-2.5 rounded-full transition ${idx === activeIndex ? "bg-amber-400" : "bg-white/25"}`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

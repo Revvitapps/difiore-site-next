@@ -19,6 +19,14 @@ export const metadata: Metadata = {
     siteName: "DiFiore Builders",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "https://difiorebuilders.com/difiore-hero-spotlight-house.png",
+        width: 1920,
+        height: 1080,
+        alt: "DiFiore Builders custom home exterior",
+      },
+    ],
   },
 };
 

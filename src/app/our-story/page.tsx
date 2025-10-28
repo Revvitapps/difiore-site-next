@@ -20,7 +20,7 @@ export default function OurStoryPage() {
           className="absolute inset-0 -z-4 bg-no-repeat"
           style={{
             backgroundImage: "url('/difiore-hero-alternate.png')",
-            backgroundSize: "100%",
+            backgroundSize: "cover",
             backgroundPosition: "50% 75%",
           }}
           aria-hidden
@@ -28,8 +28,8 @@ export default function OurStoryPage() {
         <div aria-hidden className="absolute inset-0 -z-10 bg-[rgba(8,16,28,.45)]" />
 
         <div className="absolute inset-x-0 bottom-4 px-4">
-          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-88">
-            {["Third-generation builder", "Locally owned", "Since 2003"].map((t) => (
+          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-3 md:gap-6">
+            {["Third-Generation Builder", "Locally Owned & Licensed", "Serving the Tri-State Area since 2003"].map((t) => (
               <span
                 key={t}
                 className="rounded-full bg-amber-500/95 px-3 py-1 text-[12px] font-semibold text-zinc-900 shadow"
