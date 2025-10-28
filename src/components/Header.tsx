@@ -76,7 +76,7 @@ export default function Header() {
             <button
               className="text-sm text-zinc-300 hover:text-white focus:outline-none"
               aria-haspopup="true"
-              aria-expanded="true"
+              aria-expanded="false"
             >
               Services
             </button>
@@ -195,6 +195,13 @@ export default function Header() {
             onClick={() => setMobileOpen(false)}
           >
             Additions &amp; Basements
+          </Link>
+          <Link
+            href="/services/new-builds-gc"
+            className="block text-base font-semibold text-white"
+            onClick={() => setMobileOpen(false)}
+          >
+            New Builds &amp; General Construction
           </Link>
           <Link
             href="/our-story"

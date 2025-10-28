@@ -44,9 +44,11 @@ export default function AboutSection() {
 
         <motion.figure
           initial={
-            prefersReducedMotion ? false : { opacity: 0, x: 40, y: 40 }
+            prefersReducedMotion ? false : { opacity: 0, x: 40, y: 40, scale: 0.96 }
           }
-          whileInView={prefersReducedMotion ? {} : { opacity: 1, x: 0, y: 0 }}
+          whileInView={
+            prefersReducedMotion ? {} : { opacity: 1, x: 0, y: 0, scale: 1 }
+          }
           viewport={{ once: true, amount: 0.3 }}
           transition={
             prefersReducedMotion
