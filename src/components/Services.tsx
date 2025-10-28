@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
 /* ---------- DATA: your filenames in /public ---------- */
 type Band = {
@@ -89,7 +90,15 @@ const BANDS: Band[] = [
 ];
 
 /* ---------- ONE BAND (bottom-anchored card + rotating bg) ---------- */
-function ServiceBand({ data }: { data: Band }) {
+function ServiceBand({
+  data,
+  index,
+  prefersReducedMotion,
+}: {
+  data: Band;
+  index: number;
+  prefersReducedMotion: boolean;
+}) {
   // rotation state
   const [idx, setIdx] = useState(0);
   const timer = useRef<number | null>(null);
@@ -119,10 +128,18 @@ function ServiceBand({ data }: { data: Band }) {
   const bgSrc = data.bg[idx] ?? data.bg[0] ?? "";
 
   return (
-    <section
+    <motion.section
       id={data.id}
       className="relative isolate min-h-[64svh] overflow-hidden"
       aria-label={data.title}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 60 }}
+      whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+      transition={
+        prefersReducedMotion
+          ? undefined
+          : { duration: 0.9, ease: "easeOut", delay: index * 0.08 }
+      }
+      viewport={{ once: true, amount: 0.2 }}
     >
       {/* full-bleed background */}
       <div
@@ -194,16 +211,23 @@ function ServiceBand({ data }: { data: Band }) {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
 /* ---------- PUBLIC COMPONENT ---------- */
 export default function Services() {
+  const prefersReducedMotion = useReducedMotion() ?? false;
+
   return (
     <section aria-label="Services" className="relative space-y-16 md:space-y-24">
-      {BANDS.map((b) => (
-        <ServiceBand key={b.id} data={b} />
+      {BANDS.map((b, index) => (
+        <ServiceBand
+          key={b.id}
+          data={b}
+          index={index}
+          prefersReducedMotion={prefersReducedMotion}
+        />
       ))}
     </section>
   );

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import TrustedBadges from "@/components/TrustedBadges";
 import Reviews from "@/components/Reviews";
 import Hero from "@/components/Hero";
-import Pillars from "@/components/Pillars";
-import AboutSlab from "@/components/AboutSlab";
+import PillarsSection from "@/components/home/PillarsSection";
+import AboutSection from "@/components/home/AboutSection";
 import ServicesIntro from "@/components/ServicesIntro";
 import Services from "@/components/Services";
 
@@ -20,8 +20,12 @@ export default function Page() {
   return (
     <>
       <Hero />
-      <Pillars />
-      <AboutSlab />
+      <section className="mb-16 md:mb-24">
+        <PillarsSection />
+      </section>
+      <section className="mt-8 md:mt-12">
+        <AboutSection />
+      </section>
       <ServicesIntro />
       <Services />
       <Reviews />

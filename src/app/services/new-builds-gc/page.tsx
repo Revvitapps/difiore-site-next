@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
+import HeroSection from "@/components/services/HeroSection";
+import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
 
 export const metadata: Metadata = {
   title: "New Builds & General Construction",
@@ -13,80 +14,69 @@ export const metadata: Metadata = {
 // Use filenames you know exist in /public:
 const HERO = "/difiore-services-showcase-newbuild.jpg";
 const GALLERY = [
-  "/difiore-services-showcase-newbuild.jpg",
-  "/difiore-os-newbuild-after-tr.png",
-  // Add or swap with more that exist in /public as you like:
-  // "/difiore-services-showcase-newbuild-interior.webp",
-  // "/difiore-services-showcase-newbuild-exterior.webp",
+  {
+    src: "/difiore-services-showcase-newbuild.jpg",
+    alt: "Framing in progress on a new build",
+    priority: true,
+  },
+  {
+    src: "/difiore-os-newbuild-after-tr.png",
+    alt: "Completed home exterior with finished landscaping",
+  },
+  {
+    src: "/difiore-services -addition-newconstruction1.JPG",
+    alt: "Addition framing detail on an active build",
+  },
+  {
+    src: "/difiore-services -basement-newbuild-showcase-studdedwalls.2.JPG",
+    alt: "Basement stud walls ready for infrastructure",
+  },
 ];
 
 export default function NewBuildsGCPage() {
   return (
     <>
-      {/* HERO: full-bleed image + overlay */}
-      <section
-        className="relative isolate min-h-[52svh] overflow-hidden"
-        aria-label="New Builds & General Construction"
+      <HeroSection
+        title="New Builds & General Construction"
+        subtitle="From plans to punch list — a streamlined, accountable process covering structure, envelope, energy-smart assemblies, and coordination of licensed trades."
+        blurb=""
+        imageSrc={HERO}
+        chips={["Ground-Up", "Structural", "Sitework"]}
       >
-        <div
-          className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{ backgroundImage: `url('${HERO}')` }}
-          aria-hidden
-        />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-[rgba(8,16,28,.45)]" />
-        <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-          <div className="max-w-2xl">
-            <div className="flex flex-wrap gap-2">
-              {["Ground-Up", "Structural", "Sitework"].map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-full bg-amber-500/95 px-3 py-1 text-[12px] font-semibold text-zinc-900 shadow"
-                >
-                  {chip}
-                </span>
-              ))}
-            </div>
-            <h1 className="mt-4 font-serif text-[clamp(32px,4.2vw,56px)] font-extrabold leading-tight tracking-tight">
-              New Builds &amp; General Construction
-            </h1>
-            <p className="mt-3 text-[15px] text-white/90">
-              From plans to punch list — a streamlined, accountable process covering structure, envelope,
-              energy-smart assemblies, and coordination of licensed trades.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/project-calculator"
-                className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
-              >
-                Price My Build
-              </Link>
-              <Link
-                href="/our-projects"
-                className="rounded-md border border-white/50 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
-              >
-                See Projects
-              </Link>
-            </div>
-          </div>
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <Link
+            href="/project-calculator"
+            className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
+          >
+            Price My Build
+          </Link>
+          <Link
+            href="/our-projects"
+            className="rounded-md border border-white/50 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
+          >
+            See Projects
+          </Link>
         </div>
-      </section>
+      </HeroSection>
 
       {/* OVERVIEW */}
-      <section className="px-4 py-12 md:py-16">
-        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-[1.15fr_.85fr]">
-          <div>
-            <h2 className="font-serif text-[clamp(24px,3vw,36px)] font-extrabold tracking-tight">
-              Build right from the ground up
-            </h2>
-            <div className="prose prose-invert mt-3 max-w-none text-zinc-200">
-              <p>
-                We manage estimating, permitting, scheduling, inspections, and all site coordination.
-                Expect clean staging, clear timelines, and proactive punch-list control.
-              </p>
+      <section className="px-4 py-14 md:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:gap-14 md:grid-cols-[1.15fr_.85fr]">
+          <div className="flex flex-col gap-8 md:gap-9">
+            <div className="space-y-4 md:space-y-5">
+              <h2 className="font-serif text-[clamp(24px,3vw,36px)] font-extrabold tracking-tight">
+                Build right from the ground up
+              </h2>
+              <div className="prose prose-invert max-w-none text-zinc-200">
+                <p>
+                  We manage estimating, permitting, scheduling, inspections, and all site coordination.
+                  Expect clean staging, clear timelines, and proactive punch-list control.
+                </p>
+              </div>
             </div>
 
             {/* Feature pills */}
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            <ul className="grid gap-3 sm:grid-cols-2">
               {[
                 "Foundations, framing & envelopes",
                 "Structural steel & engineered lumber",
@@ -105,29 +95,12 @@ export default function NewBuildsGCPage() {
             </ul>
           </div>
 
-          {/* Mini gallery */}
-          <figure className="grid grid-cols-2 gap-4 self-start">
-            {GALLERY.map((src, i) => (
-              <div
-                key={src + i}
-                className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15"
-              >
-                <Image
-                  src={src}
-                  alt="New build progress"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority={i === 0}
-                />
-              </div>
-            ))}
-          </figure>
+          <AnimatedImageGrid items={GALLERY} />
         </div>
       </section>
 
       {/* REVIEW HIGHLIGHT (placeholder copy; swap later) */}
-      <section className="px-4 pb-12 md:pb-16">
+      <section className="px-4 pb-16 md:pb-20 mt-16 md:mt-24">
         <div className="mx-auto max-w-6xl">
           <div className="rvv-bubble rounded-2xl border border-[rgba(255,255,255,.14)] bg-[rgba(12,15,20,.85)] shadow-[0_24px_60px_rgba(2,8,18,.45)]">
             <div className="rvv-surface p-5 md:p-6">
@@ -142,7 +115,7 @@ export default function NewBuildsGCPage() {
             </div>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-3">
             <Link
               href="/project-calculator"
               className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
+import HeroSection from "@/components/services/HeroSection";
+import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
 
 export const metadata: Metadata = {
   title: "Roofing & Siding Replacement | Tear-Offs, Exterior Wraps, Gutters",
@@ -15,74 +16,48 @@ export const metadata: Metadata = {
 export default function RoofingSidingPage() {
   return (
     <>
-      {/* HERO: full-bleed image + overlay */}
-      <section
-        className="relative isolate min-h-[52svh] overflow-hidden"
-        aria-label="Roofing & Siding"
+      <HeroSection
+        title="Roofing & Siding"
+        subtitle="Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003."
+        blurb="Weather-tight systems, clean lines, and long-term performance. From full tear-offs and re-roofs to premium siding upgrades, we handle everything with tidy job sites and clear communication."
+        imageSrc="/difiore-services-showcase-3style-roof.png"
+        chips={["Asphalt • Metal", "Vinyl • Fiber Cement", "Repairs & Replacements"]}
       >
-        <div
-          className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{ backgroundImage: "url('/difiore-services-showcase-3style-roof.png')" }}
-          aria-hidden
-        />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-[rgba(8,16,28,.45)]" />
-        <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-          <div className="max-w-2xl">
-            <div className="flex flex-wrap gap-2">
-              {["Asphalt • Metal", "Vinyl • Fiber Cement", "Repairs & Replacements"].map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-full bg-amber-500/95 px-3 py-1 text-[12px] font-semibold text-zinc-900 shadow"
-                >
-                  {chip}
-                </span>
-              ))}
-            </div>
-            <h1 className="mt-4 font-serif text-[clamp(32px,4.2vw,56px)] font-extrabold leading-tight tracking-tight">
-              Roofing &amp; Siding
-            </h1>
-            <p className="mt-3 text-[15px] text-white/90">
-              Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
-            </p>
-            <p className="mt-2 text-[15px] text-white/80">
-              Weather-tight systems, clean lines, and long-term performance. From full tear-offs and re-roofs
-              to premium siding upgrades, we handle everything with tidy job sites and clear communication.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/project-calculator"
-                className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
-              >
-                Get a Quote
-              </Link>
-              <Link
-                href="/our-projects"
-                className="rounded-md border border-white/50 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
-              >
-                See Projects
-              </Link>
-            </div>
-          </div>
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <Link
+            href="/project-calculator"
+            className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
+          >
+            Get a Quote
+          </Link>
+          <Link
+            href="/our-projects"
+            className="rounded-md border border-white/50 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
+          >
+            See Projects
+          </Link>
         </div>
-      </section>
+      </HeroSection>
 
       {/* OVERVIEW */}
-      <section className="px-4 py-12 md:py-16">
-        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-[1.15fr_.85fr]">
-          <div>
-            <h2 className="font-serif text-[clamp(24px,3vw,36px)] font-extrabold tracking-tight">
-              Built for the elements — detailed for curb appeal
-            </h2>
-            <div className="prose prose-invert mt-3 max-w-none text-zinc-200">
-              <p>
-                As a full-service GC, we coordinate the entire scope—tear-offs, sheathing repairs,
-                underlayments, flashings, siding replacement, trim, and inspections—so you get one tidy,
-                accountable process start to finish.
-              </p>
+      <section className="px-4 py-14 md:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:gap-14 md:grid-cols-[1.15fr_.85fr]">
+          <div className="flex flex-col gap-8 md:gap-9">
+            <div className="space-y-4 md:space-y-5">
+              <h2 className="font-serif text-[clamp(24px,3vw,36px)] font-extrabold tracking-tight">
+                Built for the elements — detailed for curb appeal
+              </h2>
+              <div className="prose prose-invert max-w-none text-zinc-200">
+                <p>
+                  As a full-service GC, we coordinate the entire scope—tear-offs, sheathing repairs,
+                  underlayments, flashings, siding replacement, trim, and inspections—so you get one tidy,
+                  accountable process start to finish.
+                </p>
+              </div>
             </div>
 
             {/* Feature list */}
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            <ul className="grid gap-3 sm:grid-cols-2">
               {[
                 "Tear-offs, re-roofs & leak repairs",
                 "Ice & water shield, synthetic underlayments",
@@ -104,11 +79,12 @@ export default function RoofingSidingPage() {
           </div>
 
           {/* Mini gallery */}
-          <figure className="grid grid-cols-2 gap-4 self-start">
-            {[
+          <AnimatedImageGrid
+            items={[
               {
                 src: "/difiore-services-showcase-3style-roof.png",
                 alt: "Clean roofing lines and materials",
+                priority: true,
               },
               {
                 src: "/difiore-services-showcase-roofing-gutter.webp",
@@ -122,27 +98,13 @@ export default function RoofingSidingPage() {
                 src: "/difiore-services-showcase-3style-roof.png",
                 alt: "Roof planes and color-matched accessories",
               },
-            ].map((item, idx) => (
-              <div
-                key={`${item.src}-${idx}`}
-                className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15"
-              >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority={idx === 0}
-                />
-              </div>
-            ))}
-          </figure>
+            ]}
+          />
         </div>
       </section>
 
       {/* REVIEW HIGHLIGHT (placeholder) */}
-      <section className="px-4 pb-12 md:pb-16">
+      <section className="px-4 pb-16 md:pb-20 mt-16 md:mt-24">
         <div className="mx-auto max-w-6xl">
           <div className="rvv-bubble rounded-2xl border border-[rgba(255,255,255,.14)] bg-[rgba(12,15,20,.85)] shadow-[0_24px_60px_rgba(2,8,18,.45)]">
             <div className="rvv-surface p-5 md:p-6">
@@ -158,7 +120,7 @@ export default function RoofingSidingPage() {
             </div>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-3">
             <Link
               href="/project-calculator"
               className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"

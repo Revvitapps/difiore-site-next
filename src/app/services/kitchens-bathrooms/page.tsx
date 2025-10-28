@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
+import HeroSection from "@/components/services/HeroSection";
+import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
 
 export const metadata: Metadata = {
   title: "Kitchen & Bathroom Remodeling | Cabinets, Tile, Layout Changes",
@@ -15,74 +16,48 @@ export const metadata: Metadata = {
 export default function KitchensBathroomsPage() {
   return (
     <>
-      {/* HERO: full-bleed image + overlay */}
-      <section
-        className="relative isolate min-h-[52svh] overflow-hidden"
-        aria-label="Kitchens & Bathrooms"
+      <HeroSection
+        title="Kitchens & Bathrooms"
+        subtitle="Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003."
+        blurb="Smart layouts, durable materials, and beautiful details — from fixture updates to full gut renovations, we handle everything with clean job sites and attentive service."
+        imageSrc="/difiore-services-showcase-kitchen-whole.webp"
+        chips={["Cabinetry", "Tile & Stone", "Lighting"]}
       >
-        <div
-          className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{ backgroundImage: "url('/difiore-services-showcase-kitchen-whole.webp')" }}
-          aria-hidden
-        />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-[rgba(8,16,28,.45)]" />
-        <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-          <div className="max-w-2xl">
-            <div className="flex flex-wrap gap-2">
-              {["Cabinetry", "Tile & Stone", "Lighting"].map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-full bg-amber-500/95 px-3 py-1 text-[12px] font-semibold text-zinc-900 shadow"
-                >
-                  {chip}
-                </span>
-              ))}
-            </div>
-            <h1 className="mt-4 font-serif text-[clamp(32px,4.2vw,56px)] font-extrabold leading-tight tracking-tight">
-              Kitchens & Bathrooms
-            </h1>
-            <p className="mt-3 text-[15px] text-white/90">
-              Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
-            </p>
-            <p className="mt-2 text-[15px] text-white/80">
-              Smart layouts, durable materials, and beautiful details — from fixture updates to full gut
-              renovations, we handle everything with clean job sites and attentive service.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/project-calculator"
-                className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
-              >
-                Start My Remodel
-              </Link>
-              <Link
-                href="/our-projects"
-                className="rounded-md border border-white/50 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
-              >
-                See Projects
-              </Link>
-            </div>
-          </div>
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <Link
+            href="/project-calculator"
+            className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
+          >
+            Start My Remodel
+          </Link>
+          <Link
+            href="/our-projects"
+            className="rounded-md border border-white/50 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
+          >
+            See Projects
+          </Link>
         </div>
-      </section>
+      </HeroSection>
 
       {/* OVERVIEW */}
-      <section className="px-4 py-12 md:py-16">
-        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-[1.15fr_.85fr]">
-          <div>
-            <h2 className="font-serif text-[clamp(24px,3vw,36px)] font-extrabold tracking-tight">
-              Designed for daily life — built to last
-            </h2>
-            <div className="prose prose-invert mt-3 max-w-none text-zinc-200">
-              <p>
-                As a full-service GC, we coordinate every phase — design guidance, permitting, demo,
-                rough-ins, finishes, and punch list. Expect clear schedules, careful protection, and a
-                tidy workspace from start to finish.
-              </p>
+      <section className="px-4 py-14 md:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:gap-14 md:grid-cols-[1.15fr_.85fr]">
+          <div className="flex flex-col gap-8 md:gap-9">
+            <div className="space-y-4 md:space-y-5">
+              <h2 className="font-serif text-[clamp(24px,3vw,36px)] font-extrabold tracking-tight">
+                Designed for daily life — built to last
+              </h2>
+              <div className="prose prose-invert max-w-none text-zinc-200">
+                <p>
+                  As a full-service GC, we coordinate every phase — design guidance, permitting, demo,
+                  rough-ins, finishes, and punch list. Expect clear schedules, careful protection, and a
+                  tidy workspace from start to finish.
+                </p>
+              </div>
             </div>
 
             {/* Feature list */}
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            <ul className="grid gap-3 sm:grid-cols-2">
               {[
                 "Space planning & layout optimization",
                 "Cabinetry (stock, semi-custom, custom)",
@@ -104,49 +79,31 @@ export default function KitchensBathroomsPage() {
           </div>
 
           {/* Mini gallery */}
-          <figure className="grid grid-cols-2 gap-4 self-start">
-            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
-              <Image
-                src="/difiore-services-showcase-kitchen-whole.webp"
-                alt="Kitchen detail — stone, tile, and clean lines"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
-              <Image
-                src="/difiore-services-kitchen-darkwood-stainless-appoliances.JPG"
-                alt="Bathroom refresh — tile, fixtures, and lighting"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
-              <Image
-                src="/difiore-reviews-cindy-colvin.png"
-                alt="Full kitchen remodel — bright, functional, and durable"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/15">
-              <Image
-                src="/difiore-services -bathroom-shower1.JPG"
-                alt="Tile & stone craftsmanship"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-          </figure>
+          <AnimatedImageGrid
+            items={[
+              {
+                src: "/difiore-services-showcase-kitchen-whole.webp",
+                alt: "Kitchen detail — stone, tile, and clean lines",
+              },
+              {
+                src: "/difiore-services-kitchen-darkwood-stainless-appoliances.JPG",
+                alt: "Bathroom refresh — tile, fixtures, and lighting",
+              },
+              {
+                src: "/difiore-reviews-cindy-colvin.png",
+                alt: "Full kitchen remodel — bright, functional, and durable",
+              },
+              {
+                src: "/difiore-services -bathroom-shower1.JPG",
+                alt: "Tile & stone craftsmanship",
+              },
+            ]}
+          />
         </div>
       </section>
 
       {/* REVIEW HIGHLIGHT (static text for now) */}
-      <section className="px-4 pb-12 md:pb-16">
+      <section className="px-4 pb-16 md:pb-20 mt-16 md:mt-24">
         <div className="mx-auto max-w-6xl">
           <div className="rvv-bubble rounded-2xl border border-[rgba(255,255,255,.14)] bg-[rgba(12,15,20,.85)] shadow-[0_24px_60px_rgba(2,8,18,.45)]">
             <div className="rvv-surface p-5 md:p-6">
@@ -163,7 +120,7 @@ export default function KitchensBathroomsPage() {
             </div>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-3">
             <Link
               href="/project-calculator"
               className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"

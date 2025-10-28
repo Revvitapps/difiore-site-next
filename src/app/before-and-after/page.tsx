@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { CSSProperties } from "react";
 import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
+import BeforeAfterHero from "@/components/before-after/Hero";
+import BeforeAfterGallery from "@/components/before-after/Gallery";
 
 export const metadata: Metadata = {
   title: "Before & After Project Gallery | DiFiore Builders",
@@ -45,86 +46,17 @@ const REVIEWS: Review[] = [
 export default function BeforeAfterPage() {
   return (
     <>
-      {/* HERO: blended before/after background — centered chips, heading, CTAs */}
-      <section
-        className="relative isolate min-h-[60svh] overflow-hidden"
-        aria-label="Before & After"
-      >
-        {/* Two-layer blended background */}
-        <div className="absolute inset-0 -z-10">
-          {/* Left (Before) */}
-          <div
-            className="absolute inset-y-0 left-0 w-[60%] md:w-1/2 bg-cover bg-center"
-            style={
-              {
-                backgroundImage: "url('/difiore-services-showcase-newbuild.jpg')",
-                maskImage: "linear-gradient(to right, black 62%, transparent 100%)",
-                WebkitMaskImage:
-                  "linear-gradient(to right, black 62%, transparent 100%)",
-              } as CSSProperties
-            }
-            aria-hidden
-          />
-          {/* Right (After) */}
-          <div
-            className="absolute inset-y-0 right-0 w-[60%] md:w-1/2 bg-cover bg-center"
-            style={
-              {
-                backgroundImage: "url('/difiore-os-newbuild-after-tr.png')",
-                maskImage: "linear-gradient(to left, black 62%, transparent 100%)",
-                WebkitMaskImage:
-                  "linear-gradient(to left, black 62%, transparent 100%)",
-              } as CSSProperties
-            }
-            aria-hidden
-          />
-          {/* Dark overlay for contrast */}
-          <div aria-hidden className="absolute inset-0 bg-[rgba(8,16,28,.48)]" />
-        </div>
+      <BeforeAfterHero />
 
-        <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="flex flex-wrap justify-center gap-2">
-              {["Kitchens", "Bathrooms", "Additions"].map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-full bg-amber-500/95 px-3 py-1 text-[12px] font-semibold text-zinc-900 shadow"
-                >
-                  {chip}
-                </span>
-              ))}
-            </div>
-            <h1 className="mt-4 font-serif text-[clamp(32px,4.2vw,56px)] font-extrabold leading-tight tracking-tight text-white">
-              Before &amp; After
-            </h1>
-            <p className="mt-3 text-[15px] text-white/90">
-              Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
-            </p>
-            <p className="mt-2 text-[15px] text-white/80">
-              Real renovations from kitchens to patios — see what makes DiFiore Builders trusted by families across the region.
-            </p>
-            {/* Note: Keeping hero CTAs here; review-section CTAs moved near badges */}
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Link
-                href="/project-calculator"
-                className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
-              >
-                Get a Quote
-              </Link>
-              <Link
-                href="/our-projects"
-                className="rounded-md border border-white/50 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
-              >
-                See Projects
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section aria-hidden className="h-16 md:h-24 lg:h-32" />
+
+      <BeforeAfterGallery />
+
+      <section aria-hidden className="h-16 md:h-24 lg:h-32" />
 
       {/* REVIEWS over full-page background grid */}
       <section
-        className="relative min-h-[100svh] px-4 py-16 md:py-24"
+        className="relative min-h-[100svh] px-4 py-24 md:py-32"
         aria-label="Homeowner reviews"
       >
         {/* Background image grid (2x2 full-bleed, centered, no gaps) */}
@@ -216,7 +148,7 @@ export default function BeforeAfterPage() {
       </section>
 
       {/* Bottom CTA pill (moved here) */}
-      <section className="px-4 pb-10">
+      <section className="px-4 py-20 md:py-32">
         <div className="mx-auto max-w-6xl">
           <div className="flex justify-center">
             <Link
@@ -228,6 +160,8 @@ export default function BeforeAfterPage() {
           </div>
         </div>
       </section>
+
+      <section aria-hidden className="h-16 md:h-24 lg:h-32" />
 
       {/* TRUST BADGES */}
       <TrustedBadges />
