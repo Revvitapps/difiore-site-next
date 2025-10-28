@@ -42,10 +42,11 @@ export default function RoofingSidingPage() {
       {/* OVERVIEW */}
       <section className="px-4 py-14 md:py-20">
         <div className="mx-auto grid max-w-6xl gap-10 lg:gap-14 md:grid-cols-[1.15fr_.85fr]">
-          <div className="flex flex-col gap-8 md:gap-9">
+          <div className="flex h-full flex-col gap-8 md:gap-9">
             <div className="space-y-4 md:space-y-5">
               <h2 className="font-serif text-[clamp(24px,3vw,36px)] font-extrabold tracking-tight">
-                Built for the elements — detailed for curb appeal
+                <span>Built for the elements —</span>
+                <span className="block">detailed for curb appeal</span>
               </h2>
               <div className="prose prose-invert max-w-none text-zinc-200">
                 <p>
@@ -57,7 +58,7 @@ export default function RoofingSidingPage() {
             </div>
 
             {/* Feature list */}
-            <ul className="grid gap-3 sm:grid-cols-2">
+            <ul className="grid gap-3 pb-6 sm:grid-cols-2 md:pb-10">
               {[
                 "Tear-offs, re-roofs & leak repairs",
                 "Ice & water shield, synthetic underlayments",
