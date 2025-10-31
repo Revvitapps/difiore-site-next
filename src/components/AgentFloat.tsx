@@ -83,7 +83,7 @@ export default function AgentFloat() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed right-4 bottom-4 z-50 h-[240px] w-[180px] overflow-hidden rounded-3xl border border-cyan-400/50 bg-[rgba(6,18,32,.85)] p-[6px] shadow-[0_20px_60px_rgba(4,12,24,.55)] backdrop-blur transition hover:bg-[rgba(6,18,32,.95)] md:h-[320px] md:w-[220px]"
+        className="fixed right-3 bottom-3 z-50 h-[180px] w-[130px] overflow-hidden rounded-3xl border border-cyan-400/50 bg-[rgba(6,18,32,.85)] p-[4px] shadow-[0_12px_40px_rgba(4,12,24,.55)] backdrop-blur transition hover:bg-[rgba(6,18,32,.95)] sm:right-4 sm:bottom-4 sm:h-[200px] sm:w-[150px] md:h-[280px] md:w-[200px] md:p-[6px]"
         aria-haspopup="dialog" aria-expanded={open ? 'true' : 'false'}
         aria-label="Speak to an Agent"
       >
@@ -93,7 +93,7 @@ export default function AgentFloat() {
             alt=""
             fill
             className="object-cover"
-            sizes="(min-width:768px) 220px, 180px"
+            sizes="(min-width:1024px) 200px, (min-width:640px) 150px, 130px"
             priority={false}
           />
         </span>

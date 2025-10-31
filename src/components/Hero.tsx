@@ -14,14 +14,14 @@ export default function Hero() {
               priority
               width={1200}
               height={800}
-              className="h-full w-full object-cover object-[50%_22%] md:object-[50%_18%] lg:object-[50%_12%]"
+              className="h-full w-full object-cover object-[50%_16%] md:object-[50%_18%] lg:object-[50%_12%]"
             />
           </div>
           <div aria-hidden className="absolute inset-0 bg-[rgba(6,12,20,0.32)]" />
         </div>
       </div>
 
-      <div className="absolute top-[7vh] right-[4%] md:right-[3%] lg:right-[5%] z-10 text-right">
+      <div className="absolute top-[5vh] right-[4%] md:right-[3%] lg:right-[5%] z-10 text-right">
         <span className="block max-w-[260px] text-[clamp(16px,3.2vw,28px)] font-semibold leading-snug text-white drop-shadow-[0_4px_16px_rgba(0,0,0,.45)] md:max-w-none md:whitespace-nowrap">
           “Quality work from the foundation to the Roof”
         </span>
