@@ -28,7 +28,7 @@ export default function OurStoryPage() {
         <div aria-hidden className="absolute inset-0 -z-10 bg-[rgba(8,16,28,.45)]" />
 
         <div className="absolute inset-x-0 bottom-4 px-4">
-          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-3 md:gap-6">
+          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-3 md:gap-88">
             {["Third-Generation Builder", "Locally Owned & Licensed", "Serving the Tri-State Area since 2003"].map((t) => (
               <span
                 key={t}
