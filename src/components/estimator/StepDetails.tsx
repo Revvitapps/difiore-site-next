@@ -237,7 +237,7 @@ export default function StepDetails({ project, details, estimate, onChange }: St
     <div className="space-y-6 text-white">
       <div className="rounded-2xl border border-white/10 bg-[rgba(12,14,22,.7)] p-6 backdrop-blur-md">
         <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">
-          Step 2 • Scope &amp; Details
+          Step 3 • Scope &amp; Details
         </div>
         <h3 className="mt-2 text-2xl font-bold">Tell us a little more</h3>
         <p className="mt-2 text-sm text-white/60">

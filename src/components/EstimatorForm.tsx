@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { submitEstimatorPayload } from './estimator/utils/submitEstimator';
 
 // ----- estimate + helpers -----
 
@@ -67,7 +68,7 @@ export type ProjectType =
   | 'addition';
 
 export type EstimatorState = {
-  step: number; // 1 select project, 2 details, 3 contact, 4 review
+  step: number; // 1 select project, 2 address, 3 details, 4 contact, 5 review
   project: ProjectType | '';
   address: {
     address: string;
@@ -97,8 +98,6 @@ export type EstimatorState = {
     lastName: string;
     email: string;
     phone: string;
-    notes: string;
-    timeline: string;
   };
 };
 
@@ -127,10 +126,57 @@ function createInitialState(): EstimatorState {
       lastName: '',
       email: '',
       phone: '',
-      notes: '',
-      timeline: '',
     },
   };
+}
+
+const GOOGLE_PLACES_SCRIPT_ID = 'google-places-script';
+let googlePlacesPromise: Promise<void> | null = null;
+
+type GoogleMapsEventListener = { remove: () => void };
+type GoogleAutocompletePlace = {
+  address_components?: Array<{ long_name: string; short_name: string; types: string[] }>;
+  place_id?: string;
+};
+type GoogleAutocomplete = {
+  getPlace?: () => GoogleAutocompletePlace;
+  addListener: (event: 'place_changed', handler: () => void) => GoogleMapsEventListener;
+};
+type GoogleLike = {
+  maps?: {
+    places?: {
+      Autocomplete?: new (input: HTMLInputElement, opts: Record<string, unknown>) => GoogleAutocomplete;
+    };
+  };
+};
+
+function loadGooglePlacesScript(apiKey: string) {
+  if (typeof window === 'undefined') return Promise.resolve();
+  const g = (window as typeof window & { google?: GoogleLike }).google;
+  if (g?.maps?.places?.Autocomplete) {
+    return Promise.resolve();
+  }
+  if (googlePlacesPromise) return googlePlacesPromise;
+
+  googlePlacesPromise = new Promise<void>((resolve, reject) => {
+    const existing = document.getElementById(GOOGLE_PLACES_SCRIPT_ID) as HTMLScriptElement | null;
+    if (existing) {
+      existing.addEventListener('load', () => resolve(), { once: true });
+      existing.addEventListener('error', () => reject(new Error('Google Maps script failed to load')), { once: true });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.id = GOOGLE_PLACES_SCRIPT_ID;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    script.async = true;
+    script.defer = true;
+    script.addEventListener('load', () => resolve());
+    script.addEventListener('error', () => reject(new Error('Google Maps script failed to load')));
+    document.head.appendChild(script);
+  });
+
+  return googlePlacesPromise;
 }
 
 // ----- subcomponents -----
@@ -211,14 +257,170 @@ type DetailsProps = {
   currency: (n: number) => string;
 };
 
+type AddressProps = {
+  state: EstimatorState;
+  setState: React.Dispatch<React.SetStateAction<EstimatorState>>;
+};
+
+function StepAddress({ state, setState }: AddressProps) {
+  const address = state.address;
+  const addressInputRef = useRef<HTMLInputElement | null>(null);
+
+  function updateAddress<K extends keyof EstimatorState['address']>(key: K, val: string) {
+    setState(prev => ({
+      ...prev,
+      address: {
+        ...prev.address,
+        [key]: val,
+      },
+    }));
+  }
+
+  useEffect(() => {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
+    if (!apiKey) return;
+
+    let listener: GoogleMapsEventListener | null = null;
+
+    loadGooglePlacesScript(apiKey)
+      .then(() => {
+        const input = addressInputRef.current;
+        if (!input) return;
+        const g = (window as typeof window & { google?: GoogleLike }).google;
+        if (!g?.maps?.places?.Autocomplete) return;
+
+        const instance = new g.maps.places.Autocomplete(input, {
+          types: ['address'],
+          fields: ['address_components', 'place_id'],
+        });
+
+        listener = instance.addListener('place_changed', () => {
+          const place = instance.getPlace?.();
+          const components = place?.address_components ?? [];
+          if (!components.length) return;
+
+          const getComponent = (type: string, prop: 'long_name' | 'short_name' = 'long_name') =>
+            components.find(c => Array.isArray(c.types) && c.types.includes(type))?.[prop] ?? '';
+
+          const streetNumber = getComponent('street_number');
+          const route = getComponent('route');
+          const cityName =
+            getComponent('locality') ||
+            getComponent('sublocality') ||
+            getComponent('administrative_area_level_2');
+          const stateCode = getComponent('administrative_area_level_1', 'short_name');
+          const postalCode = getComponent('postal_code');
+
+          const streetLine = [streetNumber, route].filter(Boolean).join(' ').trim();
+
+          setState(prev => ({
+            ...prev,
+            address: {
+              ...prev.address,
+              address: streetLine || prev.address.address,
+              city: cityName || prev.address.city,
+              state: stateCode || prev.address.state,
+              zip: postalCode || prev.address.zip,
+            },
+          }));
+        });
+      })
+      .catch(error => {
+        console.error('Failed to initialise Google Places autocomplete', error);
+      });
+
+    return () => {
+      listener?.remove();
+    };
+  }, [setState]);
+
+  function goDetails() {
+    setState(prev => ({ ...prev, step: 3 }));
+  }
+
+  return (
+    <div className="space-y-6 text-zinc-200">
+      <div>
+        <p className="text-amber-400/90 text-[13px] uppercase tracking-wide font-semibold">
+          Step 2 • Project Address
+        </p>
+        <h2 className="text-white font-extrabold text-[clamp(20px,2vw,24px)] leading-tight">
+          Where is this project located?
+        </h2>
+        <p className="text-sm text-zinc-400 mt-2">
+          Start with the service address so we can confirm coverage and prep the right crew.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+        <label className="flex flex-col gap-1 sm:col-span-2 lg:col-span-2">
+          <span className="text-[13px] font-semibold text-zinc-200">Project Address</span>
+          <input
+            ref={addressInputRef}
+            className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50 placeholder:text-white/40"
+            placeholder="123 Main St"
+            value={address.address}
+            onChange={e => updateAddress('address', e.target.value)}
+            autoComplete="street-address"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1">
+          <span className="text-[13px] font-semibold text-zinc-200">City</span>
+          <input
+            className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50 placeholder:text-white/40"
+            placeholder="Cranston"
+            value={address.city}
+            onChange={e => updateAddress('city', e.target.value)}
+            autoComplete="address-level2"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1">
+          <span className="text-[13px] font-semibold text-zinc-200">State</span>
+          <input
+            className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white uppercase outline-none focus:ring-2 focus:ring-amber-400/50 placeholder:text-white/40"
+            placeholder="PA"
+            value={address.state}
+            onChange={e => updateAddress('state', e.target.value.toUpperCase())}
+            autoComplete="address-level1"
+            maxLength={2}
+          />
+        </label>
+
+        <label className="flex flex-col gap-1">
+          <span className="text-[13px] font-semibold text-zinc-200">ZIP</span>
+          <input
+            className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50 placeholder:text-white/40"
+            placeholder="19063"
+            value={address.zip}
+            onChange={e => updateAddress('zip', e.target.value)}
+            autoComplete="postal-code"
+          />
+        </label>
+      </div>
+
+      <div>
+        <button
+          type="button"
+          onClick={goDetails}
+          className="rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-[14px] font-semibold text-zinc-900 shadow-[0_20px_60px_rgba(251,191,36,.4)] hover:brightness-110"
+        >
+          Continue to Project Details →
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function StepDetails({ state, setState, est, currency }: DetailsProps) {
   const d = state.details;
 
-  function update<K extends keyof EstimatorState['details']>(
+  function updateDetails<K extends keyof EstimatorState['details']>(
     key: K,
     val: string
   ) {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       details: {
         ...prev.details,
@@ -228,63 +430,55 @@ function StepDetails({ state, setState, est, currency }: DetailsProps) {
   }
 
   function goContact() {
-    setState(prev => ({ ...prev, step: 3 }));
+    setState(prev => ({ ...prev, step: 4 }));
   }
 
   return (
     <div className="space-y-6 text-zinc-200">
       <div>
         <p className="text-amber-400/90 text-[13px] uppercase tracking-wide font-semibold">
-          Step 2 • Project &amp; Property Details
+          Step 3 • Project Details
         </p>
         <h2 className="text-white font-extrabold text-[clamp(20px,2vw,24px)] leading-tight">
-          Tell us a little about the home and scope
+          What are we looking at on site?
         </h2>
         <p className="text-sm text-zinc-400 mt-2">
-          This helps us ballpark cost before we come out.
+          Share the basics so we can prep your estimate.
         </p>
       </div>
 
-      {/* basics about the property */}
       <div className="grid md:grid-cols-3 gap-4 text-sm">
         <label className="flex flex-col gap-1">
-          <span className="text-[13px] font-semibold text-zinc-200">
-            Year Built
-          </span>
+          <span className="text-[13px] font-semibold text-zinc-200">Year Built</span>
           <input
             className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
             value={d.yearBuilt}
-            onChange={e => update('yearBuilt', e.target.value)}
+            onChange={(e) => updateDetails('yearBuilt', e.target.value)}
             placeholder="e.g. 1998"
           />
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="text-[13px] font-semibold text-zinc-200">
-            Stories
-          </span>
+          <span className="text-[13px] font-semibold text-zinc-200">Stories</span>
           <input
             className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
             value={d.stories}
-            onChange={e => update('stories', e.target.value)}
+            onChange={(e) => updateDetails('stories', e.target.value)}
             placeholder="1 / 2 / 3"
           />
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="text-[13px] font-semibold text-zinc-200">
-            Approx. Sq Ft
-          </span>
+          <span className="text-[13px] font-semibold text-zinc-200">Approx. Sq Ft</span>
           <input
             className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
             value={d.squareFeet}
-            onChange={e => update('squareFeet', e.target.value)}
+            onChange={(e) => updateDetails('squareFeet', e.target.value)}
             placeholder="2400"
           />
         </label>
       </div>
 
-      {/* conditional fields that change per project */}
       {state.project === 'roofing' && (
         <div className="grid md:grid-cols-2 gap-4 text-sm">
           <label className="flex flex-col gap-1">
@@ -294,7 +488,7 @@ function StepDetails({ state, setState, est, currency }: DetailsProps) {
             <input
               className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
               value={d.roofType}
-              onChange={e => update('roofType', e.target.value)}
+              onChange={(e) => updateDetails('roofType', e.target.value)}
               placeholder="Asphalt shingle / Metal / etc."
             />
           </label>
@@ -306,7 +500,7 @@ function StepDetails({ state, setState, est, currency }: DetailsProps) {
             <input
               className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
               value={d.roofLayers}
-              onChange={e => update('roofLayers', e.target.value)}
+              onChange={(e) => updateDetails('roofLayers', e.target.value)}
               placeholder="1 layer / 2 layers"
             />
           </label>
@@ -322,7 +516,7 @@ function StepDetails({ state, setState, est, currency }: DetailsProps) {
             <input
               className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
               value={d.deckSize}
-              onChange={e => update('deckSize', e.target.value)}
+              onChange={(e) => updateDetails('deckSize', e.target.value)}
               placeholder="12'x20', wrap-around, etc."
             />
           </label>
@@ -334,7 +528,7 @@ function StepDetails({ state, setState, est, currency }: DetailsProps) {
             <input
               className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
               value={d.deckMaterial}
-              onChange={e => update('deckMaterial', e.target.value)}
+              onChange={(e) => updateDetails('deckMaterial', e.target.value)}
               placeholder="Composite / wood / not sure"
             />
           </label>
@@ -350,13 +544,12 @@ function StepDetails({ state, setState, est, currency }: DetailsProps) {
             rows={3}
             className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
             value={d.scopeDescription}
-            onChange={e => update('scopeDescription', e.target.value)}
+            onChange={(e) => updateDetails('scopeDescription', e.target.value)}
             placeholder="New cabinets and counters, move sink to island, tile shower, finish basement, reside entire home, etc."
           />
         </label>
       )}
 
-      {/* Live estimate preview */}
       <div className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.6)] p-4 text-[13px] text-zinc-200 shadow-[0_20px_60px_rgba(251,191,36,.15)]">
         <div className="text-[12px] font-semibold text-amber-400/90 uppercase tracking-wide mb-3">
           Rough Cost Range (not a formal quote)
@@ -416,6 +609,7 @@ function StepDetails({ state, setState, est, currency }: DetailsProps) {
   );
 }
 
+
 type ContactProps = {
   state: EstimatorState;
   setState: React.Dispatch<React.SetStateAction<EstimatorState>>;
@@ -437,19 +631,49 @@ function ContactForm({ state, setState }: ContactProps) {
     }));
   }
 
+  const firstName = c.firstName.trim();
+  const lastName = c.lastName.trim();
+  const email = c.email.trim();
+  const phone = c.phone.trim();
+
+  const isValidName = (value: string) => value.length >= 2;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const normalizedPhone = phone.replace(/\D/g, '');
+
+  const firstNameValid = isValidName(firstName);
+  const lastNameValid = isValidName(lastName);
+  const emailValid = emailPattern.test(email);
+  const phoneValid = normalizedPhone.length >= 10;
+
+  const formComplete = firstNameValid && lastNameValid && emailValid && phoneValid;
+
   function goReview() {
-    setState(prev => ({ ...prev, step: 4 }));
+    if (!formComplete) return;
+    setState(prev => ({ ...prev, step: 5 }));
   }
+
+  const baseInputClasses =
+    'rounded-xl border px-3 py-2 text-[14px] text-white outline-none transition bg-[rgba(20,20,28,.6)] placeholder:text-white/40';
+  const focusClasses = 'focus:ring-2 focus:ring-amber-400/50 focus:border-amber-300';
+  const errorClasses = 'border-red-400 focus:border-red-400 focus:ring-red-300/70';
+
+  const firstNameInvalid = firstName.length > 0 && !firstNameValid;
+  const lastNameInvalid = lastName.length > 0 && !lastNameValid;
+  const emailInvalid = email.length > 0 && !emailValid;
+  const phoneInvalid = phone.length > 0 && !phoneValid;
 
   return (
     <div className="space-y-6 text-zinc-200">
       <div>
         <p className="text-amber-400/90 text-[13px] uppercase tracking-wide font-semibold">
-          Step 3 • How can we reach you?
+          Step 4 • How can we reach you?
         </p>
         <h2 className="text-white font-extrabold text-[clamp(20px,2vw,24px)] leading-tight">
           We&rsquo;ll send your ballpark and follow up to schedule a visit
         </h2>
+        <p className="text-sm text-zinc-400 mt-2">
+          A real person reviews every request. We only need the best way to connect.
+        </p>
       </div>
 
       <div className="grid gap-4 text-sm text-white">
@@ -459,11 +683,20 @@ function ContactForm({ state, setState }: ContactProps) {
               First Name *
             </span>
             <input
-              className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
+              className={[
+                baseInputClasses,
+                firstNameInvalid ? errorClasses : 'border-white/15 ' + focusClasses,
+              ].join(' ')}
               value={c.firstName}
               onChange={e => update('firstName', e.target.value)}
               placeholder="John"
+              aria-invalid={firstNameInvalid}
             />
+            {firstNameInvalid && (
+              <span className="text-[11px] text-red-300">
+                First name should be at least 2 characters.
+              </span>
+            )}
           </label>
 
           <label className="flex flex-col gap-1">
@@ -471,11 +704,20 @@ function ContactForm({ state, setState }: ContactProps) {
               Last Name *
             </span>
             <input
-              className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
+              className={[
+                baseInputClasses,
+                lastNameInvalid ? errorClasses : 'border-white/15 ' + focusClasses,
+              ].join(' ')}
               value={c.lastName}
               onChange={e => update('lastName', e.target.value)}
               placeholder="Smith"
+              aria-invalid={lastNameInvalid}
             />
+            {lastNameInvalid && (
+              <span className="text-[11px] text-red-300">
+                Last name should be at least 2 characters.
+              </span>
+            )}
           </label>
         </div>
 
@@ -485,62 +727,70 @@ function ContactForm({ state, setState }: ContactProps) {
               Email *
             </span>
             <input
-              className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
+              className={[
+                baseInputClasses,
+                emailInvalid ? errorClasses : 'border-white/15 ' + focusClasses,
+              ].join(' ')}
               value={c.email}
               onChange={e => update('email', e.target.value)}
               placeholder="john@email.com"
+              aria-invalid={emailInvalid}
             />
+            {emailInvalid && (
+              <span className="text-[11px] text-red-300">
+                Enter a valid email address (name@example.com).
+              </span>
+            )}
           </label>
 
           <label className="flex flex-col gap-1">
             <span className="text-[13px] font-semibold text-zinc-200">
-              Phone
+              Phone *
             </span>
             <input
-              className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
+              inputMode="tel"
+              className={[
+                baseInputClasses,
+                phoneInvalid ? errorClasses : 'border-white/15 ' + focusClasses,
+              ].join(' ')}
               value={c.phone}
               onChange={e => update('phone', e.target.value)}
               placeholder="(555) 123-4567"
+              aria-invalid={phoneInvalid}
             />
+            {phoneInvalid && (
+              <span className="text-[11px] text-red-300">
+                Phone should include at least 10 digits.
+              </span>
+            )}
           </label>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <label className="flex flex-col gap-1">
-            <span className="text-[13px] font-semibold text-zinc-200">
-              When are you hoping to start?
-            </span>
-            <input
-              className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
-              value={c.timeline}
-              onChange={e => update('timeline', e.target.value)}
-              placeholder="ASAP / next 1-3 months / just planning"
-            />
-          </label>
-
-          <label className="flex flex-col gap-1">
-            <span className="text-[13px] font-semibold text-zinc-200">
-              Anything else we should know?
-            </span>
-            <input
-              className="rounded-xl border border-white/15 bg-[rgba(20,20,28,.6)] px-3 py-2 text-[14px] text-white outline-none focus:ring-2 focus:ring-amber-400/50"
-              value={c.notes}
-              onChange={e => update('notes', e.target.value)}
-              placeholder="Leaking over garage, HOA rules, etc."
-            />
-          </label>
-        </div>
+        <p className="text-[12px] text-zinc-400">
+          Need to share timing or special notes? You can reply to our email after submitting.
+        </p>
       </div>
 
       <div>
         <button
           type="button"
           onClick={goReview}
-          className="rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-[14px] font-semibold text-zinc-900 shadow-[0_20px_60px_rgba(251,191,36,.4)] hover:brightness-110"
+          disabled={!formComplete}
+          className={[
+            'rounded-xl px-4 py-2 text-[14px] font-semibold shadow-[0_20px_60px_rgba(251,191,36,.4)] transition',
+            formComplete
+              ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-zinc-900 hover:brightness-110'
+              : 'bg-white/5 text-zinc-500 cursor-not-allowed',
+          ].join(' ')}
         >
           Review &amp; Submit →
         </button>
       </div>
+      {!formComplete && (
+        <p className="text-[12px] text-zinc-400">
+          First &amp; last name must be 2+ characters, email must be valid, and phone needs at least 10 digits.
+        </p>
+      )}
     </div>
   );
 }
@@ -590,10 +840,6 @@ function ReviewSummary({
             <strong className="text-white/90">Phone:</strong>{' '}
             {contact.phone || 'Not provided'}
           </div>
-          <div>
-            <strong className="text-white/90">Timeline:</strong>{' '}
-            {contact.timeline || '—'}
-          </div>
         </div>
       </div>
 
@@ -639,7 +885,7 @@ export default function EstimatorForm() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // live rolling estimate for Step 2 preview card
+  // live rolling estimate for Step 3 preview card
   const estimateRangeOrNull = computeEstimate(state.details, state.project);
 
   async function handleSubmit() {
@@ -647,13 +893,64 @@ export default function EstimatorForm() {
       setSending(true);
       setError(null);
 
-      // TODO: wire this to your /api/email route or whatever you planned (submitEstimate)
-      // await submitEstimate(state);
+      if (!state.project) {
+        setError('Select a project type before submitting.');
+        return;
+      }
+
+      const projectOption = PROJECT_OPTIONS.find((opt) => opt.key === state.project);
+      const projectLabel = projectOption?.label ?? state.project;
+
+      const filteredDetails = Object.entries(state.details).reduce<Record<string, string>>(
+        (acc, [key, value]) => {
+          const trimmed = value.trim();
+          if (trimmed) acc[key] = trimmed;
+          return acc;
+        },
+        {}
+      );
+
+      const phoneDigits = state.contact.phone.replace(/\D/g, '');
+
+      await submitEstimatorPayload({
+        project: state.project,
+        projectLabel,
+        address: {
+          street: state.address.address.trim(),
+          city: state.address.city.trim(),
+          state: state.address.state.trim(),
+          zip: state.address.zip.trim(),
+        },
+        contact: {
+          firstName: state.contact.firstName.trim(),
+          lastName: state.contact.lastName.trim(),
+          email: state.contact.email.trim(),
+          phone: phoneDigits,
+          phoneFormatted: state.contact.phone.trim(),
+        },
+        details: Object.keys(filteredDetails).length ? filteredDetails : undefined,
+        estimate: estimateRangeOrNull
+          ? {
+              conservative: estimateRangeOrNull.low,
+              likely: estimateRangeOrNull.mid,
+              premium: estimateRangeOrNull.high,
+            }
+          : undefined,
+        meta: {
+          source: 'estimator-form',
+          submittedAt: new Date().toISOString(),
+          url: typeof window !== 'undefined' ? window.location.href : undefined,
+        },
+      });
 
       setSent(true);
     } catch (err) {
       console.error('Estimator submission failed', err);
-      setError('Something went wrong sending your request.');
+      const message =
+        err instanceof Error && err.message
+          ? err.message
+          : 'Something went wrong sending your request. Please try again.';
+      setError(message);
     } finally {
       setSending(false);
     }
@@ -662,7 +959,8 @@ export default function EstimatorForm() {
   return (
     <section className="mx-auto max-w-3xl space-y-8 rounded-2xl border border-white/10 bg-[radial-gradient(circle_at_20%_20%,rgba(251,191,36,.12)_0%,rgba(0,0,0,0)_60%)] bg-[rgba(15,15,20,.8)] p-6 shadow-[0_40px_120px_rgba(0,0,0,.8)] ring-1 ring-white/5 backdrop-blur-xl">
       {state.step === 1 && <ProjectSelector state={state} setState={setState} />}
-      {state.step === 2 && (
+      {state.step === 2 && <StepAddress state={state} setState={setState} />}
+      {state.step === 3 && (
         <StepDetails
           state={state}
           setState={setState}
@@ -670,8 +968,8 @@ export default function EstimatorForm() {
           currency={currency}
         />
       )}
-      {state.step === 3 && <ContactForm state={state} setState={setState} />}
-      {state.step === 4 && (
+      {state.step === 4 && <ContactForm state={state} setState={setState} />}
+      {state.step === 5 && (
         <ReviewSummary
           state={state}
           sending={sending}

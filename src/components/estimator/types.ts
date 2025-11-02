@@ -10,8 +10,8 @@ export type ProjectKey =
   | 'windows'
   | 'addition'; // "basement" is merged into addition for now; windows share siding flow
 
-// step in wizard (1..4)
-export type EstimatorStep = 1 | 2 | 3 | 4;
+// step in wizard (1..5)
+export type EstimatorStep = 1 | 2 | 3 | 4 | 5;
 
 // granular scope questions per project
 export type EstimatorDetails = {

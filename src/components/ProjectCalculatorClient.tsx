@@ -3,7 +3,9 @@
 import React from 'react';
 import ProjectSelector from '@/components/estimator/ProjectSelector';
 import StepDetails from '@/components/estimator/StepDetails';
+import StepAddress from '@/components/estimator/StepAddress';
 import ContactForm from '@/components/estimator/ContactForm';
+import { submitEstimatorPayload } from '@/components/estimator/utils/submitEstimator';
 import type {
   ProjectKey,
   EstimatorDetails,
@@ -175,6 +177,8 @@ export default function ProjectCalculatorClient() {
     contact: {},
     address: {},
   });
+  const [submitting, setSubmitting] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
 
   const liveEst = getEstimate(state.project, state.details || {});
   const estimateForDisplay = liveEst ?? {
@@ -184,12 +188,87 @@ export default function ProjectCalculatorClient() {
     breakdownLines: [],
   };
 
+  const zipIsValid = Boolean((state.address?.zip ?? '').trim().length >= 5);
+
   async function handleSubmitContact() {
-    console.log('SUBMIT LEAD', state, liveEst);
-    alert(
-      "Thanks! We'll reach out to confirm scope, schedule a site visit, and firm up your quote."
-    );
-    setState((prev) => ({ ...prev, step: 4 }));
+    if (submitting) return;
+
+    try {
+      setSubmitting(true);
+      setSubmitError(null);
+
+      if (!state.project) {
+        setSubmitError('Select a project type before submitting.');
+        return;
+      }
+
+      const projectOption = PROJECT_OPTIONS.find((opt) => opt.key === state.project);
+      const projectLabel = projectOption?.label ?? state.project;
+
+      const street = (state.address.street ?? '').trim();
+      const city = (state.address.city ?? '').trim();
+      const region = (state.address.state ?? '').trim();
+      const zip = (state.address.zip ?? '').trim();
+
+      const firstName = (state.contact.firstName ?? '').trim();
+      const lastName = (state.contact.lastName ?? '').trim();
+      const email = (state.contact.email ?? '').trim();
+      const phoneFormatted = (state.contact.phone ?? '').trim();
+      const phoneDigits = phoneFormatted.replace(/\D/g, '');
+
+      const filteredDetails = Object.entries(state.details ?? {}).reduce<Record<string, string>>(
+        (acc, [key, value]) => {
+          if (typeof value !== 'string') return acc;
+          const trimmed = value.trim();
+          if (trimmed) acc[key] = trimmed;
+          return acc;
+        },
+        {}
+      );
+
+      await submitEstimatorPayload({
+        project: state.project,
+        projectLabel,
+        address: {
+          street,
+          city,
+          state: region,
+          zip,
+        },
+        contact: {
+          firstName,
+          lastName,
+          email,
+          phone: phoneDigits,
+          phoneFormatted,
+        },
+        details: Object.keys(filteredDetails).length ? filteredDetails : undefined,
+        estimate: liveEst
+          ? {
+              conservative: liveEst.conservative,
+              likely: liveEst.likely,
+              premium: liveEst.premium,
+              breakdownLines: liveEst.breakdownLines,
+            }
+          : undefined,
+        meta: {
+          source: 'project-calculator',
+          submittedAt: new Date().toISOString(),
+          url: typeof window !== 'undefined' ? window.location.href : undefined,
+        },
+      });
+
+      setState((prev) => ({ ...prev, step: 5 }));
+    } catch (error) {
+      console.error('Estimator submission failed', error);
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : 'We couldn’t send your request. Please try again.';
+      setSubmitError(message);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -205,21 +284,14 @@ export default function ProjectCalculatorClient() {
     >
       <div className="mx-auto max-w-5xl w-full space-y-8">
         {/* HEADER */}
-        <div className="text-center max-w-3xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto space-y-4">
           <h1 className="text-3xl md:text-4xl font-extrabold text-white drop-shadow-[0_0_25px_rgba(251,191,36,0.4)]">
-            {/* marketing headline lives here */}
             Project Cost Estimator
           </h1>
-          <p className="mt-3 text-sm text-white/70 leading-relaxed">
-            Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
-          </p>
-          <p className="mt-2 text-sm text-white/70 leading-relaxed">
-            Answer a few quick questions, see real ballpark numbers, and send
-            it to our team to lock in a site visit and final quote.
-          </p>
+          <div className="h-6" aria-hidden />
         </div>
 
-        <section className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.6)] backdrop-blur-md ring-1 ring-white/5 shadow-[0_30px_120px_rgba(0,0,0,.8)] p-6 space-y-8">
+        <section className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.6)] backdrop-blur-md ring-1 ring-white/5 shadow-[0_30px_120px_rgba(0,0,0,.8)] p-6 space-y-8 mt-10 md:mt-16">
           {/* STEP 1 */}
           {state.step === 1 && (
             <ProjectSelector
@@ -237,6 +309,39 @@ export default function ProjectCalculatorClient() {
           {/* STEP 2 */}
           {state.step === 2 && (
             <>
+              <StepAddress state={state} setState={setState} />
+
+              <div className="flex flex-col gap-4 pt-4 sm:flex-row">
+                <button
+                  className="flex-1 rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 transition hover:bg-white/10"
+                  onClick={() => setState({ ...state, step: 1 })}
+                >
+                  ← Back
+                </button>
+                <button
+                  className={[
+                    'flex-1 rounded-lg px-4 py-3 text-sm font-semibold transition',
+                    zipIsValid
+                      ? 'border border-amber-400/40 bg-amber-500/10 text-amber-300 ring-1 ring-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,.35)] hover:bg-amber-500/20'
+                      : 'border border-white/15 bg-white/5 text-white/40 cursor-not-allowed',
+                  ].join(' ')}
+                  onClick={() => zipIsValid && setState({ ...state, step: 3 })}
+                  disabled={!zipIsValid}
+                >
+                  Next →
+                </button>
+              </div>
+              {!zipIsValid && (
+                <p className="text-xs text-white/60">
+                  Add at least a ZIP code so we can confirm service coverage before moving on.
+                </p>
+              )}
+            </>
+          )}
+
+          {/* STEP 3 */}
+          {state.step === 3 && (
+            <>
               <StepDetails
                 project={state.project}
                 details={state.details}
@@ -252,51 +357,18 @@ export default function ProjectCalculatorClient() {
                 }}
               />
 
-              <div className="flex flex-col gap-4 pt-4 sm:flex-row">
-                <button
-                  className="flex-1 rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 transition hover:bg-white/10"
-                  onClick={() => setState({ ...state, step: 1 })}
-                >
-                  ← Back
-                </button>
-                <button
-                  className="flex-1 rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-sm font-semibold text-amber-300 ring-1 ring-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,.35)] transition hover:bg-amber-500/20"
-                  onClick={() => setState({ ...state, step: 3 })}
-                >
-                  Next →
-                </button>
-              </div>
-            </>
-          )}
-
-          {/* STEP 3 */}
-          {state.step === 3 && (
-            <>
-              <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">
-                Step 3 • Where can we send this?
-              </div>
-              <h2 className="text-2xl font-bold text-white">Lock in a consult</h2>
-              <p className="text-sm text-white/60 max-w-2xl">
-                You’ll hear from a DiFiore project specialist soon to confirm
-                schedule, timeline, and next steps.
-                <br />
-                If you have an urgent need, click Speak to an Agent in the
-                bottom right corner.
-              </p>
-
-              <ContactForm
-                state={state}
-                setState={setState}
-                submitting={false}
-                onSubmit={handleSubmitContact}
-              />
-
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <button
                   className="flex-1 rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 hover:bg-white/10"
                   onClick={() => setState({ ...state, step: 2 })}
                 >
                   ← Back
+                </button>
+                <button
+                  className="flex-1 rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-sm font-semibold text-amber-300 ring-1 ring-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,.35)] transition hover:bg-amber-500/20"
+                  onClick={() => setState({ ...state, step: 4 })}
+                >
+                  Next →
                 </button>
               </div>
             </>
@@ -306,12 +378,43 @@ export default function ProjectCalculatorClient() {
           {state.step === 4 && (
             <>
               <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">
-                Step 4 • Sent
+                Step 4 • How can we reach you?
+              </div>
+              <h2 className="text-2xl font-bold text-white">Lock in a consult</h2>
+              <p className="text-sm text-white/60 max-w-2xl">
+                Share the best contact info and our team will call or email with next steps. Need a
+                human right away? Tap “Speak to an Agent” in the corner.
+              </p>
+
+              <ContactForm
+                state={state}
+                setState={setState}
+                submitting={submitting}
+                error={submitError}
+                onSubmit={handleSubmitContact}
+              />
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <button
+                  className="flex-1 rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 hover:bg-white/10"
+                  onClick={() => setState({ ...state, step: 3 })}
+                >
+                  ← Back
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* STEP 5 */}
+          {state.step === 5 && (
+            <>
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">
+                Step 5 • Sent
               </div>
               <h2 className="text-2xl font-bold text-white">You’re all set ✅</h2>
               <p className="text-sm text-white/60 max-w-2xl">
-                A project specialist will reach out shortly to confirm site
-                conditions and lock in final quote. No obligation.
+                A project specialist will reach out shortly to confirm site conditions and lock in
+                final quote. No obligation.
               </p>
 
               <div className="rounded-xl border border-white/10 bg-white/[0.02] ring-1 ring-white/5 p-4 text-center">

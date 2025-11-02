@@ -29,7 +29,7 @@ Export PRICING_VERSION constant as shown
      - step 3:               src/components/estimator/ContactForm.tsx
      - step 4:               src/components/estimator/ReviewSummary.tsx
      - shared types:         src/components/estimator/types.ts
-     - email submit helper:  src/components/estimator/utils/emailSubmit.ts
+    - email submit helper:  src/components/estimator/utils/submitEstimator.ts
    ============================================================================ */
 
 /* ---------------------------------- Types ---------------------------------- */
