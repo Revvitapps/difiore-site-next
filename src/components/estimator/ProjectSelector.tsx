@@ -15,7 +15,7 @@ type Option = {
   blurb: string;
 };
 
-const OPTIONS: Option[] = [
+export const PROJECT_OPTIONS: Option[] = [
   { key: 'roofing', label: 'Roofing', emoji: '🏠', blurb: 'Full tear-off & replace' },
   { key: 'deck', label: 'Deck / Outdoor Living', emoji: '🪵', blurb: 'Composite & custom builds' },
   { key: 'bathroom', label: 'Bathroom Remodel', emoji: '🚿', blurb: 'Update fixtures & tile' },
@@ -41,7 +41,7 @@ export default function ProjectSelector({ value, onSelectProject }: ProjectSelec
       </p>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {OPTIONS.map((opt) => {
+        {PROJECT_OPTIONS.map((opt) => {
           const active = value === opt.key;
           return (
             <button

@@ -17,7 +17,7 @@ const submissionSchema = z.object({
     phone: z.string().min(10),
     phoneFormatted: z.string().optional(),
   }),
-  details: z.record(z.string()).optional(),
+  details: z.record(z.string(), z.string()).optional(),
   estimate: z
     .object({
       conservative: z.number().nullable().optional(),

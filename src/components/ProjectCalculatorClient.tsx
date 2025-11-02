@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import ProjectSelector from '@/components/estimator/ProjectSelector';
+import ProjectSelector, { PROJECT_OPTIONS } from '@/components/estimator/ProjectSelector';
 import StepDetails from '@/components/estimator/StepDetails';
 import StepAddress from '@/components/estimator/StepAddress';
 import ContactForm from '@/components/estimator/ContactForm';
