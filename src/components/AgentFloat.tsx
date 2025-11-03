@@ -83,11 +83,12 @@ export default function AgentFloat() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed right-3 bottom-3 z-50 h-[180px] w-[130px] overflow-hidden rounded-3xl border border-cyan-400/50 bg-[rgba(6,18,32,.85)] p-[4px] shadow-[0_12px_40px_rgba(4,12,24,.55)] backdrop-blur transition hover:bg-[rgba(6,18,32,.95)] sm:right-4 sm:bottom-4 sm:h-[200px] sm:w-[150px] md:h-[280px] md:w-[200px] md:p-[6px]"
+        className="fixed right-3 bottom-3 z-50 flex items-center gap-2 rounded-full bg-amber-400 px-4 py-2 text-sm font-semibold text-zinc-900 shadow-[0_12px_32px_rgba(4,12,24,.45)] transition hover:bg-amber-300 sm:right-4 sm:bottom-4 sm:block sm:h-[200px] sm:w-[150px] sm:rounded-3xl sm:border sm:border-cyan-400/50 sm:bg-[rgba(6,18,32,.85)] sm:p-[4px] sm:text-inherit sm:text-white sm:shadow-[0_12px_40px_rgba(4,12,24,.55)] sm:hover:bg-[rgba(6,18,32,.95)] md:h-[280px] md:w-[200px] md:p-[6px]"
         aria-haspopup="dialog" aria-expanded={open ? 'true' : 'false'}
         aria-label="Speak to an Agent"
       >
-        <span className="relative block h-full w-full overflow-hidden rounded-[22px] ring-0 ring-cyan-300/40">
+        <span className="sm:hidden">Speak to an Agent</span>
+        <span className="relative hidden h-full w-full overflow-hidden rounded-[22px] ring-0 ring-cyan-300/40 sm:block">
           <Image
             src="/difiore-agent-floating.png"
             alt=""
