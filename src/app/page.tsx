@@ -16,9 +16,27 @@ export const metadata: Metadata = {
   },
 };
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "GeneralContractor",
+  name: "DiFiore Builders Inc.",
+  url: "https://difiorebuilders.com",
+  telephone: "+1-610-358-5433",
+  areaServed: ["Chadds Ford PA", "Glen Mills PA", "West Chester PA", "Wilmington DE"],
+  foundingDate: "2003",
+  slogan: "Quality work from the foundation to the roof",
+  sameAs: [
+    "https://www.yelp.com/biz/difiore-builders-chadds-ford-3",
+    "https://nextdoor.com/pages/difiore-builders-inc-claymont-de/"
+  ],
+};
+
+const localBusinessJson = JSON.stringify(localBusinessJsonLd);
+
 export default function Page() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: localBusinessJson }} />
       <Hero />
       <section className="mb-16 md:mb-24">
         <PillarsSection />

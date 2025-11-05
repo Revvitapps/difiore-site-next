@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Our Projects",
   description:
     "Explore a selection of completed additions, renovations, roofing, siding, and new builds from DiFiore Builders.",
-  alternates: { canonical: "/our-projects" },
+  alternates: { canonical: "https://difiorebuilders.com/our-projects" },
 };
 
 export default function Page() {

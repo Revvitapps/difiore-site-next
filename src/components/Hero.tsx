@@ -14,7 +14,7 @@ export default function Hero() {
               priority
               width={1200}
               height={800}
-              className="h-full w-full object-cover object-[50%_16%] md:object-[50%_18%] lg:object-[50%_12%]"
+              className="h-full w-full object-cover object-[50%_23%] md:object-[50%_24%] lg:object-[50%_22%] xl:object-[50%_24%]"
             />
           </div>
           <div aria-hidden className="absolute inset-0 bg-[rgba(6,12,20,0.32)]" />
