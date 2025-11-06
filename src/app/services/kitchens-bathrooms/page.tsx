@@ -115,6 +115,8 @@ export default function KitchensBathroomsPage() {
                 "Matt and Alex, thank you for the amazing workmanship, quality and efficient remodel of our master bathroom. We are VERY happy with the work and would be calling again for future jobs in our home. Will recommend to everyone. Positive Responsiveness, Punctuality, Quality, Professionalism and Value. Recommended services: Remodeling, Drywall installation, Fan installation, Install flooring, Tile work installation, Plumbing fixture installation, Paint indoors, Drywall repair.",
               rating: 5,
             }}
+            truncateAt={190}
+            reviewOffset={1}
           />
 
           <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-3">

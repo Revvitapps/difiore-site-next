@@ -116,6 +116,8 @@ export default function RoofingSidingPage() {
                 "Crew was punctual, respectful, and fast. New roof and siding look fantastic, flashing is tight, and cleanup was spotless. Communication was clear and the final price matched the proposal. Highly recommend.",
               rating: 5,
             }}
+            truncateAt={190}
+            reviewOffset={0}
           />
 
           <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-3">

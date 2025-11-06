@@ -113,6 +113,8 @@ export default function AdditionsBasementsPage() {
                 "Our addition looks like it was always part of the house. DiFiore handled permits, structural work, and finishes professionally — on schedule and with great communication.",
               rating: 5,
             }}
+            truncateAt={190}
+            reviewOffset={2}
           />
 
           <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-3">
