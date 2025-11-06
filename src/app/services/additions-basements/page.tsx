@@ -3,6 +3,7 @@ import Link from "next/link";
 import TrustedBadges from "@/components/TrustedBadges";
 import HeroSection from "@/components/services/HeroSection";
 import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
+import ReviewHighlight from "@/components/reviews/ReviewHighlight";
 
 export const metadata: Metadata = {
   title: "Home Additions, Finished Basements & Decks | DiFiore Builders",
@@ -101,21 +102,18 @@ export default function AdditionsBasementsPage() {
         </div>
       </section>
 
-      {/* REVIEW HIGHLIGHT (swap text later if you want) */}
+      {/* REVIEW HIGHLIGHT */}
       <section className="px-4 pb-16 md:pb-20 mt-16 md:mt-24">
         <div className="mx-auto max-w-6xl">
-          <div className="rvv-bubble rounded-2xl border border-[rgba(255,255,255,.14)] bg-[rgba(12,15,20,.85)] shadow-[0_24px_60px_rgba(2,8,18,.45)]">
-            <div className="rvv-surface p-5 md:p-6">
-              <div className="flex items-center justify-between">
-                <strong className="text-[15px]">Homeowner in Chadds Ford</strong>
-                <span className="ml-3 text-amber-300" aria-label="5 out of 5 stars">★★★★★</span>
-              </div>
-              <p className="mt-2 text-[15px] text-zinc-100">
-                “Our addition looks like it was always part of the house. DiFiore handled permits,
-                structural work, and finishes professionally — on schedule and with great communication.”
-              </p>
-            </div>
-          </div>
+          <ReviewHighlight
+            label="Homeowner Review"
+            fallback={{
+              name: "Homeowner in Chadds Ford",
+              text:
+                "Our addition looks like it was always part of the house. DiFiore handled permits, structural work, and finishes professionally — on schedule and with great communication.",
+              rating: 5,
+            }}
+          />
 
           <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-3">
             <Link

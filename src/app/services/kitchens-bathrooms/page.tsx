@@ -3,6 +3,7 @@ import Link from "next/link";
 import TrustedBadges from "@/components/TrustedBadges";
 import HeroSection from "@/components/services/HeroSection";
 import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
+import ReviewHighlight from "@/components/reviews/ReviewHighlight";
 
 export const metadata: Metadata = {
   title: "Kitchen & Bathroom Remodeling | Cabinets, Tile, Layout Changes",
@@ -103,23 +104,18 @@ export default function KitchensBathroomsPage() {
         </div>
       </section>
 
-      {/* REVIEW HIGHLIGHT (static text for now) */}
+      {/* REVIEW HIGHLIGHT */}
       <section className="px-4 pb-16 md:pb-20 mt-16 md:mt-24">
         <div className="mx-auto max-w-6xl">
-          <div className="rvv-bubble rounded-2xl border border-[rgba(255,255,255,.14)] bg-[rgba(12,15,20,.85)] shadow-[0_24px_60px_rgba(2,8,18,.45)]">
-            <div className="rvv-surface p-5 md:p-6">
-              <div className="flex items-center justify-between">
-                <strong className="text-[15px]">Cindy Colvin</strong>
-                <span className="ml-3 text-amber-300" aria-label="5 out of 5 stars">★★★★★</span>
-              </div>
-             <p className="mt-2 text-[15px] text-zinc-100">
-  “Matt and Alex, Thank you for the amazing workmanship, quality and efficient remodel of our master bathroom. We are VERY happy with the work and would be calling again for future jobs in our home. Will recommend to everyone.
-  Positive Responsiveness, Punctuality, Quality, Professionalism and Value.”
-  <br />
-  <strong>Recommended services:</strong> Remodeling, Drywall installation, Fan installation, Install flooring, Tile work installation, Plumbing fixture installation, Paint indoors, Drywall repair
-</p>
-            </div>
-          </div>
+          <ReviewHighlight
+            label="Homeowner Review"
+            fallback={{
+              name: "Cindy Colvin",
+              text:
+                "Matt and Alex, thank you for the amazing workmanship, quality and efficient remodel of our master bathroom. We are VERY happy with the work and would be calling again for future jobs in our home. Will recommend to everyone. Positive Responsiveness, Punctuality, Quality, Professionalism and Value. Recommended services: Remodeling, Drywall installation, Fan installation, Install flooring, Tile work installation, Plumbing fixture installation, Paint indoors, Drywall repair.",
+              rating: 5,
+            }}
+          />
 
           <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-3">
             <Link

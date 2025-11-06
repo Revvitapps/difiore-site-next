@@ -3,6 +3,7 @@ import Link from "next/link";
 import TrustedBadges from "@/components/TrustedBadges";
 import HeroSection from "@/components/services/HeroSection";
 import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
+import ReviewHighlight from "@/components/reviews/ReviewHighlight";
 
 export const metadata: Metadata = {
   title: "Roofing & Siding Replacement | Tear-Offs, Exterior Wraps, Gutters",
@@ -104,22 +105,18 @@ export default function RoofingSidingPage() {
         </div>
       </section>
 
-      {/* REVIEW HIGHLIGHT (placeholder) */}
+      {/* REVIEW HIGHLIGHT */}
       <section className="px-4 pb-16 md:pb-20 mt-16 md:mt-24">
         <div className="mx-auto max-w-6xl">
-          <div className="rvv-bubble rounded-2xl border border-[rgba(255,255,255,.14)] bg-[rgba(12,15,20,.85)] shadow-[0_24px_60px_rgba(2,8,18,.45)]">
-            <div className="rvv-surface p-5 md:p-6">
-              <div className="flex items-center justify-between">
-                <strong className="text-[15px]">Homeowner Review</strong>
-                <span className="ml-3 text-amber-300" aria-label="5 out of 5 stars">★★★★★</span>
-              </div>
-              <p className="mt-2 text-[15px] text-zinc-100">
-                “Crew was punctual, respectful, and fast. New roof and siding look fantastic, flashing
-                is tight, and cleanup was spotless. Communication was clear and the final price matched
-                the proposal. Highly recommend.”
-              </p>
-            </div>
-          </div>
+          <ReviewHighlight
+            label="Homeowner Review"
+            fallback={{
+              name: "Roofing & Siding homeowner",
+              text:
+                "Crew was punctual, respectful, and fast. New roof and siding look fantastic, flashing is tight, and cleanup was spotless. Communication was clear and the final price matched the proposal. Highly recommend.",
+              rating: 5,
+            }}
+          />
 
           <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-3">
             <Link

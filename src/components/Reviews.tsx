@@ -1,39 +1,100 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { TouchEvent } from 'react';
+import { clampRating, formatReviewDate, renderStars } from '@/lib/reviewFormatting';
 
-type Review = { id: string; name: string; rating: number; text: string };
+type Review = {
+  id: string;
+  name: string;
+  rating: number;
+  text: string;
+  createTime?: string;
+  avatarUrl?: string;
+};
 
 const MOCK: Review[] = [
-  { id: 'r1', name: 'Catherine R.', rating: 5, text: 'Beautiful work and very clean job site. Communication was excellent.' },
-  { id: 'r2', name: 'James W.',     rating: 5, text: 'They handled our addition end-to-end. On time, on budget.' },
-  { id: 'r3', name: 'Mark P.',      rating: 5, text: 'Roof tear-off and re-roof in one day. Professional crew.' },
-  { id: 'r4', name: 'Alyssa D.',    rating: 5, text: 'Kitchen remodel turned out incredible—fit and tile work are top notch.' },
+  {
+    id: 'r1',
+    name: 'Catherine R.',
+    rating: 5,
+    text: 'Beautiful work and very clean job site. Communication was excellent.',
+  },
+  {
+    id: 'r2',
+    name: 'James W.',
+    rating: 5,
+    text: 'They handled our addition end-to-end. On time, on budget.',
+  },
+  {
+    id: 'r3',
+    name: 'Mark P.',
+    rating: 5,
+    text: 'Roof tear-off and re-roof in one day. Professional crew.',
+  },
+  {
+    id: 'r4',
+    name: 'Alyssa D.',
+    rating: 5,
+    text: 'Kitchen remodel turned out incredible—fit and tile work are top notch.',
+  },
 ];
 
-const PLACE_ID = 'REPLACE_WITH_YOUR_PLACE_ID';
+const PLACE_ID = process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID?.trim() || '';
 
 export default function Reviews() {
+  const googleReviewUrl = PLACE_ID ? `https://search.google.com/local/writereview?placeid=${PLACE_ID}` : null;
   const useMock = process.env.NEXT_PUBLIC_REVIEWS_MOCK === '1';
   const [reviews, setReviews] = useState<Review[]>(MOCK);
-  const [avg, setAvg] = useState<number>(5.0);
+  const [avg, setAvg] = useState<number>(5);
   const [count, setCount] = useState<number>(MOCK.length);
   const [itemsPerView, setItemsPerView] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (useMock) return;
-    (async () => {
+    if (useMock) return undefined;
+    let cancelled = false;
+
+    const loadReviews = async () => {
       try {
         const res = await fetch('/api/reviews', { cache: 'no-store' });
+        if (!res.ok) {
+          throw new Error(`Request failed: ${res.status}`);
+        }
         const data = await res.json();
-        setAvg(data.rating ?? 5);
-        setCount(data.count ?? MOCK.length);
-        setReviews(Array.isArray(data.reviews) && data.reviews.length ? data.reviews : MOCK);
-      } catch {
-        setReviews(MOCK); setAvg(5); setCount(MOCK.length);
+
+        if (cancelled) return;
+
+        const nextReviews: Review[] =
+          Array.isArray(data.reviews) && data.reviews.length ? data.reviews : MOCK;
+        const averageRaw = Number(data.rating);
+        const totalCount =
+          typeof data.count === 'number' && data.count > 0 ? Math.round(data.count) : nextReviews.length;
+        const sumRatings = nextReviews.reduce((sum, review) => sum + (review.rating ?? 0), 0);
+        const derivedAverage =
+          Number.isFinite(averageRaw) && averageRaw > 0
+            ? clampRating(averageRaw)
+            : nextReviews.length
+            ? clampRating(sumRatings / nextReviews.length)
+            : 5;
+
+        setReviews(nextReviews);
+        setAvg(derivedAverage);
+        setCount(totalCount);
+      } catch (error) {
+        if (!cancelled) {
+          console.error('Failed to load Google reviews', error);
+          setReviews(MOCK);
+          setAvg(5);
+          setCount(MOCK.length);
+        }
       }
-    })();
+    };
+
+    void loadReviews();
+
+    return () => {
+      cancelled = true;
+    };
   }, [useMock]);
 
   useEffect(() => {
@@ -59,6 +120,9 @@ export default function Reviews() {
   }, [itemsPerView, reviews.length]);
 
   const totalSlides = useMemo(() => Math.max(1, reviews.length - itemsPerView + 1), [reviews.length, itemsPerView]);
+  const averageDisplay = useMemo(() => clampRating(avg), [avg]);
+  const averageStars = useMemo(() => renderStars(averageDisplay), [averageDisplay]);
+  const reviewCountLabel = useMemo(() => (count > 0 ? `${count}+ reviews` : 'Google reviews'), [count]);
   const touchStartX = useRef<number | null>(null);
   const touchDeltaX = useRef<number>(0);
 
@@ -113,20 +177,26 @@ export default function Reviews() {
           <span className="text-[19px] uppercase tracking-wide text-amber-400/90">Customer Reviews</span>
           <h2 className="font-serif text-[clamp(30px,3.2vw,40px)] font-extrabold tracking-tight">What homeowners say</h2>
           <div className="mt-1 flex items-center gap-3 text-sm text-zinc-300">
-            <span className="text-lg" aria-label={`${avg} out of 5 stars`}>
-              {'★'.repeat(Math.round(avg))}{'☆'.repeat(5 - Math.round(avg))}
+            <span className="text-lg" aria-label={`${averageDisplay.toFixed(1)} out of 5 stars`}>
+              {averageStars}
             </span>
-            <span>{avg.toFixed(1)} / 5 • {count}+ reviews</span>
+            <span>
+              {averageDisplay.toFixed(1)} / 5
+              {reviewCountLabel ? ` • ${reviewCountLabel}` : ''}
+            </span>
           </div>
-          <div className="mt-3 flex flex-wrap justify-center gap-3">
-            <a
-              href={`https://search.google.com/local/writereview?placeid=${PLACE_ID}`}
-              target="_blank" rel="noopener noreferrer"
-              className="rounded-full bg-amber-500 px-4 py-2 text-[14px] font-semibold text-zinc-900 hover:bg-amber-400"
-            >
-              Write a Google review
-            </a>
-          </div>
+          {googleReviewUrl ? (
+            <div className="mt-3 flex flex-wrap justify-center gap-3">
+              <a
+                href={googleReviewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-amber-500 px-4 py-2 text-[14px] font-semibold text-zinc-900 hover:bg-amber-400"
+              >
+                Write a Google review
+              </a>
+            </div>
+          ) : null}
         </div>
 
         {/* Carousel */}
@@ -160,13 +230,23 @@ export default function Reviews() {
                 >
                   <article className="rvv-bubble h-full rounded-2xl border border-white/15 bg-[rgba(12,15,20,.9)] shadow-[0_24px_60px_rgba(2,8,18,.45)]">
                     <div className="rvv-surface h-full p-4">
-                      <div className="flex items-center justify-between gap-4">
-                        <strong className="truncate">{r.name}</strong>
-                        <span className="ml-auto text-amber-300" aria-label={`${r.rating} stars`}>
-                          {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0">
+                          <strong className="block truncate text-[15px]">{r.name}</strong>
+                          {r.createTime ? (
+                            <span className="mt-0.5 block text-xs text-zinc-400">
+                              {formatReviewDate(r.createTime)}
+                            </span>
+                          ) : null}
+                        </div>
+                        <span
+                          className="ml-auto text-sm text-amber-300"
+                          aria-label={`${clampRating(r.rating).toFixed(0)} stars`}
+                        >
+                          {renderStars(r.rating)}
                         </span>
                       </div>
-                      <p className="mt-2 text-sm text-zinc-200">{r.text}</p>
+                      <p className="mt-3 text-sm leading-relaxed text-zinc-200">{r.text}</p>
                     </div>
                   </article>
                 </div>
