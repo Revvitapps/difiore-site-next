@@ -23,7 +23,7 @@ Implementation notes:
 - After launch, verify real-time traffic is registering in GA4.
 
 ### Google Search Console
-- Preferred verification method: HTML file upload. Download the existing `googlexxxxxxxxxxxx.html` file from the current site, place it in the Next.js `public/` directory, and keep it there before launch so the verification persists once DNS switches.
+- Preferred verification method: HTML file upload. Download the existing `googlexxxxxxxxxxxx.html` file from the current site, place it in the Next.js `public/` directory (replace `google-site-verification-placeholder.html`), and keep it there before launch so the verification persists once DNS switches.
 - Alternative: meta tag in `app/layout.tsx` if the original file is unavailable.
 - Once live, re-submit `https://difiorebuilders.com/sitemap.xml` inside Search Console.
 
@@ -34,5 +34,5 @@ Implementation notes:
 
 - Lower DNS TTL at GoDaddy ~24 hours before the cutover if possible.
 - Re-point only the A/AAAA (and `www` CNAME) records to Vercel when ready; do **not** remove MX/TXT records for email or Resend.
-- After DNS cutover, visit `/robots.txt` and `/sitemap.xml` to ensure the new files are live.
+- Run `npm run sitemap` and deploy so `sitemap.xml` is generated, then after DNS cutover visit `/robots.txt` and `/sitemap.xml` to ensure the new files are live.
 - Trigger a test submission from the estimator form to confirm Resend delivers to the inbox listed in `ESTIMATOR_NOTIFICATION_TO`.

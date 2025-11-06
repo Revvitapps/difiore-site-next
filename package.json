@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "seo:ingest": "node scripts/seo-ingest.mjs"
+    "seo:ingest": "node scripts/seo-ingest.mjs",
+    "sitemap": "next-sitemap"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
