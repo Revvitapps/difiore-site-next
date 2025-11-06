@@ -85,7 +85,7 @@ export default function AdditionsBasementsPage() {
                 alt: "Family room addition",
               },
               {
-                src: "/difiore-services-showcase-additions-familyroom-1.JPG",
+                src: "/difiore-services-addition-familyroom.JPG",
                 alt: "Open living expansion",
               },
               {
@@ -93,8 +93,8 @@ export default function AdditionsBasementsPage() {
                 alt: "Exterior addition tie-in",
               },
               {
-                src: "/difiore-services-deck4.jpeg",
-                alt: "Decking and outdoor space",
+                src: "/difiore-services-additions-secondstory2.jpeg",
+                alt: "Second-story addition exterior",
               },
             ]}
           />
