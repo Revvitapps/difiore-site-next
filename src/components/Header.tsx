@@ -6,6 +6,7 @@ import Image from "next/image";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [servicesOpen, setServicesOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (!mobileOpen) {
@@ -27,6 +28,19 @@ export default function Header() {
       window.removeEventListener("keydown", handleKey);
     };
   }, [mobileOpen]);
+
+  React.useEffect(() => {
+    if (!servicesOpen) return;
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setServicesOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [servicesOpen]);
+
+  const closeServices = React.useCallback(() => setServicesOpen(false), []);
 
   return (
     <header
@@ -72,27 +86,39 @@ export default function Header() {
           </Link>
 
           {/* Services dropdown (hover/focus keeps it open) */}
-          <div className="relative group">
+          <div
+            className="relative"
+            onMouseEnter={() => setServicesOpen(true)}
+            onMouseLeave={() => setServicesOpen(false)}
+            onFocusCapture={() => setServicesOpen(true)}
+            onBlurCapture={(event) => {
+              const relatedTarget = event.relatedTarget as Node | null;
+              if (!relatedTarget || !event.currentTarget.contains(relatedTarget)) {
+                setServicesOpen(false);
+              }
+            }}
+          >
             <button
               className="text-sm text-zinc-300 hover:text-white focus:outline-none"
               aria-haspopup="true"
-              aria-expanded="false"
+              aria-expanded={servicesOpen}
+              onClick={() => setServicesOpen((prev) => !prev)}
             >
               Services
             </button>
             <div
-              className="
-                invisible absolute left-0 mt-2 min-w-[220px] rounded-lg border border-white/10
-                bg-zinc-900/95 p-2 opacity-0 shadow-xl backdrop-blur
-                transition-all duration-150
-                group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100
-              "
+              className={`absolute left-0 mt-2 min-w-[220px] rounded-lg border border-white/10 bg-zinc-900/95 p-2 shadow-xl backdrop-blur transition-all duration-150 ${
+                servicesOpen
+                  ? "visible opacity-100 translate-y-0"
+                  : "invisible -translate-y-1 opacity-0"
+              }`}
               role="menu"
             >
               <Link
                 href="/services/kitchens-bathrooms"
                 className="block rounded-md px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
                 role="menuitem"
+                onClick={closeServices}
               >
                 Kitchens &amp; Bathrooms
               </Link>
@@ -100,6 +126,7 @@ export default function Header() {
                 href="/services/roofing-siding"
                 className="block rounded-md px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
                 role="menuitem"
+                onClick={closeServices}
               >
                 Roofing &amp; Siding
               </Link>
@@ -107,6 +134,7 @@ export default function Header() {
                 href="/services/additions-basements"
                 className="block rounded-md px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
                 role="menuitem"
+                onClick={closeServices}
               >
                 Additions &amp; Basements
               </Link>
@@ -114,6 +142,7 @@ export default function Header() {
                 href="/services/new-builds-gc"
                 className="block rounded-md px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
                 role="menuitem"
+                onClick={closeServices}
               >
                 New Builds &amp; General Construction
               </Link>

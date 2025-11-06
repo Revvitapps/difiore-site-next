@@ -93,7 +93,7 @@ export default function AdditionsBasementsPage() {
                 alt: "Exterior addition tie-in",
               },
               {
-                src: "/difiore-services-showcase-decking-pool.jpeg",
+                src: "/difiore-services-deck4.jpeg",
                 alt: "Decking and outdoor space",
               },
             ]}

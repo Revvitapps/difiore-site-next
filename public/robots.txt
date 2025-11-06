@@ -1,3 +1,9 @@
+# *
 User-agent: *
 Allow: /
+
+# Host
+Host: https://difiorebuilders.com
+
+# Sitemaps
 Sitemap: https://difiorebuilders.com/sitemap.xml
