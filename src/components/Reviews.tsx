@@ -40,6 +40,7 @@ const MOCK: Review[] = [
 ];
 
 const PLACE_ID = process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID?.trim() || '';
+const TEXT_LIMIT = 220;
 
 export default function Reviews() {
   const googleReviewUrl = PLACE_ID ? `https://search.google.com/local/writereview?placeid=${PLACE_ID}` : null;
@@ -49,6 +50,7 @@ export default function Reviews() {
   const [count, setCount] = useState<number>(MOCK.length);
   const [itemsPerView, setItemsPerView] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [expandedReview, setExpandedReview] = useState<Review | null>(null);
 
   useEffect(() => {
     if (useMock) return undefined;
@@ -125,6 +127,28 @@ export default function Reviews() {
   const reviewCountLabel = useMemo(() => (count > 0 ? `${count}+ reviews` : 'Google reviews'), [count]);
   const touchStartX = useRef<number | null>(null);
   const touchDeltaX = useRef<number>(0);
+
+  useEffect(() => {
+    if (!expandedReview) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setExpandedReview(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [expandedReview]);
+
+  useEffect(() => {
+    if (!expandedReview) return undefined;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [expandedReview]);
 
   const handlePrev = () => {
     setActiveIndex((prev) => {
@@ -222,14 +246,20 @@ export default function Reviews() {
               style={{ transform: `translateX(-${(activeIndex * 100) / itemsPerView}%)` }}
               aria-live="polite"
             >
-              {reviews.map((r) => (
+              {reviews.map((r) => {
+                const needsTruncate = r.text.length > TEXT_LIMIT;
+                const truncatedText = needsTruncate
+                  ? `${r.text.slice(0, TEXT_LIMIT).replace(/\s+\S*$/, '')}…`
+                  : r.text;
+
+                return (
                 <div
                   key={r.id}
                   className="w-full shrink-0 px-2"
                   style={{ flexBasis: `${100 / itemsPerView}%` }}
                 >
                   <article className="rvv-bubble h-full rounded-2xl border border-white/15 bg-[rgba(12,15,20,.9)] shadow-[0_24px_60px_rgba(2,8,18,.45)]">
-                    <div className="rvv-surface h-full p-4">
+                    <div className="rvv-surface flex h-full flex-col p-4">
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <strong className="block truncate text-[15px]">{r.name}</strong>
@@ -246,11 +276,22 @@ export default function Reviews() {
                           {renderStars(r.rating)}
                         </span>
                       </div>
-                      <p className="mt-3 text-sm leading-relaxed text-zinc-200">{r.text}</p>
+                      <p className="mt-3 text-sm leading-relaxed text-zinc-200">{truncatedText}</p>
+                      {needsTruncate ? (
+                        <button
+                          type="button"
+                          onClick={() => setExpandedReview(r)}
+                          className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-amber-300 transition hover:text-amber-200"
+                        >
+                          Read full review
+                          <span aria-hidden>→</span>
+                        </button>
+                      ) : null}
                     </div>
                   </article>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -295,6 +336,46 @@ export default function Reviews() {
           </div>
         </div>
       </div>
+
+      {expandedReview ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-8"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="review-dialog-title"
+        >
+          <div className="rvv-bubble w-full max-w-2xl rounded-2xl border border-white/15 bg-[rgba(12,15,20,.95)] shadow-[0_24px_60px_rgba(2,8,18,.65)]">
+            <div className="rvv-surface p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <h3 id="review-dialog-title" className="truncate text-lg font-semibold text-white">
+                    {expandedReview.name}
+                  </h3>
+                  {expandedReview.createTime ? (
+                    <p className="mt-1 text-xs text-zinc-400">
+                      {formatReviewDate(expandedReview.createTime)}
+                    </p>
+                  ) : null}
+                  <p className="mt-2 text-sm text-amber-300" aria-label={`${clampRating(expandedReview.rating).toFixed(0)} stars`}>
+                    {renderStars(expandedReview.rating)}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setExpandedReview(null)}
+                  className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-sm text-white transition hover:bg-black/60"
+                  aria-label="Close review"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="mt-4 text-sm leading-relaxed text-zinc-100 whitespace-pre-line">
+                {expandedReview.text}
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
