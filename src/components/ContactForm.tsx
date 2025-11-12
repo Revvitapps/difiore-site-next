@@ -42,10 +42,16 @@ export function ContactForm() {
         ),
       });
 
-      const data = await response.json().catch(() => ({}));
+      const data = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        details?: { fieldErrors?: Record<string, string[]> };
+      };
 
       if (!response.ok) {
-        throw new Error(data?.error ?? "Unable to send your message. Please try again.");
+        const firstFieldError = data?.details?.fieldErrors
+          ? Object.values(data.details.fieldErrors).flat().find(Boolean)
+          : undefined;
+        throw new Error(firstFieldError ?? data?.error ?? "Unable to send your message. Please try again.");
       }
 
       setFormState(INITIAL_FORM_STATE);

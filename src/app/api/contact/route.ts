@@ -14,7 +14,7 @@ const contactSchema = z.object({
     },
     z.string().min(3, "Address should be at least 3 characters.").optional()
   ),
-  message: z.string().trim().min(10, "Message must be at least 10 characters."),
+  message: z.string().trim().min(5, "Message must be at least 5 characters."),
 });
 
 type ContactPayload = z.infer<typeof contactSchema>;
@@ -105,6 +105,7 @@ export async function POST(request: Request) {
     const parsed = contactSchema.safeParse(body);
 
     if (!parsed.success) {
+      console.warn("Contact form validation failed", parsed.error.flatten());
       return NextResponse.json(
         { error: "Invalid contact submission.", details: parsed.error.flatten() },
         { status: 400 }
