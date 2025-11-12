@@ -31,7 +31,7 @@ export default function Hero() {
               className="hero-background-image h-full w-full object-cover transition-[object-position] duration-500"
             />
           </div>
-          <div aria-hidden className="absolute inset-0 bg-[rgba(6,12,20,0.32)]" />
+          <div aria-hidden className="absolute inset-0 bg-[rgba(4,8,16,0.12)]" />
         </div>
       </div>
 
