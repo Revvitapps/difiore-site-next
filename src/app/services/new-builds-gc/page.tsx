@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "New Builds & General Construction",
   description:
     "From plans to punch list — framing, envelopes, energy-smart assemblies, and full project management.",
-  alternates: { canonical: "/services/new-builds-gc" },
+  alternates: { canonical: "https://difiorebuilders.com/services/new-builds-gc" },
 };
 
 // Use filenames you know exist in /public:

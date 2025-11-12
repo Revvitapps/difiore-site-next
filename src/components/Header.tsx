@@ -155,6 +155,12 @@ export default function Header() {
           >
             Our Story
           </Link>
+          <Link
+            href="/contact"
+            className="text-sm text-zinc-300 hover:text-white"
+          >
+            Contact
+          </Link>
 
           <Link
             href="/project-calculator"
@@ -238,6 +244,13 @@ export default function Header() {
             onClick={() => setMobileOpen(false)}
           >
             Our Story
+          </Link>
+          <Link
+            href="/contact"
+            className="block text-base font-semibold text-white"
+            onClick={() => setMobileOpen(false)}
+          >
+            Contact
           </Link>
           <Link
             href="/project-calculator"
