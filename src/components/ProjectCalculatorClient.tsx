@@ -6,6 +6,7 @@ import StepDetails from '@/components/estimator/StepDetails';
 import StepAddress from '@/components/estimator/StepAddress';
 import ContactForm from '@/components/estimator/ContactForm';
 import { submitEstimatorPayload } from '@/components/estimator/utils/submitEstimator';
+import { heroBackground } from '@/lib/theme';
 import type {
   ProjectKey,
   EstimatorDetails,
@@ -275,10 +276,10 @@ export default function ProjectCalculatorClient() {
     <main
       className="min-h-screen text-white px-4 py-12 md:py-16 bg-[#0c0f14] bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: 'url("/difiore-hero-spotlight-house.png")',
+        backgroundImage: `url("${heroBackground.imageSrc}")`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center top',
-        backgroundAttachment: 'fixed',
+        backgroundPosition: heroBackground.estimatorPosition ?? heroBackground.positions.tablet,
+        backgroundAttachment: heroBackground.attachment,
         backgroundColor: '#0c0f14',
       }}
     >

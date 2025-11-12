@@ -1,20 +1,34 @@
 'use client';
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { heroBackground } from "@/lib/theme";
 
 export default function Hero() {
+  const heroBg = heroBackground;
+
   return (
-    <section className="relative isolate min-h-[72svh] md:min-h-[84svh] w-full overflow-hidden" aria-label="Hero">
+    <section
+      className="relative isolate min-h-[72svh] md:min-h-[84svh] w-full overflow-hidden"
+      aria-label="Hero"
+      style={
+        {
+          "--hero-bg-mobile": heroBg.positions.mobile,
+          "--hero-bg-md": heroBg.positions.tablet,
+          "--hero-bg-lg": heroBg.positions.desktop,
+        } as CSSProperties
+      }
+    >
       <div className="pointer-events-none fixed inset-0 -z-20">
         <div className="relative h-full w-full">
           <div className="h-full w-full max-w-full overflow-hidden">
             <Image
-              src="/difiore-hero-spotlight-house.png"
+              src={heroBg.imageSrc}
               alt="Exterior renovation by DiFiore Builders"
               priority
               width={1200}
               height={800}
-              className="h-full w-full object-cover object-[50%_23%] md:object-[50%_24%] lg:object-[50%_22%] xl:object-[50%_24%]"
+              className="hero-background-image h-full w-full object-cover transition-[object-position] duration-500"
             />
           </div>
           <div aria-hidden className="absolute inset-0 bg-[rgba(6,12,20,0.32)]" />
