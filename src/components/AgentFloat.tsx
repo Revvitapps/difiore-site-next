@@ -7,6 +7,9 @@ declare global {
     Wishpond?: {
       render?: () => void;
     };
+    RevvitAgent?: {
+      render?: () => void;
+    };
   }
 }
 
@@ -22,7 +25,7 @@ export default function AgentFloat() {
     const loadScript = () =>
       new Promise<void>((resolve, reject) => {
         const existing = document.querySelector(
-          'script[data-id="wishpond-embed"]'
+          'script[data-id="revvit-agent-embed"]'
         ) as HTMLScriptElement | null;
 
         if (existing) {
@@ -45,7 +48,7 @@ export default function AgentFloat() {
         script.src = 'https://agents.revvit.io/js/embed_demo_form.js?v=10';
         script.defer = true;
         script.async = true;
-        script.dataset.id = 'wishpond-embed';
+        script.dataset.id = 'revvit-agent-embed';
         script.onload = () => {
           scriptLoadedRef.current = true;
           resolve();
@@ -58,7 +61,7 @@ export default function AgentFloat() {
       try {
         await loadScript();
         if (!cancelled) {
-          window.Wishpond?.render?.();
+          (window.RevvitAgent ?? window.Wishpond)?.render?.();
         }
       } catch (error) {
         console.error(error);
@@ -69,7 +72,7 @@ export default function AgentFloat() {
 
     const retry = window.setTimeout(() => {
       if (!cancelled) {
-        window.Wishpond?.render?.();
+        (window.RevvitAgent ?? window.Wishpond)?.render?.();
       }
     }, 600);
 
