@@ -1,7 +1,20 @@
+'use client';
+
 import clsx from 'clsx';
+import { useEffect, useMemo, useState } from 'react';
 import { clampRating, formatReviewDate, renderStars } from '@/lib/reviewFormatting';
-import { fetchGoogleReviews } from '@/lib/googleReviews';
-import type { ReviewSummary } from '@/lib/googleReviews';
+
+type ReviewSummary = {
+  rating: number;
+  count: number;
+  reviews: Array<{
+    id: string;
+    name: string;
+    rating: number;
+    text: string;
+    createTime?: string;
+  }>;
+};
 
 type HighlightReview = {
   name?: string;
@@ -43,7 +56,7 @@ function selectReview(summary: ReviewSummary, fallback?: HighlightReview, review
   return null;
 }
 
-export default async function ReviewHighlight({
+export default function ReviewHighlight({
   label = 'Homeowner Review',
   className,
   fallback,
@@ -52,8 +65,67 @@ export default async function ReviewHighlight({
   ctaLabel = 'See more Google reviews',
   reviewOffset = 0,
 }: ReviewHighlightProps) {
-  const summary = await fetchGoogleReviews();
-  const selected = selectReview(summary, fallback, reviewOffset);
+  const fallbackSummary: ReviewSummary = useMemo(() => {
+    if (!fallback?.text?.trim()) {
+      return { rating: fallback?.rating ?? 5, count: 0, reviews: [] };
+    }
+    return {
+      rating: fallback.rating ?? 5,
+      count: 1,
+      reviews: [
+        {
+          id: 'fallback-review',
+          name: fallback.name || 'Google reviewer',
+          rating: fallback.rating ?? 5,
+          text: fallback.text.trim(),
+          createTime: fallback.createTime,
+        },
+      ],
+    };
+  }, [fallback]);
+
+  const [summary, setSummary] = useState<ReviewSummary>(fallbackSummary);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch('/api/reviews', { cache: 'no-store' });
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        const data = await res.json();
+        if (cancelled) return;
+
+        const rating =
+          typeof data.rating === 'number' && Number.isFinite(data.rating) ? data.rating : fallbackSummary.rating ?? 5;
+        const count = typeof data.count === 'number' && data.count >= 0 ? data.count : fallbackSummary.count ?? 0;
+        const reviews = Array.isArray(data.reviews) ? data.reviews : fallbackSummary.reviews;
+
+        setSummary({
+          rating,
+          count,
+          reviews: reviews.map((item) => ({
+            id: item.id ?? crypto.randomUUID(),
+            name: item.name ?? 'Google reviewer',
+            rating: typeof item.rating === 'number' ? item.rating : fallback?.rating ?? 5,
+            text: item.text ?? '',
+            createTime: item.createTime,
+          })),
+        });
+      } catch (error) {
+        if (!cancelled) {
+          setSummary((prev) => (prev.reviews.length ? prev : fallbackSummary));
+        }
+        console.error('Failed to load Google reviews', error);
+      }
+    };
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [fallbackSummary, fallback?.rating]);
+
+  const selected = useMemo(() => selectReview(summary, fallback, reviewOffset), [summary, fallback, reviewOffset]);
 
   if (!selected?.text) {
     return null;
