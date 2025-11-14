@@ -103,7 +103,7 @@ export default function ReviewHighlight({
         setSummary({
           rating,
           count,
-          reviews: reviews.map((item) => ({
+          reviews: reviews.map((item: { id?: string; name?: string; rating?: number; text?: string; createTime?: string }) => ({
             id: item.id ?? crypto.randomUUID(),
             name: item.name ?? 'Google reviewer',
             rating: typeof item.rating === 'number' ? item.rating : fallback?.rating ?? 5,
