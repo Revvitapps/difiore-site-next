@@ -1,8 +1,10 @@
 import AgentFloat from "@/components/AgentFloat";
+import { AnalyticsListener } from "@/components/AnalyticsListener";
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ANALYTICS_CONFIG } from "@/lib/analytics/config";
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
@@ -33,6 +35,8 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const { metaPixelId, ga4MeasurementId } = ANALYTICS_CONFIG;
+
   return (
     <html lang="en">
       <head>
@@ -40,24 +44,50 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:image:alt" content="Exterior renovation by DiFiore Builders" />
         <meta property="twitter:image" content="https://difiorebuilders.com/difiore-hero-spotlight-house.png" />
         <meta name="twitter:card" content="summary_large_image" />
+        {metaPixelId && (
+          <>
+            <Script id="fb-pixel" strategy="afterInteractive">
+              {`
+                !function(f,b,e,v,n,t,s){
+                  if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                  n.queue=[];t=b.createElement(e);t.async=!0;
+                  t.src=v;s=b.getElementsByTagName(e)[0];
+                  s.parentNode.insertBefore(t,s)
+                }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '${metaPixelId}');
+              `}
+            </Script>
+            <Script id="fb-pixel-pageview" strategy="afterInteractive">
+              {`fbq('track', 'PageView');`}
+            </Script>
+          </>
+        )}
+
+        {ga4MeasurementId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${ga4MeasurementId}`}
+              strategy="afterInteractive"
+              async
+            />
+            <Script id="gtag-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${ga4MeasurementId}', { send_page_view: false });
+              `}
+            </Script>
+          </>
+        )}
       </head>
       {/* No max-w on <main>; sections control their own width */}
       <body className="bg-zinc-950 text-zinc-100 antialiased">
         <Header />
+        <AnalyticsListener />
         <main className="min-h-[60vh]">{children}</main>
-<Script
-  src="https://www.googletagmanager.com/gtag/js?id=G-364C0XZKH3"
-  strategy="afterInteractive"
-  async
-/>
-<Script id="gtag-init" strategy="afterInteractive">
-  {`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-364C0XZKH3');
-  `}
-</Script>
 
         {/* Global prefooter */}
 

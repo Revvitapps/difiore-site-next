@@ -1,9 +1,26 @@
 "use client";
 
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+
+type Turnstile = {
+  render: (
+    element: HTMLElement,
+    options: {
+      sitekey: string;
+      callback: (token: string) => void;
+      "expired-callback"?: () => void;
+      "error-callback"?: () => void;
+    },
+  ) => void;
+  reset?: (element?: HTMLElement) => void;
+};
+
+type TurnstileWindow = Window & {
+  turnstile?: Turnstile;
+};
 
 const INITIAL_FORM_STATE = {
   firstName: "",
@@ -12,6 +29,8 @@ const INITIAL_FORM_STATE = {
   phone: "",
   address: "",
   message: "",
+  honeypot: "",
+  turnstileToken: "",
 };
 
 type FormState = typeof INITIAL_FORM_STATE;
@@ -20,6 +39,47 @@ export function ContactForm() {
   const [formState, setFormState] = useState<FormState>(INITIAL_FORM_STATE);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const widgetRef = useRef<HTMLDivElement | null>(null);
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+  useEffect(() => {
+    if (!turnstileSiteKey || typeof window === "undefined") return;
+
+    const renderWidget = () => {
+      const target = widgetRef.current;
+      const turnstile = (window as TurnstileWindow).turnstile;
+      if (!target || !turnstile) return;
+
+      turnstile.render(target, {
+        sitekey: turnstileSiteKey,
+        callback: (token: string) => setFormState((prev) => ({ ...prev, turnstileToken: token })),
+        "expired-callback": () => setFormState((prev) => ({ ...prev, turnstileToken: "" })),
+        "error-callback": () => setFormState((prev) => ({ ...prev, turnstileToken: "" })),
+      });
+    };
+
+    const existingScript = document.getElementById("cf-turnstile-script") as HTMLScriptElement | null;
+    if (existingScript) {
+      if (existingScript.dataset.loaded === "true") {
+        renderWidget();
+      } else {
+        existingScript.addEventListener("load", renderWidget, { once: true });
+      }
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = "cf-turnstile-script";
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async = true;
+    script.defer = true;
+    script.dataset.loaded = "false";
+    script.onload = () => {
+      script.dataset.loaded = "true";
+      renderWidget();
+    };
+    document.head.appendChild(script);
+  }, [turnstileSiteKey]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -30,6 +90,18 @@ export function ContactForm() {
     event.preventDefault();
     setStatus("loading");
     setErrorMessage(null);
+
+    if (!turnstileSiteKey) {
+      setStatus("error");
+      setErrorMessage("Form temporarily unavailable. Please call us while we restore contact submissions.");
+      return;
+    }
+
+    if (!formState.turnstileToken) {
+      setStatus("error");
+      setErrorMessage("Please verify you are not a bot.");
+      return;
+    }
 
     try {
       const response = await fetch("/api/contact", {
@@ -55,6 +127,10 @@ export function ContactForm() {
       }
 
       setFormState(INITIAL_FORM_STATE);
+      const turnstile = (typeof window !== "undefined" ? (window as TurnstileWindow).turnstile : null);
+      if (turnstile?.reset && widgetRef.current) {
+        turnstile.reset(widgetRef.current);
+      }
       setStatus("success");
     } catch (error) {
       setStatus("error");
@@ -64,6 +140,20 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 text-white shadow-[0_25px_60px_rgba(3,7,18,.55)] backdrop-blur">
+      {/* Honeypot field to catch bots; users will not see this */}
+      <label className="sr-only">
+        <span>Leave this field blank</span>
+        <input
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          name="honeypot"
+          value={formState.honeypot}
+          onChange={handleChange}
+          className="hidden"
+        />
+      </label>
+
       <div className="space-y-1">
         <p className="text-sm text-white/70">
           This is the same contact step we use inside the estimator—fill it out here to skip straight to a conversation with the team.
@@ -146,6 +236,12 @@ export function ContactForm() {
           placeholder="Tell us about your project, timing, goals, or anything else we should know."
         />
       </label>
+
+      {turnstileSiteKey && (
+        <div className="mt-2 flex justify-center">
+          <div ref={widgetRef} className="overflow-hidden rounded-md bg-white/10 p-2" />
+        </div>
+      )}
 
       <div className="space-y-3">
         <Button

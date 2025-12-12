@@ -14,7 +14,9 @@ const contactSchema = z.object({
     },
     z.string().min(3, "Address should be at least 3 characters.").optional()
   ),
-  message: z.string().trim().min(5, "Message must be at least 5 characters."),
+  message: z.string().trim().min(10, "Message must be at least 10 characters."),
+  honeypot: z.string().max(0, "Invalid submission.").optional(),
+  turnstileToken: z.string().trim().min(10, "Verification required."),
 });
 
 type ContactPayload = z.infer<typeof contactSchema>;
@@ -83,6 +85,45 @@ const buildAutoReplyHtml = (payload: ContactPayload) => {
   `;
 };
 
+async function verifyTurnstile(token: string) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+
+  if (!secret) {
+    console.error("TURNSTILE_SECRET_KEY is not configured");
+    return { success: false, status: 500, error: "Verification unavailable." };
+  }
+
+  try {
+    const params = new URLSearchParams();
+    params.append("secret", secret);
+    params.append("response", token);
+
+    const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString(),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("Turnstile verification HTTP failure", response.status, text);
+      return { success: false, status: 502, error: "Verification failed." };
+    }
+
+    const result = (await response.json()) as { success: boolean; "error-codes"?: string[] };
+
+    if (!result.success) {
+      console.warn("Turnstile verification rejected", result["error-codes"]);
+      return { success: false, status: 400, error: "Verification failed." };
+    }
+
+    return { success: true as const };
+  } catch (error) {
+    console.error("Turnstile verification error", error);
+    return { success: false, status: 500, error: "Verification failed." };
+  }
+}
+
 async function sendEmailThroughResend(resendKey: string, message: Record<string, unknown>): Promise<void> {
   const response = await fetch(RESEND_ENDPOINT, {
     method: "POST",
@@ -113,6 +154,18 @@ export async function POST(request: Request) {
     }
 
     const payload = parsed.data;
+
+    // Honeypot filled => likely bot
+    if (payload.honeypot && payload.honeypot.trim().length > 0) {
+      console.warn("Contact honeypot tripped; dropping submission");
+      return NextResponse.json({ success: true });
+    }
+
+    const captchaCheck = await verifyTurnstile(payload.turnstileToken);
+    if (!captchaCheck.success) {
+      const status = captchaCheck.status ?? 400;
+      return NextResponse.json({ error: captchaCheck.error ?? "Verification failed." }, { status });
+    }
     const resendKey = process.env.RESEND_API_KEY;
     const notificationList = process.env.CONTACT_NOTIFICATION_TO || process.env.ESTIMATOR_NOTIFICATION_TO;
     const fromEmail =
