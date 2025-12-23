@@ -39,6 +39,8 @@ const GBP_V4_BASE = 'https://mybusiness.googleapis.com/v4';
 // to another account/location, update the constants or lift them into env vars.
 const GBP_ACCOUNT_ID = '101505310957108827231';
 const GBP_LOCATION_ID = '9626568385906286179';
+const GBP_ALERT_WEBHOOK = process.env.GBP_ALERT_WEBHOOK?.trim();
+let hasAlertedFailure = false;
 
 const STAR_MAP: Record<string, number> = {
   ONE: 1,
@@ -49,12 +51,21 @@ const STAR_MAP: Record<string, number> = {
 };
 
 async function fetchAccessToken(): Promise<string> {
-  const clientId = process.env.GBP_CLIENT_ID;
-  const clientSecret = process.env.GBP_CLIENT_SECRET;
-  const refreshToken = process.env.GBP_REFRESH_TOKEN;
+  const clientId = process.env.GBP_CLIENT_ID?.trim();
+  const clientSecret = process.env.GBP_CLIENT_SECRET?.trim();
+  const refreshToken = process.env.GBP_REFRESH_TOKEN?.trim();
 
   if (!clientId || !clientSecret || !refreshToken) {
-    throw new Error('GBP OAuth credentials are not configured.');
+    const missing = [
+      ['GBP_CLIENT_ID', clientId],
+      ['GBP_CLIENT_SECRET', clientSecret],
+      ['GBP_REFRESH_TOKEN', refreshToken],
+    ]
+      .filter(([, value]) => !value)
+      .map(([key]) => key)
+      .join(', ');
+
+    throw new Error(`GBP OAuth credentials are not configured (${missing || 'missing values'}).`);
   }
 
   const response = await fetch(TOKEN_ENDPOINT, {
@@ -75,6 +86,10 @@ async function fetchAccessToken(): Promise<string> {
   }
 
   const json = await response.json();
+  if (!json.access_token) {
+    throw new Error(`GBP token response missing access_token: ${JSON.stringify(json)}`);
+  }
+
   return json.access_token as string;
 }
 
@@ -145,10 +160,32 @@ export async function fetchGoogleReviews(): Promise<ReviewSummary> {
     return summary;
   } catch (error) {
     console.error('Failed to load Google reviews', error);
+    void sendFailureAlert(error);
     return {
       rating: 5,
       count: 0,
       reviews: [],
     };
+  }
+}
+
+async function sendFailureAlert(error: unknown) {
+  if (!GBP_ALERT_WEBHOOK || hasAlertedFailure) return;
+  hasAlertedFailure = true;
+
+  const message =
+    typeof error === 'object' && error !== null ? JSON.stringify(error) : String(error ?? 'Unknown error');
+
+  try {
+    await fetch(GBP_ALERT_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: `GBP reviews failed: ${message}`,
+        source: 'difiore-site',
+      }),
+    });
+  } catch (alertError) {
+    console.error('Unable to send GBP alert', alertError);
   }
 }

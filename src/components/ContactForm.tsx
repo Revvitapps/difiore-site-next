@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "r
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics/track";
+import { useLeadFormTracking } from "@/lib/analytics/useLeadFormTracking";
 
 type Turnstile = {
   render: (
@@ -41,6 +43,19 @@ export function ContactForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const widgetRef = useRef<HTMLDivElement | null>(null);
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+  useLeadFormTracking({
+    formId: "contact",
+    fields: {
+      firstName: formState.firstName,
+      lastName: formState.lastName,
+      email: formState.email,
+      phone: formState.phone,
+      address: formState.address,
+      message: formState.message,
+    },
+    context: { source: "contact-page" },
+  });
 
   useEffect(() => {
     if (!turnstileSiteKey || typeof window === "undefined") return;
@@ -132,9 +147,16 @@ export function ContactForm() {
         turnstile.reset(widgetRef.current);
       }
       setStatus("success");
+      trackEvent("lead_form_submit", { form_id: "contact", status: "success", source: "contact-page" });
     } catch (error) {
       setStatus("error");
       setErrorMessage(error instanceof Error ? error.message : "Unable to send your message at this time.");
+      trackEvent("lead_form_submit", {
+        form_id: "contact",
+        status: "error",
+        source: "contact-page",
+        error: error instanceof Error ? error.message : "unknown",
+      });
     }
   };
 

@@ -4,6 +4,7 @@ import Image from "next/image";
 import TrustedBadges from "@/components/TrustedBadges";
 import BeforeAfterHero from "@/components/before-after/Hero";
 import BeforeAfterGallery from "@/components/before-after/Gallery";
+import { fetchGoogleReviews } from "@/lib/googleReviews";
 
 export const metadata: Metadata = {
   title: "Before & After Project Gallery | DiFiore Builders",
@@ -14,9 +15,9 @@ export const metadata: Metadata = {
   },
 };
 
-type Review = { name: string; rating: number; text: string };
+type Review = { id?: string; name: string; rating: number; text: string };
 
-const REVIEWS: Review[] = [
+const FALLBACK_REVIEWS: Review[] = [
   {
     name: "Kevin Parchen",
     rating: 5,
@@ -43,7 +44,30 @@ const REVIEWS: Review[] = [
   },
 ];
 
-export default function BeforeAfterPage() {
+function pickRandomReviews(all: Review[], count: number): Review[] {
+  if (!all.length) return [];
+  const copy = [...all];
+  // simple in-place shuffle
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, Math.max(1, count));
+}
+
+export default async function BeforeAfterPage() {
+  const summary = await fetchGoogleReviews();
+  const source = summary.reviews.length ? summary.reviews : FALLBACK_REVIEWS;
+  const reviews = pickRandomReviews(
+    source.map((r) => ({
+      id: r.id,
+      name: r.name,
+      rating: r.rating,
+      text: r.text,
+    })),
+    4
+  );
+
   return (
     <>
       <BeforeAfterHero />
@@ -119,9 +143,9 @@ export default function BeforeAfterPage() {
         {/* Reviews list — split left/right, consistent sizes, rectangle pills */}
         <div className="mx-auto mt-8 max-w-6xl">
           <div className="space-y-4 md:space-y-6">
-            {REVIEWS.map((r, idx) => (
+            {reviews.map((r, idx) => (
               <div
-                key={`${r.name}-${idx}`}
+                key={r.id ?? `${r.name}-${idx}`}
                 className={`md:flex ${idx % 2 === 0 ? "md:justify-start" : "md:justify-end"}`}
               >
                 <article
