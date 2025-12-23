@@ -7,6 +7,8 @@ import StepAddress from '@/components/estimator/StepAddress';
 import ContactForm from '@/components/estimator/ContactForm';
 import { submitEstimatorPayload } from '@/components/estimator/utils/submitEstimator';
 import { heroBackground } from '@/lib/theme';
+import { useLeadFormTracking } from '@/lib/analytics/useLeadFormTracking';
+import { trackEvent } from '@/lib/analytics/track';
 import type {
   ProjectKey,
   EstimatorDetails,
@@ -180,6 +182,8 @@ export default function ProjectCalculatorClient() {
   });
   const [submitting, setSubmitting] = React.useState(false);
   const [submitError, setSubmitError] = React.useState<string | null>(null);
+  const formSectionRef = React.useRef<HTMLElement | null>(null);
+  const prevStepRef = React.useRef(state.step);
 
   const liveEst = getEstimate(state.project, state.details || {});
   const estimateForDisplay = liveEst ?? {
@@ -190,6 +194,20 @@ export default function ProjectCalculatorClient() {
   };
 
   const zipIsValid = Boolean((state.address?.zip ?? '').trim().length >= 5);
+
+  useLeadFormTracking({
+    formId: 'project-calculator',
+    step: state.step,
+    context: { source: 'project-calculator' },
+    fields: {
+      project: state.project ?? '',
+      zip: state.address?.zip ?? '',
+      email: state.contact.email ?? '',
+      phone: state.contact.phone ?? '',
+      firstName: state.contact.firstName ?? '',
+      lastName: state.contact.lastName ?? '',
+    },
+  });
 
   async function handleSubmitContact() {
     if (submitting) return;
@@ -259,6 +277,13 @@ export default function ProjectCalculatorClient() {
         },
       });
 
+      trackEvent('lead_form_submit', {
+        form_id: 'project-calculator',
+        status: 'success',
+        project: projectLabel,
+        step: state.step,
+      });
+
       setState((prev) => ({ ...prev, step: 5 }));
     } catch (error) {
       console.error('Estimator submission failed', error);
@@ -267,10 +292,32 @@ export default function ProjectCalculatorClient() {
           ? error.message
           : 'We couldn’t send your request. Please try again.';
       setSubmitError(message);
+      trackEvent('lead_form_submit', {
+        form_id: 'project-calculator',
+        status: 'error',
+        step: state.step,
+        error: error instanceof Error ? error.message : 'unknown',
+      });
     } finally {
       setSubmitting(false);
     }
   }
+
+  React.useEffect(() => {
+    if (prevStepRef.current === state.step) return;
+    prevStepRef.current = state.step;
+
+    if (!formSectionRef.current) return;
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+
+    formSectionRef.current.scrollIntoView({
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  }, [state.step]);
 
   return (
     <main
@@ -292,7 +339,10 @@ export default function ProjectCalculatorClient() {
           <div className="h-6" aria-hidden />
         </div>
 
-        <section className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.6)] backdrop-blur-md ring-1 ring-white/5 shadow-[0_30px_120px_rgba(0,0,0,.8)] p-6 space-y-8 mt-10 md:mt-16">
+        <section
+          ref={formSectionRef}
+          className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.6)] backdrop-blur-md ring-1 ring-white/5 shadow-[0_30px_120px_rgba(0,0,0,.8)] p-6 space-y-8 mt-10 md:mt-16"
+        >
           {/* STEP 1 */}
           {state.step === 1 && (
             <ProjectSelector
