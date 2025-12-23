@@ -16,6 +16,26 @@ type Band = {
   ctaSecondary?: { href: string; label: string };
 };
 
+type Review = {
+  id: string;
+  name: string;
+  rating: number;
+  text: string;
+};
+
+type ApiReview = {
+  id?: string;
+  name?: string;
+  rating?: number;
+  text?: string;
+  createTime?: string;
+  avatarUrl?: string;
+};
+
+type ReviewsResponse = {
+  reviews?: ApiReview[];
+};
+
 const BANDS: Band[] = [
   {
     id: "roofing-siding",
@@ -89,15 +109,59 @@ const BANDS: Band[] = [
   },
 ];
 
+const FALLBACK_REVIEWS: Review[] = [
+  {
+    id: "r1",
+    name: "Catherine R.",
+    rating: 5,
+    text: "Beautiful work and very clean job site. Communication was excellent.",
+  },
+  {
+    id: "r2",
+    name: "James W.",
+    rating: 5,
+    text: "They handled our addition end-to-end. On time, on budget.",
+  },
+  {
+    id: "r3",
+    name: "Mark P.",
+    rating: 5,
+    text: "Roof tear-off and re-roof in one day. Professional crew.",
+  },
+  {
+    id: "r4",
+    name: "Alyssa D.",
+    rating: 5,
+    text: "Kitchen remodel turned out incredible—fit and tile work are top notch.",
+  },
+];
+
+function pickRandom<T>(items: T[], count: number): T[] {
+  if (!items.length || count <= 0) return [];
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, count);
+}
+
+function renderStars(rating: number) {
+  const clamped = Math.max(1, Math.min(5, Math.round(rating)));
+  return "★".repeat(clamped) + "☆".repeat(5 - clamped);
+}
+
 /* ---------- ONE BAND (bottom-anchored card + rotating bg) ---------- */
 function ServiceBand({
   data,
   index,
   prefersReducedMotion,
+  review,
 }: {
   data: Band;
   index: number;
   prefersReducedMotion: boolean;
+  review?: Review | null;
 }) {
   // rotation state
   const [idx, setIdx] = useState(0);
@@ -191,6 +255,18 @@ function ServiceBand({
               ))}
             </div>
 
+            {review && (
+              <div className="mt-4 rounded-2xl border border-white/20 bg-black/35 p-4 shadow-inner">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[14px] font-semibold text-white">{review.name}</span>
+                  <span className="text-amber-300 text-xs" aria-label={`${review.rating} out of 5 stars`}>
+                    {renderStars(review.rating)}
+                  </span>
+                </div>
+                <p className="mt-2 text-[13px] leading-relaxed text-white/90 line-clamp-3">{review.text}</p>
+              </div>
+            )}
+
             {/* CTAs */}
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Link
@@ -218,6 +294,47 @@ function ServiceBand({
 /* ---------- PUBLIC COMPONENT ---------- */
 export default function Services() {
   const prefersReducedMotion = useReducedMotion() ?? false;
+  const [reviewPool, setReviewPool] = useState<Review[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/reviews", { cache: "no-store" });
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        const data: ReviewsResponse = await res.json();
+        if (cancelled) return;
+        const incoming: Review[] = Array.isArray(data.reviews)
+          ? data.reviews
+              .filter((review): review is ApiReview => Boolean(review?.text && review?.rating))
+              .map((review) => ({
+                id: review.id ?? crypto.randomUUID(),
+                name: review.name || "Google reviewer",
+                rating: review.rating ?? 5,
+                text: review.text ?? "",
+              }))
+          : [];
+        setReviewPool(incoming.length ? incoming : FALLBACK_REVIEWS);
+      } catch {
+        if (!cancelled) {
+          setReviewPool(FALLBACK_REVIEWS);
+        }
+      }
+    };
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const bandReviews = useMemo(() => {
+    if (!reviewPool.length) return {};
+    const picks = pickRandom(reviewPool, BANDS.length);
+    return BANDS.reduce<Record<string, Review>>((acc, band, idx) => {
+      acc[band.id] = picks[idx % picks.length];
+      return acc;
+    }, {});
+  }, [reviewPool]);
 
   return (
     <section aria-label="Services" className="relative space-y-16 md:space-y-24">
@@ -227,6 +344,7 @@ export default function Services() {
           data={b}
           index={index}
           prefersReducedMotion={prefersReducedMotion}
+          review={bandReviews[b.id]}
         />
       ))}
     </section>
