@@ -3,6 +3,7 @@ export type AnalyticsEventName =
   | "view_content"
   | "lead_form_view"
   | "lead_form_start"
+  | "lead_form_partial"
   | "lead_form_submit"
   | "call_click"
   | "sms_click"
@@ -15,6 +16,7 @@ export type AnalyticsEventParams = Record<string, unknown>;
 
 const metaNameMap: Record<AnalyticsEventName, string> = {
   lead_form_submit: "Lead",
+  lead_form_partial: "Lead",
   purchase: "Purchase",
   view_content: "ViewContent",
   page_view: "PageView",
