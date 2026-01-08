@@ -1,86 +1,14 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-
-declare global {
-  interface Window {
-    Wishpond?: {
-      render?: () => void;
-    };
-    RevvitAgent?: {
-      render?: () => void;
-    };
-  }
-}
 
 export default function AgentFloat() {
   const [open, setOpen] = useState(false);
-  const scriptLoadedRef = useRef(false);
 
-  useEffect(() => {
-    if (!open || typeof window === 'undefined') return;
-
-    let cancelled = false;
-
-    const loadScript = () =>
-      new Promise<void>((resolve, reject) => {
-        const existing = document.querySelector(
-          'script[data-id="revvit-agent-embed"]'
-        ) as HTMLScriptElement | null;
-
-        if (existing) {
-          if (scriptLoadedRef.current) {
-            resolve();
-          } else {
-            existing.addEventListener(
-              'load',
-              () => {
-                scriptLoadedRef.current = true;
-                resolve();
-              },
-              { once: true }
-            );
-          }
-          return;
-        }
-
-        const script = document.createElement('script');
-        script.src = 'https://agents.revvit.io/js/embed_demo_form.js?v=10';
-        script.defer = true;
-        script.async = true;
-        script.dataset.id = 'revvit-agent-embed';
-        script.onload = () => {
-          scriptLoadedRef.current = true;
-          resolve();
-        };
-        script.onerror = () => reject(new Error('Wishpond script failed to load'));
-        document.body.appendChild(script);
-      });
-
-    const ensureRender = async () => {
-      try {
-        await loadScript();
-        if (!cancelled) {
-          (window.RevvitAgent ?? window.Wishpond)?.render?.();
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    ensureRender();
-
-    const retry = window.setTimeout(() => {
-      if (!cancelled) {
-        (window.RevvitAgent ?? window.Wishpond)?.render?.();
-      }
-    }, 600);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(retry);
-    };
-  }, [open]);
+  const PHONE_DISPLAY = "(610) 358-5433";
+  const PHONE_LINK = "tel:+16103585433";
+  const EMAIL_ADDRESS = "hello@difiorebuilders.com";
+  const EMAIL_LINK = `mailto:${EMAIL_ADDRESS}`;
 
   return (
     <>
@@ -105,21 +33,46 @@ export default function AgentFloat() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={()=>setOpen(false)}>
-          <div className="absolute right-4 bottom-20 w-[min(92vw,480px)] rounded-2xl border border-white/15 bg-[rgba(10,20,36,.92)] p-5 shadow-[0_24px_80px_rgba(3,9,20,.65)] text-white" onClick={(e)=>e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={() => setOpen(false)}>
+          <div
+            className="absolute right-4 bottom-20 w-[min(92vw,480px)] rounded-2xl border border-white/15 bg-[rgba(10,20,36,.92)] p-5 shadow-[0_24px_80px_rgba(3,9,20,.65)] text-white"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-end">
               <button
-                onClick={()=>setOpen(false)}
+                onClick={() => setOpen(false)}
                 className="rounded-full border border-white/20 px-3 py-1 text-[12px] text-white hover:bg-white/10"
               >
                 Close
               </button>
             </div>
-            <div
-              className="wshpnd-scloser-meeting-form min-h-[420px]"
-              data-wishpond-id="8b969b2d-18c0-460a-a81d-956df042c1ec"
-              data-wishpond-domain="https://agents.revvit.io"
-            />
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-300">
+                  Need help now?
+                </p>
+                <p className="mt-2 text-base text-white/80">
+                  Reach out via email or phone and our project specialist will respond right away.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <a
+                    href={PHONE_LINK}
+                    className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white/10"
+                  >
+                    Call {PHONE_DISPLAY}
+                  </a>
+                  <a
+                    href={EMAIL_LINK}
+                    className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white/10"
+                  >
+                    Email {EMAIL_ADDRESS}
+                  </a>
+                </div>
+                <p className="mt-3 text-[11px] text-white/60">
+                  Available weekdays; same estimator team monitors these channels.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}

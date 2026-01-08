@@ -434,7 +434,7 @@ export default function ProjectCalculatorClient() {
               <h2 className="text-2xl font-bold text-white">Lock in a consult</h2>
               <p className="text-sm text-white/60 max-w-2xl">
                 Share the best contact info and our team will call or email with next steps. Need a
-                human right away? Tap “Speak to an Agent” in the corner.
+                human right away? Tap “Speak to an Agent” in the corner for email or phone call options.
               </p>
 
               <ContactForm
