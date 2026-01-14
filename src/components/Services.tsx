@@ -34,6 +34,7 @@ type ApiReview = {
 
 type ReviewsResponse = {
   reviews?: ApiReview[];
+  error?: string | null;
 };
 
 const BANDS: Band[] = [

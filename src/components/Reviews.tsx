@@ -52,9 +52,13 @@ export default function Reviews() {
   const [itemsPerView, setItemsPerView] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [expandedReview, setExpandedReview] = useState<Review | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (useMock) return undefined;
+    if (useMock) {
+      setErrorMessage(null);
+      return undefined;
+    }
     let cancelled = false;
 
     const loadReviews = async () => {
@@ -79,6 +83,7 @@ export default function Reviews() {
             : nextReviews.length
             ? clampRating(sumRatings / nextReviews.length)
             : 5;
+        setErrorMessage(data.error ?? null);
 
         setReviews(nextReviews);
         setAvg(derivedAverage);
@@ -86,6 +91,9 @@ export default function Reviews() {
       } catch (error) {
         if (!cancelled) {
           console.error('Failed to load Google reviews', error);
+          const message =
+            error instanceof Error ? error.message : 'Unable to load Google reviews at the moment.';
+          setErrorMessage(message);
           setReviews(MOCK);
           setAvg(5);
           setCount(MOCK.length);
@@ -223,6 +231,17 @@ export default function Reviews() {
             </div>
           ) : null}
         </div>
+
+        {errorMessage ? (
+          <div className="mt-6 rounded-2xl border border-amber-500/60 bg-amber-500/10 px-4 py-3 text-sm text-amber-100 sm:text-base">
+            <p className="font-semibold text-white">Google reviews are temporarily unavailable.</p>
+            <p className="mt-1 text-amber-50">{errorMessage}</p>
+            <p className="mt-1 text-[13px] text-amber-200">
+              Rotate the Google Business Profile refresh token (see <span className="font-semibold text-white">docs/gbp-refresh-token.md</span>)
+              if the error mentions OAuth credentials, then redeploy so fresh reviews publish again.
+            </p>
+          </div>
+        ) : null}
 
         {/* Carousel */}
         <div className="relative mt-10">

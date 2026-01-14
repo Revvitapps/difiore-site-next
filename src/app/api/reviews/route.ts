@@ -15,5 +15,6 @@ export async function GET() {
       createTime: review.createTime,
       avatarUrl: review.avatarUrl,
     })),
+    error: summary.error ?? null,
   });
 }

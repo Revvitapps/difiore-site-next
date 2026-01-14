@@ -30,6 +30,7 @@ export type ReviewSummary = {
     createTime?: string;
     avatarUrl?: string;
   }>;
+  error?: string;
 };
 
 const TOKEN_ENDPOINT = 'https://oauth2.googleapis.com/token';
@@ -159,12 +160,14 @@ export async function fetchGoogleReviews(): Promise<ReviewSummary> {
 
     return summary;
   } catch (error) {
+    const errorMessage = formatErrorMessage(error);
     console.error('Failed to load Google reviews', error);
     void sendFailureAlert(error);
     return {
       rating: 5,
       count: 0,
       reviews: [],
+      error: errorMessage,
     };
   }
 }
@@ -188,4 +191,13 @@ async function sendFailureAlert(error: unknown) {
   } catch (alertError) {
     console.error('Unable to send GBP alert', alertError);
   }
+}
+
+function formatErrorMessage(error: unknown): string {
+  if (typeof error === "string") return error;
+  if (error instanceof Error) return error.message;
+  if (error && typeof error === "object" && "toString" in error) {
+    return String(error);
+  }
+  return "Unknown error";
 }

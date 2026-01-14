@@ -6,6 +6,7 @@ import PillarsSection from "@/components/home/PillarsSection";
 import AboutSection from "@/components/home/AboutSection";
 import ServicesIntro from "@/components/ServicesIntro";
 import Services from "@/components/Services";
+import HomeContactSection from "@/components/HomeContactSection";
 
 export const metadata: Metadata = {
   title: "Home Remodeling, Roofing & Additions | DiFiore Builders – Tri-State Area",
@@ -48,6 +49,7 @@ export default function Page() {
       <Services />
       <Reviews />
       <TrustedBadges />
+      <HomeContactSection />
     </>
   );
 }
