@@ -53,6 +53,7 @@ export default function Reviews() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [expandedReview, setExpandedReview] = useState<Review | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const showReviewErrors = process.env.NEXT_PUBLIC_SHOW_REVIEW_ERRORS === '1';
 
   useEffect(() => {
     if (useMock) {
@@ -232,7 +233,7 @@ export default function Reviews() {
           ) : null}
         </div>
 
-        {errorMessage ? (
+        {errorMessage && showReviewErrors ? (
           <div className="mt-6 rounded-2xl border border-amber-500/60 bg-amber-500/10 px-4 py-3 text-sm text-amber-100 sm:text-base">
             <p className="font-semibold text-white">Google reviews are temporarily unavailable.</p>
             <p className="mt-1 text-amber-50">{errorMessage}</p>
