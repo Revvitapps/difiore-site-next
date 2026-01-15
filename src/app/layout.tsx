@@ -1,4 +1,3 @@
-import AgentFloat from "@/components/AgentFloat";
 import { AnalyticsListener } from "@/components/AnalyticsListener";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -95,7 +94,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Global prefooter */}
 
         <Footer />
-        <AgentFloat />
         <Analytics />
         <SpeedInsights />
       </body>
