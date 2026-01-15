@@ -19,32 +19,38 @@ export default function HomeContactSection() {
           </p>
         </header>
 
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
-          <div className="space-y-6">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-6 shadow-[0_25px_60px_rgba(3,6,14,.6)] backdrop-blur">
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-200">Call or text</p>
-              <a
-                href={PHONE_LINK}
-                className="mt-3 block text-3xl font-semibold text-white hover:text-amber-300 sm:text-4xl"
-              >
-                {PHONE_DISPLAY}
-              </a>
-              <p className="mt-4 text-sm text-white/70">
-                We keep this line open during work hours. If we miss you, leave a quick note and the estimator team
-                will call back shortly.
-              </p>
-              <dl className="mt-6 grid gap-4 text-sm text-white/70">
-                <div>
-                  <dt className="text-white/90 font-semibold">Service area</dt>
-                  <dd>Tri-State area with a focus on Chadds Ford, Glen Mills, West Chester, and Wilmington.</dd>
-                </div>
-                <div>
-                  <dt className="text-white/90 font-semibold">Prefer to email?</dt>
-                  <dd>The same inbox that powers the estimator monitors this form for a next business-day response.</dd>
-                </div>
-              </dl>
-            </div>
+        <div className="space-y-10">
+          <div className="mx-auto max-w-3xl space-y-6 rounded-2xl border border-white/10 bg-white/[0.05] p-8 shadow-[0_35px_80px_rgba(0,0,0,.4)] backdrop-blur">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-200 text-center">
+              Call or text
+            </p>
+            <a
+              href={PHONE_LINK}
+              className="text-center text-4xl font-bold tracking-tight text-white underline-offset-4 hover:text-amber-300 sm:text-5xl"
+            >
+              {PHONE_DISPLAY}
+            </a>
+            <p className="text-center text-sm text-white/70">
+              We keep this line open during work hours. If we miss you, leave a quick note and the estimator team
+              will call back shortly.
+            </p>
+            <dl className="grid text-sm text-white/70 lg:grid-cols-2">
+              <div>
+                <dt className="text-white/80 font-semibold">Service area</dt>
+                <dd className="mt-1">
+                  Tri-State area with a focus on Chadds Ford, Glen Mills, West Chester, and Wilmington.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-white/80 font-semibold">Prefer to email?</dt>
+                <dd className="mt-1">
+                  The same inbox that powers the estimator monitors this form for a next business-day response.
+                </dd>
+              </div>
+            </dl>
+          </div>
 
+          <div className="mx-auto max-w-4xl">
             <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#1f2937] via-[#0f172a] to-black p-6 shadow-[0_25px_60px_rgba(2,6,23,.6)]">
               <h3 className="text-xl font-semibold text-white">Need ballpark numbers first?</h3>
               <p className="mt-3 text-sm text-white/70">
@@ -60,7 +66,9 @@ export default function HomeContactSection() {
             </div>
           </div>
 
-          <ContactForm />
+          <div className="mx-auto w-full max-w-5xl">
+            <ContactForm />
+          </div>
         </div>
 
         <div className="mt-10 rounded-2xl border border-white/10 bg-white/[0.05] p-6 text-sm text-white/70">
