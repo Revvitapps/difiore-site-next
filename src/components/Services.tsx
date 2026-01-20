@@ -33,7 +33,7 @@ const BANDS: Band[] = [
       "/difiore-services-showcase-roofing-gutter.webp",
     ],
     ctaPrimary: { href: "/project-calculator", label: "Get a Quote" },
-    ctaSecondary: { href: "/our-projects", label: "See Projects" },
+    ctaSecondary: { href: "/services/roofing-siding", label: "Learn More" },
   },
   {
     id: "additions",
@@ -52,7 +52,7 @@ const BANDS: Band[] = [
       "/difiore-os-after-bl.jpeg",
     ],
     ctaPrimary: { href: "/project-calculator", label: "Plan My Addition" },
-    ctaSecondary: { href: "/our-projects", label: "See Projects" },
+    ctaSecondary: { href: "/services/additions-basements", label: "Learn More" },
   },
   {
     id: "kitchens-renovations",
@@ -69,7 +69,7 @@ const BANDS: Band[] = [
       "/difiore-services-showcase-kitchen-closeup.webp",
     ],
     ctaPrimary: { href: "/project-calculator", label: "Start My Remodel" },
-    ctaSecondary: { href: "/our-projects", label: "See Projects" },
+    ctaSecondary: { href: "/services/kitchens-bathrooms", label: "Learn More" },
   },
   {
     id: "new-builds-gc",
@@ -86,7 +86,7 @@ const BANDS: Band[] = [
       "/difiore-services-showcase-3style-roof.png",
     ],
     ctaPrimary: { href: "/project-calculator", label: "Price My Build" },
-    ctaSecondary: { href: "/our-projects", label: "See Projects" },
+    ctaSecondary: { href: "/services/new-builds-gc", label: "Learn More" },
   },
 ];
 
