@@ -8,7 +8,7 @@ import ReviewHighlight from "@/components/reviews/ReviewHighlight";
 export const metadata: Metadata = {
   title: "Roofing & Siding Replacement | Tear-Offs, Exterior Wraps, Gutters",
   description:
-    "Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. Complete tear-offs, premium roofing, vinyl and fiber-cement siding, exterior wraps, gutters, fascia, and trim delivered with high-quality craftsmanship at an agreed-upon price.",
+    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Complete tear-offs, premium roofing, vinyl and fiber-cement siding, exterior wraps, gutters, fascia, and trim delivered with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
     canonical: "https://difiorebuilders.com/services/roofing-siding",
   },
@@ -19,7 +19,7 @@ export default function RoofingSidingPage() {
     <>
       <HeroSection
         title="Roofing & Siding"
-        subtitle="Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003."
+        subtitle="Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003."
         blurb="Weather-tight systems, clean lines, and long-term performance. From full tear-offs and re-roofs to premium siding upgrades, we handle everything with tidy job sites and clear communication."
         imageSrc="/difiore-services-showcase-3style-roof.png"
         chips={["Asphalt • Metal", "Vinyl • Fiber Cement", "Repairs & Replacements"]}

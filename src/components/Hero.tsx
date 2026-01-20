@@ -56,20 +56,33 @@ export default function Hero() {
                 Project Calculator
               </Link>
               <Link
-                href="/our-story"
+                href="/contact"
                 className="rounded-md border border-white/55 bg-black/20 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
               >
-                Our Story
+                Get a Quote
+              </Link>
+              <Link
+                href="/before-and-after"
+                className="rounded-md border border-white/55 bg-black/20 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
+              >
+                See Projects
               </Link>
             </div>
 
-            <p className="mt-6 mx-auto max-w-[680px] text-[15px] text-white/90">
-              Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
+            <a
+              href="tel:+16103585433"
+              className="mt-5 inline-flex items-center justify-center gap-2 text-[14px] font-semibold uppercase tracking-[0.18em] text-amber-300/90 hover:text-amber-300"
+            >
+              Call now (610) 358-5433
+            </a>
+            <p className="mt-4 mx-auto max-w-[680px] text-[18px] font-semibold text-white/90">
+              Family-owned, licensed &amp; insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester,
+              and Wilmington since 2003.
             </p>
-            <p className="mt-2 mx-auto max-w-[680px] text-[15px] text-white/80">
+            <p className="mt-2 mx-auto max-w-[680px] text-[18px] font-semibold text-white/80">
               See what’s possible on your budget in minutes.
             </p>
-            <p className="text-[13px] text-white/70">
+            <p className="text-[16px] font-medium text-white/70">
               * Calculator ranges are estimates; final pricing requires an in-person evaluation.
             </p>
           </div>

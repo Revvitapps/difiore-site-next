@@ -9,7 +9,7 @@ import { fetchGoogleReviews } from "@/lib/googleReviews";
 export const metadata: Metadata = {
   title: "Before & After Project Gallery | DiFiore Builders",
   description:
-    "Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. Explore roofing, siding, kitchen, bathroom, deck, and home addition transformations delivered with high-quality craftsmanship at an agreed-upon price.",
+    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Explore roofing, siding, kitchen, bathroom, deck, and home addition transformations delivered with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
     canonical: "https://difiorebuilders.com/before-and-after",
   },

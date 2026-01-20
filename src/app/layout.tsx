@@ -17,7 +17,8 @@ export const metadata: Metadata = {
   description: "Quality work from the foundation to the roof.",
   openGraph: {
     title: "DiFiore Builders",
-    description: "Quality craftsmanship from the foundation to the roof — serving the Tri-State area since 2003.",
+    description:
+      "Quality craftsmanship from the foundation to the roof — serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003.",
     url: "https://difiorebuilders.com",
     siteName: "DiFiore Builders",
     locale: "en_US",

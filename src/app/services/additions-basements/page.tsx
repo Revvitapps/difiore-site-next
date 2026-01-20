@@ -8,7 +8,7 @@ import ReviewHighlight from "@/components/reviews/ReviewHighlight";
 export const metadata: Metadata = {
   title: "Home Additions, Finished Basements & Decks | DiFiore Builders",
   description:
-    "Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. Second-story additions, first-floor expansions, primary suites, finished basements, and outdoor living decks completed with high-quality craftsmanship at an agreed-upon price.",
+    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Second-story additions, first-floor expansions, primary suites, finished basements, and outdoor living decks completed with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
     canonical: "https://difiorebuilders.com/services/additions-basements",
   },
@@ -21,7 +21,7 @@ export default function AdditionsBasementsPage() {
     <>
       <HeroSection
         title="Additions & Basements"
-        subtitle="Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003."
+        subtitle="Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003."
         blurb="New space that looks like it was always part of your home — from suites and sunrooms to dormers, garages, and fully finished basements."
         imageSrc={HERO}
         chips={["Design–Build", "Permit Ready", "Seamless Tie-ins"]}
@@ -108,7 +108,7 @@ export default function AdditionsBasementsPage() {
           <ReviewHighlight
             label="Homeowner Review"
             fallback={{
-              name: "Homeowner in Chadds Ford",
+              name: "Homeowner in Chadds Ford, PA",
               text:
                 "Our addition looks like it was always part of the house. DiFiore handled permits, structural work, and finishes professionally — on schedule and with great communication.",
               rating: 5,

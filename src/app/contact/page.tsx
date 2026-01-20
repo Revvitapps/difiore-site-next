@@ -32,7 +32,7 @@ export default function ContactPage() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
           <div className="space-y-6">
             <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-6 shadow-[0_25px_60px_rgba(3,6,14,.6)] backdrop-blur">
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-200">Call or text</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-200">Call now</p>
               <a href={PHONE_LINK} className="mt-3 block text-3xl font-semibold text-white hover:text-amber-300 sm:text-4xl">
                 {PHONE_DISPLAY}
               </a>
@@ -43,7 +43,7 @@ export default function ContactPage() {
               <dl className="mt-6 grid gap-4 text-sm text-white/70">
                 <div>
                   <dt className="text-white">Service area</dt>
-                  <dd>Tri-State area with a focus on Chadds Ford, Glen Mills, West Chester, and Wilmington.</dd>
+                  <dd>Chadds Ford, PA, Glen Mills, West Chester, and Wilmington.</dd>
                 </div>
                 <div>
                   <dt className="text-white">Prefer email?</dt>

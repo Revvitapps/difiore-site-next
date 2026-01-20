@@ -84,6 +84,12 @@ export default function Header() {
           >
             Before &amp; After
           </Link>
+          <Link
+            href="/blog"
+            className="text-sm text-zinc-300 hover:text-white"
+          >
+            Blog
+          </Link>
 
           {/* Services dropdown (hover/focus keeps it open) */}
           <div
@@ -211,6 +217,13 @@ export default function Header() {
             Before &amp; After
           </Link>
           <Link
+            href="/blog"
+            className="block text-base font-semibold text-white"
+            onClick={() => setMobileOpen(false)}
+          >
+            Blog
+          </Link>
+          <Link
             href="/services/roofing-siding"
             className="block text-base font-semibold text-white"
             onClick={() => setMobileOpen(false)}
@@ -261,7 +274,7 @@ export default function Header() {
           </Link>
 
           <div className="border-t border-white/10 pt-4 text-[11px] leading-relaxed text-white/40">
-            Family-owned, licensed &amp; insured. Serving the Tri-State Area since 2003.
+            Family-owned, licensed &amp; insured. Serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003.
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ import ReviewHighlight from "@/components/reviews/ReviewHighlight";
 export const metadata: Metadata = {
   title: "Kitchen & Bathroom Remodeling | Cabinets, Tile, Layout Changes",
   description:
-    "Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. Full kitchen gut-and-redesigns, cabinet replacements, appliance upgrades, tile showers, and custom bathrooms delivered with high-quality craftsmanship at an agreed-upon price.",
+    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Full kitchen gut-and-redesigns, cabinet replacements, appliance upgrades, tile showers, and custom bathrooms delivered with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
     canonical: "https://difiorebuilders.com/services/kitchens-bathrooms",
   },
@@ -19,7 +19,7 @@ export default function KitchensBathroomsPage() {
     <>
       <HeroSection
         title="Kitchens & Bathrooms"
-        subtitle="Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003."
+        subtitle="Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003."
         blurb="Smart layouts, durable materials, and beautiful details — from fixture updates to full gut renovations, we handle everything with clean job sites and attentive service."
         imageSrc="/difiore-services-showcase-kitchen-whole.webp"
         chips={["Cabinetry", "Tile & Stone", "Lighting"]}

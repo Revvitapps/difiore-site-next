@@ -5,7 +5,7 @@ import OurStoryHeroClient from "@/components/OurStoryHeroClient";
 export const metadata: Metadata = {
   title: "Our Story | Family-Owned General Contractor Since 2003",
   description:
-    "Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003. We specialize in roofing, siding, additions, kitchens, bathrooms, decks, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price.",
+    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. We specialize in roofing, siding, additions, kitchens, bathrooms, decks, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
     canonical: "https://difiorebuilders.com/our-story",
   },
@@ -29,7 +29,11 @@ export default function OurStoryPage() {
 
         <div className="absolute inset-x-0 bottom-4 px-4">
           <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-3 md:gap-88">
-            {["Third-Generation Builder", "Locally Owned & Licensed", "Serving the Tri-State Area since 2003"].map((t) => (
+            {[
+              "Third-Generation Builder",
+              "Locally Owned & Licensed",
+              "Serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington",
+            ].map((t) => (
               <span
                 key={t}
                 className="rounded-full bg-amber-500/95 px-3 py-1 text-[12px] font-semibold text-zinc-900 shadow"
@@ -51,7 +55,8 @@ export default function OurStoryPage() {
             Our Story
           </h1>
           <p className="mt-2 text-[15px] text-white/85">
-            Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
+            Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester,
+            and Wilmington since 2003.
           </p>
 
           <h2 className="sr-only">Company background</h2>
@@ -66,7 +71,7 @@ export default function OurStoryPage() {
 
             <p>
               That tradition lives on today through <strong>DiFiore Builders Inc.</strong>,
-              a full-service general construction company proudly serving Chadds Ford, Glen Mills,
+              a full-service general construction company proudly serving Chadds Ford, PA, Glen Mills,
               Garnet Valley, Kennett Township, Concord, West Chester, East &amp; West Marlborough,
               Pocopson, West Goshen, and London Grove since 2003. What started with family values
               and a commitment to quality has grown into a trusted local business built on

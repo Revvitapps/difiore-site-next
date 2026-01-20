@@ -62,7 +62,8 @@ export default function BeforeAfterHero() {
             Before &amp; After
           </h1>
           <p className="text-[15px] text-white/90">
-            Family-owned, licensed and insured general contractor serving the Tri-State Area since 2003.
+            Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester,
+            and Wilmington since 2003.
           </p>
           <p className="text-[15px] leading-relaxed text-white/80">
             Real renovations from kitchens to patios — see what makes DiFiore Builders trusted by families across the region.

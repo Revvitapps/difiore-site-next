@@ -22,7 +22,7 @@ export default function HomeContactSection() {
         <div className="space-y-10">
           <div className="mx-auto max-w-3xl space-y-6 rounded-2xl border border-white/10 bg-white/[0.05] p-8 shadow-[0_35px_80px_rgba(0,0,0,.4)] backdrop-blur">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-200 text-center">
-              Call or text
+              Call now
             </p>
             <a
               href={PHONE_LINK}
@@ -38,7 +38,7 @@ export default function HomeContactSection() {
               <div>
                 <dt className="text-white/80 font-semibold">Service area</dt>
                 <dd className="mt-1">
-                  Tri-State area with a focus on Chadds Ford, Glen Mills, West Chester, and Wilmington.
+                  Chadds Ford, PA, Glen Mills, West Chester, and Wilmington.
                 </dd>
               </div>
               <div>

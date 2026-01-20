@@ -28,7 +28,8 @@ export default function Intro() {
             <p className="mt-3 text-[15px] leading-relaxed text-zinc-200">
               Being a small, local team, you can expect nothing less than personalized care and
               attention to detail. We’re proud of our longstanding reputation as your one-call solution
-              here in the Tri-State Area. Get in touch anytime for a quote — we’re always happy to help.
+              in Chadds Ford, PA, Glen Mills, West Chester, and Wilmington. Get in touch anytime for a quote — we’re
+              always happy to help.
             </p>
 
             {/* add a tiny spacer so the card feels balanced if copy is short */}

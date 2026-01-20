@@ -244,7 +244,7 @@ export function ContactForm() {
           autoComplete="street-address"
           value={formState.address}
           onChange={handleChange}
-          placeholder="123 Woodworking Way, Chadds Ford"
+          placeholder="123 Woodworking Way, Chadds Ford, PA"
         />
       </label>
 
