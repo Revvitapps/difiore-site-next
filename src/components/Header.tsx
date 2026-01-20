@@ -84,12 +84,6 @@ export default function Header() {
           >
             Before &amp; After
           </Link>
-          <Link
-            href="/blog"
-            className="text-sm text-zinc-300 hover:text-white"
-          >
-            Blog
-          </Link>
 
           {/* Services dropdown (hover/focus keeps it open) */}
           <div
@@ -215,13 +209,6 @@ export default function Header() {
             onClick={() => setMobileOpen(false)}
           >
             Before &amp; After
-          </Link>
-          <Link
-            href="/blog"
-            className="block text-base font-semibold text-white"
-            onClick={() => setMobileOpen(false)}
-          >
-            Blog
           </Link>
           <Link
             href="/services/roofing-siding"
