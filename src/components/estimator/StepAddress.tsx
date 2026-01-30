@@ -61,7 +61,7 @@ type StepAddressProps = {
 export default function StepAddress({ state, setState }: StepAddressProps) {
   const addressInputRef = useRef<HTMLInputElement | null>(null);
   const [autocompleteLoaded, setAutocompleteLoaded] = useState(false);
-  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadNotice, setLoadNotice] = useState<string | null>(null);
 
   function updateAddress<K extends keyof EstimatorStateLike['address']>(
     key: K,
@@ -79,7 +79,7 @@ export default function StepAddress({ state, setState }: StepAddressProps) {
   useEffect(() => {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
     if (!apiKey) {
-      setLoadError('Google Places API key missing. Autocomplete is disabled.');
+      setLoadNotice('Autocomplete is unavailable. Manual address entry is enabled.');
       return;
     }
 
@@ -98,6 +98,7 @@ export default function StepAddress({ state, setState }: StepAddressProps) {
         });
 
         setAutocompleteLoaded(true);
+        setLoadNotice(null);
 
         listener = instance.addListener('place_changed', () => {
           const place = instance.getPlace?.();
@@ -129,10 +130,10 @@ export default function StepAddress({ state, setState }: StepAddressProps) {
             },
           }));
         });
-      })
+    })
       .catch((error) => {
         console.error('Failed to initialise Google Places autocomplete', error);
-        setLoadError('Unable to load Google Places autocomplete. Check API key & quotas.');
+        setLoadNotice('Autocomplete is unavailable. Manual address entry is enabled.');
       });
 
     return () => {
@@ -144,15 +145,15 @@ export default function StepAddress({ state, setState }: StepAddressProps) {
     <div className="space-y-6 text-white">
       <div className="rounded-2xl border border-white/10 bg-[rgba(12,14,22,.7)] p-6 backdrop-blur-md">
         <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">
-          Step 2 • Project Address
+          Step 3 • Project Address
         </div>
         <h3 className="mt-2 text-2xl font-bold">Where is the work happening?</h3>
         <p className="mt-2 text-sm text-white/60">
           We use this to confirm service coverage and prep the right crew. You can adjust any field
           manually if needed.
         </p>
-        {loadError && (
-          <p className="mt-3 text-xs text-amber-300/80">{loadError}</p>
+        {loadNotice && (
+          <p className="mt-3 text-xs text-white/60">{loadNotice}</p>
         )}
 
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
@@ -213,9 +214,11 @@ export default function StepAddress({ state, setState }: StepAddressProps) {
       </div>
 
       <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-[12px] text-white/60 leading-relaxed">
-        We only use your address to scope the project.{' '}
-        {autocompleteLoaded ? '' : 'Autocomplete is optional—feel free to type it in manually. '}
-        You&rsquo;ll see your estimate next, then you can share contact info to schedule a visit.
+        We only use your address to confirm service coverage and send your estimate.{' '}
+        {autocompleteLoaded
+          ? 'Start typing to see suggestions, or enter it manually.'
+          : 'Autocomplete is optional—manual entry always works.'}{' '}
+        Your estimate is already on screen—add your address so we can email it to you.
       </div>
     </div>
   );

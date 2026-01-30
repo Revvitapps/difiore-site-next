@@ -193,6 +193,47 @@ export default function ProjectCalculatorClient() {
     breakdownLines: [],
   };
 
+  const renderEstimateSummary = (heading: string) => (
+    <div className="rounded-xl border border-white/10 bg-white/[0.02] ring-1 ring-white/5 p-4 text-center">
+      <div className="text-[11px] uppercase tracking-wide font-semibold text-amber-300 mb-2">
+        {heading}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+        <div className="rounded-lg border border-white/15 bg-black/20 p-4">
+          <div className="text-xs font-medium text-white/80">Conservative</div>
+          <div className="text-lg font-bold text-green-400 mt-1">
+            {formatUsd(estimateForDisplay.conservative)}
+          </div>
+        </div>
+
+        <div className="rounded-lg border border-amber-400/40 bg-black/30 p-4 ring-2 ring-amber-400/60 shadow-[0_0_30px_rgba(251,191,36,.4)]">
+          <div className="text-xs font-medium text-white/80">Most Likely</div>
+          <div className="text-lg font-extrabold text-amber-300 mt-1">
+            {formatUsd(estimateForDisplay.likely)}
+          </div>
+        </div>
+
+        <div className="rounded-lg border border-white/20 bg-black/20 p-4">
+          <div className="text-xs font-medium text-white/80">Premium</div>
+          <div className="text-lg font-bold text-red-400 mt-1">
+            {formatUsd(estimateForDisplay.premium)}
+          </div>
+        </div>
+      </div>
+
+      {estimateForDisplay.breakdownLines?.length ? (
+        <div className="mt-4 text-[11px] text-white/50 leading-relaxed">
+          {estimateForDisplay.breakdownLines.map((line: string, idx: number) => (
+            <div key={idx}>{line}</div>
+          ))}
+          <div className="mt-2 text-white/40">
+            Final quote requires a site visit (structure/utilities/permits).
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+
   const zipIsValid = Boolean((state.address?.zip ?? '').trim().length >= 5);
 
   useLeadFormTracking({
@@ -218,6 +259,11 @@ export default function ProjectCalculatorClient() {
 
       if (!state.project) {
         setSubmitError('Select a project type before submitting.');
+        return;
+      }
+
+      if (!zipIsValid) {
+        setSubmitError('Add at least a ZIP code so we can send your estimate.');
         return;
       }
 
@@ -284,7 +330,7 @@ export default function ProjectCalculatorClient() {
         step: state.step,
       });
 
-      setState((prev) => ({ ...prev, step: 5 }));
+      setState((prev) => ({ ...prev, step: 4 }));
     } catch (error) {
       console.error('Estimator submission failed', error);
       const message =
@@ -360,39 +406,6 @@ export default function ProjectCalculatorClient() {
           {/* STEP 2 */}
           {state.step === 2 && (
             <>
-              <StepAddress state={state} setState={setState} />
-
-              <div className="flex flex-col gap-4 pt-4 sm:flex-row">
-                <button
-                  className="flex-1 rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 transition hover:bg-white/10"
-                  onClick={() => setState({ ...state, step: 1 })}
-                >
-                  ← Back
-                </button>
-                <button
-                  className={[
-                    'flex-1 rounded-lg px-4 py-3 text-sm font-semibold transition',
-                    zipIsValid
-                      ? 'border border-amber-400/40 bg-amber-500/10 text-amber-300 ring-1 ring-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,.35)] hover:bg-amber-500/20'
-                      : 'border border-white/15 bg-white/5 text-white/40 cursor-not-allowed',
-                  ].join(' ')}
-                  onClick={() => zipIsValid && setState({ ...state, step: 3 })}
-                  disabled={!zipIsValid}
-                >
-                  Next →
-                </button>
-              </div>
-              {!zipIsValid && (
-                <p className="text-xs text-white/60">
-                  Add at least a ZIP code so we can confirm service coverage before moving on.
-                </p>
-              )}
-            </>
-          )}
-
-          {/* STEP 3 */}
-          {state.step === 3 && (
-            <>
               <StepDetails
                 project={state.project}
                 details={state.details}
@@ -411,13 +424,13 @@ export default function ProjectCalculatorClient() {
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <button
                   className="flex-1 rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 hover:bg-white/10"
-                  onClick={() => setState({ ...state, step: 2 })}
+                  onClick={() => setState({ ...state, step: 1 })}
                 >
                   ← Back
                 </button>
                 <button
                   className="flex-1 rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-sm font-semibold text-amber-300 ring-1 ring-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,.35)] transition hover:bg-amber-500/20"
-                  onClick={() => setState({ ...state, step: 4 })}
+                  onClick={() => setState({ ...state, step: 3 })}
                 >
                   Next →
                 </button>
@@ -425,17 +438,24 @@ export default function ProjectCalculatorClient() {
             </>
           )}
 
-          {/* STEP 4 */}
-          {state.step === 4 && (
+          {/* STEP 3 */}
+          {state.step === 3 && (
             <>
-              <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">
-                Step 4 • How can we reach you?
+              <StepAddress state={state} setState={setState} />
+              {!zipIsValid && (
+                <p className="text-xs text-white/60">
+                  Add at least a ZIP code so we can confirm service coverage and email your estimate.
+                </p>
+              )}
+
+              {renderEstimateSummary('Your Estimate')}
+
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-white">Where should we send it?</h2>
+                <p className="text-sm text-white/60 max-w-2xl">
+                  Add the best contact details and we&rsquo;ll email this estimate plus next steps.
+                </p>
               </div>
-              <h2 className="text-2xl font-bold text-white">Lock in a consult</h2>
-              <p className="text-sm text-white/60 max-w-2xl">
-                Share the best contact info and our team will call or email with next steps. Need a
-                human right away? Tap “Speak to an Agent” in the corner for email or phone call options.
-              </p>
 
               <ContactForm
                 state={state}
@@ -448,7 +468,7 @@ export default function ProjectCalculatorClient() {
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <button
                   className="flex-1 rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 hover:bg-white/10"
-                  onClick={() => setState({ ...state, step: 3 })}
+                  onClick={() => setState({ ...state, step: 2 })}
                 >
                   ← Back
                 </button>
@@ -456,11 +476,11 @@ export default function ProjectCalculatorClient() {
             </>
           )}
 
-          {/* STEP 5 */}
-          {state.step === 5 && (
+          {/* STEP 4 */}
+          {state.step === 4 && (
             <>
               <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">
-                Step 5 • Sent
+                Step 4 • Sent
               </div>
               <h2 className="text-2xl font-bold text-white">You’re all set ✅</h2>
               <p className="text-sm text-white/60 max-w-2xl">
@@ -468,44 +488,7 @@ export default function ProjectCalculatorClient() {
                 final quote. No obligation.
               </p>
 
-              <div className="rounded-xl border border-white/10 bg-white/[0.02] ring-1 ring-white/5 p-4 text-center">
-                <div className="text-[11px] uppercase tracking-wide font-semibold text-amber-300 mb-2">
-                  Your Estimate
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                  <div className="rounded-lg border border-white/15 bg-black/20 p-4">
-                    <div className="text-xs font-medium text-white/80">Conservative</div>
-                    <div className="text-lg font-bold text-green-400 mt-1">
-                      {formatUsd(estimateForDisplay.conservative)}
-                    </div>
-                  </div>
-
-                  <div className="rounded-lg border border-amber-400/40 bg-black/30 p-4 ring-2 ring-amber-400/60 shadow-[0_0_30px_rgba(251,191,36,.4)]">
-                    <div className="text-xs font-medium text-white/80">Most Likely</div>
-                    <div className="text-lg font-extrabold text-amber-300 mt-1">
-                      {formatUsd(estimateForDisplay.likely)}
-                    </div>
-                  </div>
-
-                  <div className="rounded-lg border border-white/20 bg-black/20 p-4">
-                    <div className="text-xs font-medium text-white/80">Premium</div>
-                    <div className="text-lg font-bold text-red-400 mt-1">
-                      {formatUsd(estimateForDisplay.premium)}
-                    </div>
-                  </div>
-                </div>
-
-                {estimateForDisplay.breakdownLines?.length ? (
-                  <div className="mt-4 text-[11px] text-white/50 leading-relaxed">
-                    {estimateForDisplay.breakdownLines.map((line: string, idx: number) => (
-                      <div key={idx}>{line}</div>
-                    ))}
-                    <div className="mt-2 text-white/40">
-                      Final quote requires a site visit (structure/utilities/permits).
-                    </div>
-                  </div>
-                ) : null}
-              </div>
+              {renderEstimateSummary('Your Estimate')}
             </>
           )}
         </section>
