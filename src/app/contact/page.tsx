@@ -40,16 +40,6 @@ export default function ContactPage() {
                 We keep this line open during the workday. If we miss you, leave a quick note and the same team that monitors
                 the estimator will call right back.
               </p>
-              <dl className="mt-6 grid gap-4 text-sm text-white/70">
-                <div>
-                  <dt className="text-white">Service area</dt>
-                  <dd>Chadds Ford, PA, Glen Mills, West Chester, and Wilmington.</dd>
-                </div>
-                <div>
-                  <dt className="text-white">Prefer email?</dt>
-                  <dd>The same inbox that powers our estimator monitors this form for a same-day response.</dd>
-                </div>
-              </dl>
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#1f2937] via-[#0f172a] to-black p-6 shadow-[0_25px_60px_rgba(2,6,23,.6)]">
@@ -67,7 +57,21 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <ContactForm />
+          <div className="space-y-6">
+            <ContactForm />
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-sm text-white/70">
+              <dl className="grid gap-6 md:grid-cols-2">
+                <div>
+                  <dt className="text-white">Service area</dt>
+                  <dd>Chadds Ford, PA, Glen Mills, PA, and the surrounding area.</dd>
+                </div>
+                <div>
+                  <dt className="text-white">Prefer email?</dt>
+                  <dd>The same inbox that powers our estimator monitors this form for a same-day response.</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
         </div>
       </section>
 

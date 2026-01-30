@@ -19,55 +19,59 @@ export default function HomeContactSection() {
           </p>
         </header>
 
-        <div className="space-y-10">
-          <div className="mx-auto max-w-3xl space-y-6 rounded-2xl border border-white/10 bg-white/[0.05] p-8 shadow-[0_35px_80px_rgba(0,0,0,.4)] backdrop-blur">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-200 text-center">
-              Call now
-            </p>
-            <a
-              href={PHONE_LINK}
-              className="text-center text-4xl font-bold tracking-tight text-white underline-offset-4 hover:text-amber-300 sm:text-5xl"
-            >
-              {PHONE_DISPLAY}
-            </a>
-            <p className="text-center text-sm text-white/70">
-              We keep this line open during work hours. If we miss you, leave a quick note and the estimator team
-              will call back shortly.
-            </p>
-            <dl className="grid text-sm text-white/70 lg:grid-cols-2">
-              <div>
-                <dt className="text-white/80 font-semibold">Service area</dt>
-                <dd className="mt-1">
-                  Chadds Ford, PA, Glen Mills, West Chester, and Wilmington.
-                </dd>
+        <div className="rounded-3xl border border-white/10 bg-zinc-900/80 p-6 shadow-[0_35px_80px_rgba(0,0,0,.5)] backdrop-blur md:p-10">
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-200">
+                  Call now
+                </p>
+                <a
+                  href={PHONE_LINK}
+                  className="block text-4xl font-bold tracking-tight text-white underline-offset-4 hover:text-amber-300 sm:text-5xl"
+                >
+                  {PHONE_DISPLAY}
+                </a>
+                <p className="text-sm text-white/70">
+                  We keep this line open during work hours. If we miss you, leave a quick note and the estimator team
+                  will call back shortly.
+                </p>
               </div>
-              <div>
-                <dt className="text-white/80 font-semibold">Prefer to email?</dt>
-                <dd className="mt-1">
-                  The same inbox that powers the estimator monitors this form for a next business-day response.
-                </dd>
-              </div>
-            </dl>
-          </div>
 
-          <div className="mx-auto max-w-4xl">
-            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#1f2937] via-[#0f172a] to-black p-6 shadow-[0_25px_60px_rgba(2,6,23,.6)]">
-              <h3 className="text-xl font-semibold text-white">Need ballpark numbers first?</h3>
-              <p className="mt-3 text-sm text-white/70">
-                The cost estimator follows the same questions our project specialists ask on-site—launch it to lock in
-                a quick scope before we visit.
-              </p>
-              <Link
-                href="/project-calculator"
-                className="mt-4 inline-flex items-center justify-center rounded-full bg-amber-400 px-4 py-2 text-sm font-semibold text-zinc-950 shadow hover:bg-amber-300"
-              >
-                Launch the estimator
-              </Link>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-5">
+                <h3 className="text-lg font-semibold text-white">Need ballpark numbers first?</h3>
+                <p className="mt-2 text-sm text-white/70">
+                  The cost estimator follows the same questions our project specialists ask on-site—launch it to lock in
+                  a quick scope before we visit.
+                </p>
+                <Link
+                  href="/project-calculator"
+                  className="mt-4 inline-flex items-center justify-center rounded-full bg-amber-400 px-4 py-2 text-sm font-semibold text-zinc-950 shadow hover:bg-amber-300"
+                >
+                  Launch the estimator
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <div className="mx-auto w-full max-w-5xl">
-            <ContactForm />
+            <div className="space-y-6">
+              <ContactForm />
+              <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 text-sm text-white/70">
+                <dl className="grid gap-6 md:grid-cols-2">
+                  <div>
+                    <dt className="text-white/80 font-semibold">Service area</dt>
+                    <dd className="mt-1">
+                      Chadds Ford, PA, Glen Mills, PA, and the surrounding area.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-white/80 font-semibold">Prefer to email?</dt>
+                    <dd className="mt-1">
+                      The same inbox that powers the estimator monitors this form for a next business-day response.
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { heroBackground } from "@/lib/theme";
+import TrustedBadges from "@/components/TrustedBadges";
 
 export default function Hero() {
   const heroBg = heroBackground;
@@ -49,7 +50,7 @@ export default function Hero() {
               The DiFiore Difference
             </h1>
 
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:mt-8 sm:gap-4">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:mt-12 sm:gap-5">
               <Link
                 href="/project-calculator"
                 className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
@@ -72,20 +73,14 @@ export default function Hero() {
 
             <a
               href="tel:+16103585433"
-              className="mt-4 inline-flex items-center justify-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-amber-300/90 hover:text-amber-300 sm:mt-5 sm:text-[14px]"
+              className="mt-8 inline-flex items-center justify-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-amber-300/90 hover:text-amber-300 sm:mt-9 sm:text-[14px]"
             >
               Call now (610) 358-5433
             </a>
-            <p className="mt-4 mx-auto max-w-[680px] text-[16px] font-semibold leading-relaxed text-white/90 sm:text-[18px]">
-              Family-owned, licensed &amp; insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester,
-              and Wilmington since 2003.
+            <p className="mt-5 mx-auto max-w-[680px] text-[17px] font-bold leading-relaxed text-white/90 sm:text-[20px]">
+              Plan your next project in minutes.
             </p>
-            <p className="mt-2 mx-auto max-w-[680px] text-[16px] font-semibold leading-relaxed text-white/80 sm:text-[18px]">
-              See what’s possible on your budget in minutes.
-            </p>
-            <p className="text-[14px] font-medium text-white/70 sm:text-[16px]">
-              * Calculator ranges are estimates; final pricing requires an in-person evaluation.
-            </p>
+            <TrustedBadges compact className="pt-12" />
           </div>
         </div>
       </div>

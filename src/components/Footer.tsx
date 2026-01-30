@@ -100,7 +100,7 @@ export default function Footer() {
 
         <div className="flex flex-col gap-2 text-xs text-zinc-400 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} DiFiore Builders.</p>
-          <p>Family-owned, licensed &amp; insured. Serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003.</p>
+          <p>Family-owned, licensed &amp; insured. Serving Chadds Ford, PA, Glen Mills, PA, and the surrounding area since 2003.</p>
         </div>
       </div>
     </footer>

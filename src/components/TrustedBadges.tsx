@@ -3,11 +3,23 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
-export default function TrustedBadges() {
+type TrustedBadgesProps = {
+  compact?: boolean;
+  className?: string;
+};
+
+export default function TrustedBadges({ compact = false, className }: TrustedBadgesProps) {
   const prefersReducedMotion = useReducedMotion();
+  const sectionPadding = compact ? "py-6 md:py-8" : "py-12 md:py-16";
+  const cardPadding = compact ? "p-3" : "p-4";
+  const imageHeight = compact ? "h-16" : "h-24";
+  const gridCols = compact ? "grid-cols-[180px_1fr]" : "grid-cols-[220px_1fr]";
 
   return (
-    <section aria-label="Trusted & Verified" className="relative z-10 px-4 py-12 md:py-16">
+    <section
+      aria-label="Trusted & Verified"
+      className={`relative z-10 px-4 ${sectionPadding} ${className ?? ""}`}
+    >
       <div className="mx-auto max-w-6xl">
         {/* Header with lines */}
         <div className="mb-6 flex items-center justify-center gap-4">
@@ -33,17 +45,17 @@ export default function TrustedBadges() {
               href="https://www.bbb.org/us/pa/chadds-ford/profile/general-contractor/difiore-builders-inc-0241-191952896#accreditation"
               target="_blank"
               rel="noopener noreferrer"
-              className="group block rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,.08)] transition-all duration-200 will-change-transform hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,.12)]"
+              className={`group block rounded-2xl border border-zinc-200 bg-white ${cardPadding} shadow-[0_8px_24px_rgba(0,0,0,.08)] transition-all duration-200 will-change-transform hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,.12)]`}
               aria-label="View DiFiore Builders on BBB (Accredited Business)"
             >
-              <div className="grid grid-cols-[220px_1fr] items-center gap-4">
+              <div className={`grid ${gridCols} items-center gap-4`}>
                 <div className="grid place-items-center">
                   <Image
                     src="https://m.bbb.org/terminuscontent/dist/img/business-profile/accreditation/AB-seal-horz.svg?tx=f_svg,w_640"
                     alt="BBB Accredited Business"
                     width={260}
                     height={96}
-                    className="h-24 w-auto"
+                    className={`${imageHeight} w-auto`}
                   />
                 </div>
                 <div className="min-w-0">
@@ -71,17 +83,17 @@ export default function TrustedBadges() {
               href="https://www.houzz.com/professionals/general-contractors/difiore-builders-inc-pfvwus-pf~1479707423"
               target="_blank"
               rel="noopener noreferrer"
-              className="group block rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,.08)] transition-all duration-200 will-change-transform hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,.12)]"
+              className={`group block rounded-2xl border border-zinc-200 bg-white ${cardPadding} shadow-[0_8px_24px_rgba(0,0,0,.08)] transition-all duration-200 will-change-transform hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,.12)]`}
               aria-label="View DiFiore Builders on Houzz"
             >
-              <div className="grid grid-cols-[220px_1fr] items-center gap-4">
+              <div className={`grid ${gridCols} items-center gap-4`}>
                 <div className="grid place-items-center">
                   <Image
                     src="https://img1.wsimg.com/isteam/ip/111e2203-c8e6-4588-acfc-521f62348879/houzz1.png"
                     alt="Houzz"
                     width={200}
                     height={200}
-                    className="h-24 w-auto"
+                    className={`${imageHeight} w-auto`}
                   />
                 </div>
                 <div className="min-w-0">

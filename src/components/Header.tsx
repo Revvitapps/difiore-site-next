@@ -274,7 +274,7 @@ export default function Header() {
           </Link>
 
           <div className="border-t border-white/10 pt-4 text-[11px] leading-relaxed text-white/40">
-            Family-owned, licensed &amp; insured. Serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003.
+            Family-owned, licensed &amp; insured since 2003.
           </div>
         </div>
       </div>

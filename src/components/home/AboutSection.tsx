@@ -36,8 +36,7 @@ export default function AboutSection() {
             </p>
             <p>
               As a small, local team, you get personal service and attention to detail.
-              We’re proud of our reputation as your one-call solution in Chadds Ford, PA, Glen Mills, West Chester,
-              and Wilmington.
+              We’re proud of our reputation as your one-call solution for remodeling, roofing, additions, and exterior upgrades.
               Get in touch for a quote — we’re happy to help.
             </p>
           </div>

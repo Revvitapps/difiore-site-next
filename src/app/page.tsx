@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import TrustedBadges from "@/components/TrustedBadges";
 import Reviews from "@/components/Reviews";
 import Hero from "@/components/Hero";
 import PillarsSection from "@/components/home/PillarsSection";
@@ -11,7 +10,7 @@ import HomeContactSection from "@/components/HomeContactSection";
 export const metadata: Metadata = {
   title: "Home Remodeling, Roofing & Additions | DiFiore Builders | Chadds Ford, PA",
   description:
-    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Roofing, siding, decks, additions, kitchens, bathrooms, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price.",
+    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, PA, and the surrounding area since 2003. Roofing, siding, decks, additions, kitchens, bathrooms, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
     canonical: "https://difiorebuilders.com/",
   },
@@ -23,7 +22,7 @@ const localBusinessJsonLd = {
   name: "DiFiore Builders Inc.",
   url: "https://difiorebuilders.com",
   telephone: "+1-610-358-5433",
-  areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
+  areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "Surrounding areas"],
   foundingDate: "2003",
   slogan: "Quality work from the foundation to the roof",
   sameAs: [
@@ -39,7 +38,7 @@ export default function Page() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: localBusinessJson }} />
       <Hero />
-      <section className="mb-16 md:mb-24">
+      <section className="mt-16 mb-16 md:mt-24 md:mb-24">
         <PillarsSection />
       </section>
       <section className="mt-8 md:mt-12">
@@ -48,7 +47,6 @@ export default function Page() {
       <ServicesIntro />
       <Services />
       <Reviews />
-      <TrustedBadges />
       <HomeContactSection />
     </>
   );
