@@ -174,13 +174,13 @@ export default function ConcordKannapolisLanding({
             ))}
           </div>
 
-          <div className="mt-14 md:mt-16">
-            <TrustedBadges compact />
+          <div className="mt-16 md:mt-20">
+            <TrustedBadges compact className="pt-6 pb-2 md:pt-8 md:pb-3" />
           </div>
         </motion.div>
       </section>
 
-      <section className="px-4 pb-6 -mt-10 md:-mt-16">
+      <section className="px-4 pb-6 -mt-16 md:-mt-24">
         <motion.div
           initial={baseInitial}
           whileInView={baseAnimate}
