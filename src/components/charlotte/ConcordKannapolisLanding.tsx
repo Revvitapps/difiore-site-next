@@ -95,7 +95,9 @@ export default function ConcordKannapolisLanding({
   const baseInitial = prefersReducedMotion ? false : { opacity: 0, y: 28 };
   const baseAnimate = prefersReducedMotion ? {} : { opacity: 1, y: 0 };
   const baseTransition = (delay = 0) =>
-    prefersReducedMotion ? undefined : { duration: 0.75, ease: "easeOut", delay };
+    prefersReducedMotion
+      ? undefined
+      : { duration: 0.75, ease: [0.16, 1, 0.3, 1], delay };
   const copy = VARIANT_COPY[variant];
 
   return (
