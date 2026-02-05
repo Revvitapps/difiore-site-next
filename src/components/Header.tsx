@@ -90,6 +90,12 @@ export default function Header() {
           >
             Blog
           </Link>
+          <Link
+            href="/charlotte/concord-kannapolis"
+            className="text-sm text-zinc-300 hover:text-white"
+          >
+            Charlotte
+          </Link>
 
           {/* Services dropdown (hover/focus keeps it open) */}
           <div
@@ -222,6 +228,13 @@ export default function Header() {
             onClick={() => setMobileOpen(false)}
           >
             Blog
+          </Link>
+          <Link
+            href="/charlotte/concord-kannapolis"
+            className="block text-base font-semibold text-white"
+            onClick={() => setMobileOpen(false)}
+          >
+            Charlotte
           </Link>
           <Link
             href="/services/roofing-siding"

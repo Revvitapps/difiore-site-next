@@ -93,6 +93,7 @@ export default function Footer() {
             <Link href="/our-story" className="hover:text-white">Our Story</Link>
             <Link href="/before-and-after" className="hover:text-white">Before &amp; After</Link>
             <Link href="/blog" className="hover:text-white">Blog</Link>
+            <Link href="/charlotte/concord-kannapolis" className="hover:text-white">Charlotte</Link>
             <Link href="/project-calculator" className="hover:text-white">Project Calculator</Link>
             <Link href="/contact" className="hover:text-white">Contact</Link>
           </nav>
