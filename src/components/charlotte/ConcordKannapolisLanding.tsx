@@ -45,6 +45,8 @@ const steps = [
 ];
 
 type LandingVariant = "default" | "meta" | "lsa";
+const CHARLOTTE_PHONE_DISPLAY = "(980) 946-6791";
+const CHARLOTTE_PHONE_TEL = "tel:+19809466791";
 
 const VARIANT_COPY: Record<
   LandingVariant,
@@ -64,7 +66,7 @@ const VARIANT_COPY: Record<
     support:
       "We are expanding into the Charlotte metro while continuing to serve our Pennsylvania clients.",
     primaryCta: "Get a Charlotte Estimate",
-    secondaryCta: "Call Now (610) 358-5433",
+    secondaryCta: `Call Now ${CHARLOTTE_PHONE_DISPLAY}`,
   },
   meta: {
     eyebrow: "Charlotte Metro Expansion",
@@ -73,7 +75,7 @@ const VARIANT_COPY: Record<
     support:
       "Quick cost ranges, clear timelines, and clean job sites from a family-owned team.",
     primaryCta: "Get My Estimate",
-    secondaryCta: "Call Now",
+    secondaryCta: `Call Now ${CHARLOTTE_PHONE_DISPLAY}`,
   },
   lsa: {
     eyebrow: "Concord & Kannapolis, NC",
@@ -82,7 +84,7 @@ const VARIANT_COPY: Record<
     support:
       "We are expanding to Charlotte metro while keeping our PA crews fully active.",
     primaryCta: "Start My Estimate",
-    secondaryCta: "Call for a Quote",
+    secondaryCta: `Call Now ${CHARLOTTE_PHONE_DISPLAY}`,
   },
 };
 
@@ -152,7 +154,7 @@ export default function ConcordKannapolisLanding({
               {copy.primaryCta}
             </Link>
             <a
-              href="tel:+16103585433"
+              href={CHARLOTTE_PHONE_TEL}
               className="inline-flex w-full items-center justify-center rounded-md border border-white/40 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 sm:w-auto"
             >
               {copy.secondaryCta}
@@ -317,7 +319,7 @@ export default function ConcordKannapolisLanding({
               Start My Estimate
             </Link>
             <a
-              href="tel:+16103585433"
+              href={CHARLOTTE_PHONE_TEL}
               className="inline-flex w-full items-center justify-center rounded-md border border-white/40 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 sm:w-auto"
             >
               Call Now

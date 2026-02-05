@@ -3,8 +3,19 @@ import { ContactForm } from "@/components/ContactForm";
 
 const PHONE_DISPLAY = "(610) 358-5433";
 const PHONE_LINK = "tel:+16103585433";
+const SERVICE_AREA_DEFAULT = "Chadds Ford, PA, Glen Mills, PA, and the surrounding area.";
 
-export default function HomeContactSection() {
+type HomeContactSectionProps = {
+  phoneDisplay?: string;
+  phoneLink?: string;
+  serviceArea?: string;
+};
+
+export default function HomeContactSection({
+  phoneDisplay = PHONE_DISPLAY,
+  phoneLink = PHONE_LINK,
+  serviceArea = SERVICE_AREA_DEFAULT,
+}: HomeContactSectionProps) {
   return (
     <section id="contact" className="bg-gradient-to-b from-zinc-950 via-zinc-900 to-black text-white">
       <div className="mx-auto max-w-6xl px-4 py-16 lg:py-20">
@@ -27,10 +38,10 @@ export default function HomeContactSection() {
                   Call now
                 </p>
                 <a
-                  href={PHONE_LINK}
+                  href={phoneLink}
                   className="block text-4xl font-bold tracking-tight text-white underline-offset-4 hover:text-amber-300 sm:text-5xl"
                 >
-                  {PHONE_DISPLAY}
+                  {phoneDisplay}
                 </a>
                 <p className="text-sm text-white/70">
                   We keep this line open during work hours. If we miss you, leave a quick note and the estimator team
@@ -59,9 +70,7 @@ export default function HomeContactSection() {
                 <dl className="grid gap-6 md:grid-cols-2">
                   <div>
                     <dt className="text-white/80 font-semibold">Service area</dt>
-                    <dd className="mt-1">
-                      Chadds Ford, PA, Glen Mills, PA, and the surrounding area.
-                    </dd>
+                    <dd className="mt-1">{serviceArea}</dd>
                   </div>
                   <div>
                     <dt className="text-white/80 font-semibold">Prefer to email?</dt>
