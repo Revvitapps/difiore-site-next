@@ -61,10 +61,10 @@ const VARIANT_COPY: Record<
 > = {
   default: {
     eyebrow: "Now Serving Concord & Kannapolis, NC",
-    headline: "Concord-Kannapolis remodeling starts here",
+    headline: "Concord & Kannapolis General Contractor for Home Remodeling",
     lead: "Licensed in North Carolina and backed by 20+ years of remodeling experience since 2003.",
     support:
-      "We are expanding into the Charlotte metro while continuing to serve our Pennsylvania clients.",
+      "Our owner is now based in Kannapolis, and we are expanding across Cabarrus County while continuing to serve Pennsylvania clients.",
     primaryCta: "Get a Charlotte Estimate",
     secondaryCta: `Call Now ${CHARLOTTE_PHONE_DISPLAY}`,
   },
@@ -119,7 +119,7 @@ export default function ConcordKannapolisLanding({
         <div className="relative h-full w-full">
           <Image
             src={heroBackground.imageSrc}
-            alt="DiFiore Builders exterior renovation"
+            alt="Home remodeling and roofing work by DiFiore Builders in Concord and Kannapolis, NC"
             priority
             fill
             sizes="100vw"
