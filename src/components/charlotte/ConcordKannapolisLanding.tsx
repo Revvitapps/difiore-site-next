@@ -90,8 +90,10 @@ const VARIANT_COPY: Record<
 
 export default function ConcordKannapolisLanding({
   variant = "default",
+  reviewUrl,
 }: {
   variant?: LandingVariant;
+  reviewUrl?: string;
 }) {
   const prefersReducedMotion = useReducedMotion();
   const baseInitial = prefersReducedMotion ? false : { opacity: 0, y: 28 };
@@ -190,7 +192,7 @@ export default function ConcordKannapolisLanding({
           viewport={{ once: true, amount: 0.25 }}
           className="mx-auto w-full max-w-6xl"
         >
-          <Reviews />
+          <Reviews reviewUrl={reviewUrl} />
         </motion.div>
       </section>
 

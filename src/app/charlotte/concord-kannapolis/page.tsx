@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function ConcordKannapolisLandingPage() {
   return (
     <>
-      <ConcordKannapolisLanding />
+      <ConcordKannapolisLanding reviewUrl="https://g.page/r/CabSGkj6zxcpEAI/review" />
       <HomeContactSection
         phoneDisplay={CHARLOTTE_PHONE_DISPLAY}
         phoneLink={CHARLOTTE_PHONE_LINK}

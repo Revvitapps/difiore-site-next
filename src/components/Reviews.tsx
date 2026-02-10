@@ -43,8 +43,16 @@ const PLACE_ID = process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID?.trim() || '';
 const CUSTOM_REVIEW_URL = process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL?.trim() || '';
 const TEXT_LIMIT = 220;
 
-export default function Reviews() {
-  const googleReviewUrl = CUSTOM_REVIEW_URL || (PLACE_ID ? `https://search.google.com/local/writereview?placeid=${PLACE_ID}` : null);
+type ReviewsProps = {
+  reviewUrl?: string;
+};
+
+export default function Reviews({ reviewUrl }: ReviewsProps) {
+  const pageReviewUrl = reviewUrl?.trim() || '';
+  const googleReviewUrl =
+    pageReviewUrl ||
+    CUSTOM_REVIEW_URL ||
+    (PLACE_ID ? `https://search.google.com/local/writereview?placeid=${PLACE_ID}` : null);
   const useMock = process.env.NEXT_PUBLIC_REVIEWS_MOCK === '1';
   const [reviews, setReviews] = useState<Review[]>(MOCK);
   const [avg, setAvg] = useState<number>(5);
