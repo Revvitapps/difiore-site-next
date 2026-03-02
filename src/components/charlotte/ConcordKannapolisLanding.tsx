@@ -3,9 +3,9 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 import { heroBackground } from "@/lib/theme";
-import Reviews from "@/components/Reviews";
 import TrustedBadges from "@/components/TrustedBadges";
 
 const highlights = [
@@ -47,6 +47,10 @@ const steps = [
 type LandingVariant = "default" | "meta" | "lsa";
 const CHARLOTTE_PHONE_DISPLAY = "(980) 946-6791";
 const CHARLOTTE_PHONE_TEL = "tel:9809466791";
+const Reviews = dynamic(() => import("@/components/Reviews"), {
+  ssr: false,
+  loading: () => <div className="mx-auto w-full max-w-6xl min-h-[280px]" aria-hidden />,
+});
 
 const VARIANT_COPY: Record<
   LandingVariant,
@@ -115,14 +119,16 @@ export default function ConcordKannapolisLanding({
         } as CSSProperties
       }
     >
-      <div className="pointer-events-none fixed inset-0 -z-20">
+      <div className="pointer-events-none absolute inset-0 -z-20">
         <div className="relative h-full w-full">
           <Image
             src={heroBackground.imageSrc}
             alt="Home remodeling and roofing work by DiFiore Builders in Concord and Kannapolis, NC"
             priority
+            fetchPriority="high"
             fill
             sizes="100vw"
+            quality={65}
             className="hero-background-image h-full w-full object-cover"
           />
           <div aria-hidden className="absolute inset-0 bg-[rgba(6,10,20,0.12)]" />

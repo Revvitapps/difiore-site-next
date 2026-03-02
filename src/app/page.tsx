@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Reviews from "@/components/Reviews";
 import Hero from "@/components/Hero";
 import PillarsSection from "@/components/home/PillarsSection";
 import AboutSection from "@/components/home/AboutSection";
 import ServicesIntro from "@/components/ServicesIntro";
 import Services from "@/components/Services";
 import HomeContactSection from "@/components/HomeContactSection";
+import LazyReviews from "@/components/home/LazyReviews";
 
 export const metadata: Metadata = {
   title: "Home Remodeling, Roofing & Additions | DiFiore Builders | Chadds Ford, PA",
@@ -46,7 +46,7 @@ export default function Page() {
       </section>
       <ServicesIntro />
       <Services />
-      <Reviews />
+      <LazyReviews />
       <HomeContactSection />
     </>
   );
