@@ -46,7 +46,7 @@ const steps = [
 
 type LandingVariant = "default" | "meta" | "lsa";
 const CHARLOTTE_PHONE_DISPLAY = "(980) 946-6791";
-const CHARLOTTE_PHONE_TEL = "tel:+19809466791";
+const CHARLOTTE_PHONE_TEL = "tel:9809466791";
 
 const VARIANT_COPY: Record<
   LandingVariant,

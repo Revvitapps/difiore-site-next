@@ -3,7 +3,7 @@ import ConcordKannapolisLanding from "@/components/charlotte/ConcordKannapolisLa
 import HomeContactSection from "@/components/HomeContactSection";
 
 const CHARLOTTE_PHONE_DISPLAY = "(980) 946-6791";
-const CHARLOTTE_PHONE_LINK = "tel:+19809466791";
+const CHARLOTTE_PHONE_LINK = "tel:9809466791";
 const CHARLOTTE_SERVICE_AREA = "Concord, Kannapolis, and the greater Charlotte metro area.";
 const PAGE_URL = "https://www.difiorebuilders.com/charlotte/concord-kannapolis";
 const PAGE_TITLE = "Concord & Kannapolis General Contractor and Home Remodeling | DiFiore Builders";
