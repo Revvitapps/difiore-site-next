@@ -39,3 +39,47 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local campaign/test artifacts
+.campaign-sent-log.json
+campaign-test-*.csv
+tmp-email.html
+
+# local SEO audits and crawl exports
+/qa/
+/New Site Crawl/
+/docs/seo/
+/SEO_*.md
+/DIFIORE_*.md
+/OLDSITE_*.md
+/difiore-meta_description_all.csv
+/difiore-url_all.csv
+/difiorebuilders-seo-schema-extract.json
+/Difiore-internal_all.csv
+
+# local contact/export files
+/Difiore-email-list.CSV - extracted email addresses.CSV.csv
+/Difiore-email-list.CSV - extracted email addresses.CSV.numbers
+/difiore_email_list_dedup.csv
+
+# local marketing/source docs
+/DiFioreBuilders_Executive_Growth_Overview_Talk_Track.docx
+/DiFioreBuilders_GA_Performance_Report.pdf
+/DiFiore_Facebook_Posting_Kit.pages
+/Social /
+
+# local media and scratch assets
+/public/ScreenRecording_12-23-2025 08-10-22_1.mp4
+/public/galaxyai_video_694a8f511277efc703e49908_1766494132238.mp4
+/public/Facebook-color.png
+/public/instagram-color.png
+/public/yelp-red-favicon.png
+/public/yelp-rw.png
+/public/*.heic
+
+# local email workflow scratch files
+/docs/gbp-refresh-token.md
+/scripts/gbp-refresh-token.mjs
+/scripts/send-test-email.ts
+/src/app/api/send-email/
+/.github/workflows/csv-email.yml
