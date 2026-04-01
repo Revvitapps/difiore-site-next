@@ -31,6 +31,22 @@ const posts = [
     image: "/difiore-services-showcase-3style-roof.webp",
   },
   {
+    slug: "bathroom-remodeling-chadds-ford-pa",
+    title: "Bathroom remodeling in Chadds Ford, PA: what to upgrade first",
+    summary:
+      "Smart guidance on what to prioritize first, what you can handle yourself, and which bathroom upgrades matter most long-term.",
+    tag: "Kitchens & bathrooms",
+    image: "/difiore-services-showcase-bathroom-shower-walkin-fulltile.JPG",
+  },
+  {
+    slug: "siding-replacement-chadds-ford-pa",
+    title: "Siding replacement in Chadds Ford, PA: signs it is time and what to expect",
+    summary:
+      "Learn when repair is enough, when replacement makes more sense, and what to expect during a siding project in southeastern Pennsylvania.",
+    tag: "Roofing & siding",
+    image: "/difiore-os-before-br-front.jpeg",
+  },
+  {
     slug: "home-remodeling-diy-vs-pros-chadds-ford",
     title: "Home remodeling: DIY vs. when to call the pros",
     summary:
