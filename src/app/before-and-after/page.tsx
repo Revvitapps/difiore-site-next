@@ -5,13 +5,16 @@ import TrustedBadges from "@/components/TrustedBadges";
 import BeforeAfterHero from "@/components/before-after/Hero";
 import BeforeAfterGallery from "@/components/before-after/Gallery";
 import { fetchGoogleReviews } from "@/lib/googleReviews";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Before & After Project Gallery | DiFiore Builders",
+  title: "Before and After Project Gallery | DiFiore Builders",
   description:
     "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Explore roofing, siding, kitchen, bathroom, deck, and home addition transformations delivered with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
-    canonical: "https://difiorebuilders.com/before-and-after",
+    canonical: `${SITE_URL}/before-and-after`,
   },
 };
 
@@ -68,8 +71,24 @@ export default async function BeforeAfterPage() {
     4
   );
 
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Before and After", path: "/before-and-after" },
+  ]);
+
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Before and After Project Gallery",
+    description:
+      "A visual gallery of before-and-after remodeling projects completed by DiFiore Builders in Chadds Ford, Glen Mills, West Chester, and Wilmington.",
+    url: `${SITE_URL}/before-and-after`,
+  };
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={collectionSchema} />
       <BeforeAfterHero />
 
       <section aria-hidden className="h-16 md:h-24 lg:h-32" />

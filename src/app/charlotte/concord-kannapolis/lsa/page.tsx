@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description:
     "Licensed NC contractor for remodeling, roofing, and additions in Concord and Kannapolis.",
   alternates: {
-    canonical: "https://difiorebuilders.com/charlotte/concord-kannapolis/lsa",
+    canonical: "https://www.difiorebuilders.com/charlotte/concord-kannapolis/lsa",
   },
   robots: {
     index: false,
@@ -27,6 +27,8 @@ export default function ConcordKannapolisLsaPage() {
         phoneDisplay={CHARLOTTE_PHONE_DISPLAY}
         phoneLink={CHARLOTTE_PHONE_LINK}
         serviceArea={CHARLOTTE_SERVICE_AREA}
+        serviceAreasHref="/charlotte"
+        serviceAreasLabel="Charlotte service areas"
       />
     </>
   );

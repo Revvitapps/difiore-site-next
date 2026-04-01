@@ -3,10 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [servicesOpen, setServicesOpen] = React.useState(false);
+  const serviceAreasHref = pathname?.startsWith("/charlotte") ? "/charlotte" : "/service-areas";
 
   React.useEffect(() => {
     if (!mobileOpen) {
@@ -91,6 +94,12 @@ export default function Header() {
             Blog
           </Link>
           <Link
+            href={serviceAreasHref}
+            className="text-sm text-zinc-300 hover:text-white"
+          >
+            Service Areas
+          </Link>
+          <Link
             href="/charlotte/concord-kannapolis"
             className="text-sm text-zinc-300 hover:text-white"
           >
@@ -126,6 +135,14 @@ export default function Header() {
               }`}
               role="menu"
             >
+              <Link
+                href="/services"
+                className="block rounded-md px-3 py-2 text-sm font-semibold text-zinc-100 hover:bg-white/10"
+                role="menuitem"
+                onClick={closeServices}
+              >
+                All Services
+              </Link>
               <Link
                 href="/services/kitchens-bathrooms"
                 className="block rounded-md px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
@@ -228,6 +245,13 @@ export default function Header() {
             onClick={() => setMobileOpen(false)}
           >
             Blog
+          </Link>
+          <Link
+            href={serviceAreasHref}
+            className="block text-base font-semibold text-white"
+            onClick={() => setMobileOpen(false)}
+          >
+            Service Areas
           </Link>
           <Link
             href="/charlotte/concord-kannapolis"

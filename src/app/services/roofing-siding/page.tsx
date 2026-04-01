@@ -4,24 +4,42 @@ import TrustedBadges from "@/components/TrustedBadges";
 import HeroSection from "@/components/services/HeroSection";
 import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
 import ReviewHighlight from "@/components/reviews/ReviewHighlight";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Roofing & Siding Replacement | Tear-Offs, Exterior Wraps, Gutters",
+  title: "Roofing and Siding Replacement | Tear-Offs, Exterior Wraps, Gutters",
   description:
     "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Complete tear-offs, premium roofing, vinyl and fiber-cement siding, exterior wraps, gutters, fascia, and trim delivered with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
-    canonical: "https://difiorebuilders.com/services/roofing-siding",
+    canonical: `${SITE_URL}/services/roofing-siding`,
   },
 };
 
 export default function RoofingSidingPage() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services" },
+    { name: "Roofing and Siding", path: "/services/roofing-siding" },
+  ]);
+  const serviceLd = serviceSchema({
+    name: "Roofing and Siding",
+    description:
+      "Roofing replacement, siding upgrades, flashing, trim, and exterior weatherproofing services by DiFiore Builders.",
+    path: "/services/roofing-siding",
+    areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
+  });
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={serviceLd} />
       <HeroSection
         title="Roofing & Siding"
         subtitle="Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003."
         blurb="Weather-tight systems, clean lines, and long-term performance. From full tear-offs and re-roofs to premium siding upgrades, we handle everything with tidy job sites and clear communication."
-        imageSrc="/difiore-services-showcase-3style-roof.png"
+        imageSrc="/difiore-services-showcase-3style-roof.webp"
         chips={["Asphalt • Metal", "Vinyl • Fiber Cement", "Repairs & Replacements"]}
       >
         <div className="mt-10 flex flex-wrap justify-center gap-3">
@@ -84,7 +102,7 @@ export default function RoofingSidingPage() {
           <AnimatedImageGrid
             items={[
               {
-                src: "/difiore-services-showcase-3style-roof.png",
+                src: "/difiore-services-showcase-3style-roof.webp",
                 alt: "Clean roofing lines and materials",
                 priority: true,
               },
@@ -97,7 +115,7 @@ export default function RoofingSidingPage() {
                 alt: "Detailing at eaves and trim",
               },
               {
-                src: "/difiore-services-showcase-3style-roof.png",
+                src: "/difiore-services-showcase-3style-roof.webp",
                 alt: "Roof planes and color-matched accessories",
               },
             ]}
@@ -133,6 +151,18 @@ export default function RoofingSidingPage() {
             >
               See Projects
             </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-14">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+          <h2 className="text-2xl font-semibold text-white">Roofing and siding by service area</h2>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/chadds-ford/roofing-siding" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Chadds Ford</Link>
+            <Link href="/glen-mills/roofing-siding" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Glen Mills</Link>
+            <Link href="/west-chester/roofing-siding" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">West Chester</Link>
+            <Link href="/wilmington-de/roofing-siding" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Wilmington, DE</Link>
           </div>
         </div>
       </section>

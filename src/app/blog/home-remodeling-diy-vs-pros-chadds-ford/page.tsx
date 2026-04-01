@@ -1,19 +1,56 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import HeroSection from "@/components/services/HeroSection";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Home remodeling in Chadds Ford, PA: DIY vs. when to call the pros",
+  title: "Home Remodeling in Chadds Ford, PA: DIY vs. Hiring a Pro | DiFiore Builders",
   description:
     "Planning a remodel? Discover which home projects you can tackle yourself and when it is time to bring in the experts at DiFiore Builders in Chadds Ford, PA.",
   alternates: {
-    canonical: "https://difiorebuilders.com/blog/home-remodeling-diy-vs-pros-chadds-ford",
+    canonical: `${SITE_URL}/blog/home-remodeling-diy-vs-pros-chadds-ford`,
   },
 };
 
 export default function RemodelingPost() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+    { name: "Home Remodeling: DIY vs Hiring a Pro", path: "/blog/home-remodeling-diy-vs-pros-chadds-ford" },
+  ]);
+
+  const article = articleSchema({
+    headline: "Home Remodeling in Chadds Ford, PA: DIY vs Hiring a Pro",
+    description:
+      "A practical guide for deciding when DIY is enough and when licensed remodeling support protects budget and quality.",
+    path: "/blog/home-remodeling-diy-vs-pros-chadds-ford",
+    datePublished: "2026-01-02",
+    dateModified: "2026-03-11",
+    image: "/difiore-services -addition-newconstruction1.JPG",
+  });
+
+  const faq = faqSchema([
+    {
+      question: "How much does a remodel cost?",
+      answer: "Small updates can start under $10k, while full remodels can range from $30k to $100k+.",
+    },
+    {
+      question: "How long does remodeling take?",
+      answer: "Minor projects can take 1-2 weeks, and larger renovations often run 6-12 weeks.",
+    },
+    {
+      question: "Will DiFiore help with design ideas?",
+      answer: "Yes. Our team can collaborate with you directly or with your designer.",
+    },
+  ]);
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={article} />
+      <SeoJsonLd data={faq} />
       <HeroSection
         title="Home remodeling: DIY vs. when to call the pros"
         subtitle="Understand the line between quick upgrades and structural work."
@@ -112,10 +149,22 @@ export default function RemodelingPost() {
               View remodeling services
             </Link>
             <Link
+              href="/chadds-ford"
+              className="inline-flex rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Chadds Ford service area
+            </Link>
+            <Link
               href="/contact"
               className="inline-flex rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-amber-400"
             >
               Schedule a consult
+            </Link>
+            <Link
+              href="/project-calculator"
+              className="inline-flex rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Estimate project cost
             </Link>
           </div>
         </section>

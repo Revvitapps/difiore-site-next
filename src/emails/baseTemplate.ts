@@ -33,7 +33,7 @@ export type TemplateVariables = Partial<Record<BaseTemplateKey, string>>;
 
 export const baseTemplateDefaults: Record<BaseTemplateKey, string> = {
   EMAIL_SUBJECT: "EMAIL_SUBJECT",
-  HERO_IMAGE_URL: "https://www.difiorebuilders.com/difiore-hero-spotlight-house.png",
+  HERO_IMAGE_URL: "https://www.difiorebuilders.com/difiore-hero-spotlight-house.webp",
   HERO_ALT_TEXT: "DiFiore Builders spotlight home",
   LOGO_URL: "https://www.difiorebuilders.com/difiore-logo.png",
   LOGO_ALT_TEXT: "DiFiore Builders logo",

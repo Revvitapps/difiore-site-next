@@ -1,19 +1,56 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import HeroSection from "@/components/services/HeroSection";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Kitchen remodeling experts in Chadds Ford, PA: trends & tips for 2026",
+  title: "Kitchen Remodeling Trends and Tips for 2026 in Chadds Ford, PA | DiFiore Builders",
   description:
     "Upgrade your kitchen with confidence. Discover remodeling trends, design ideas, and expert tips from DiFiore Builders in Chadds Ford, PA.",
   alternates: {
-    canonical: "https://difiorebuilders.com/blog/kitchen-remodeling-chadds-ford-pa",
+    canonical: `${SITE_URL}/blog/kitchen-remodeling-chadds-ford-pa`,
   },
 };
 
 export default function KitchenTrendsPost() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+    { name: "Kitchen Remodeling Trends and Tips for 2026", path: "/blog/kitchen-remodeling-chadds-ford-pa" },
+  ]);
+
+  const article = articleSchema({
+    headline: "Kitchen Remodeling Trends and Tips for 2026 in Chadds Ford, PA",
+    description:
+      "Design ideas, planning steps, and practical considerations for kitchen remodeling projects in Chadds Ford.",
+    path: "/blog/kitchen-remodeling-chadds-ford-pa",
+    datePublished: "2026-01-04",
+    dateModified: "2026-03-11",
+    image: "/difiore-services-showcase-kitchen-whole.webp",
+  });
+
+  const faq = faqSchema([
+    {
+      question: "How much does a kitchen remodel cost?",
+      answer: "Minor updates can start around $15k. Full custom remodels can exceed $60k based on scope and finishes.",
+    },
+    {
+      question: "How long does a kitchen remodel take?",
+      answer: "Most kitchen remodels run about 4 to 6 weeks depending on complexity and material lead times.",
+    },
+    {
+      question: "Do I need a designer before calling?",
+      answer: "No. DiFiore can work with your designer or help guide planning and selections in-house.",
+    },
+  ]);
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={article} />
+      <SeoJsonLd data={faq} />
       <HeroSection
         title="Kitchen remodeling trends & tips for 2026"
         subtitle="Design ideas and practical planning from your local kitchen remodeling team."
@@ -112,10 +149,22 @@ export default function KitchenTrendsPost() {
               Explore kitchen services
             </Link>
             <Link
+              href="/chadds-ford/kitchen-remodeling"
+              className="inline-flex rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Chadds Ford kitchen page
+            </Link>
+            <Link
               href="/contact"
               className="inline-flex rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-amber-400"
             >
               Book a consultation
+            </Link>
+            <Link
+              href="/project-calculator"
+              className="inline-flex rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Start with estimator
             </Link>
           </div>
         </section>

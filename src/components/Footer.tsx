@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { CANONICAL_NAP } from "@/lib/seo/constants";
 
 type SocialLink = {
   name: string;
@@ -45,6 +47,9 @@ const socialLinks: SocialLink[] = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  const serviceAreasHref = pathname?.startsWith("/charlotte") ? "/charlotte" : "/service-areas";
+
   return (
     <footer
       role="contentinfo"
@@ -90,7 +95,10 @@ export default function Footer() {
             aria-label="Footer navigation"
             className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-300 md:justify-end md:text-right"
           >
+            <Link href="/services" className="hover:text-white">Services</Link>
+            <Link href={serviceAreasHref} className="hover:text-white">Service Areas</Link>
             <Link href="/our-story" className="hover:text-white">Our Story</Link>
+            <Link href="/our-projects" className="hover:text-white">Our Projects</Link>
             <Link href="/before-and-after" className="hover:text-white">Before &amp; After</Link>
             <Link href="/blog" className="hover:text-white">Blog</Link>
             <Link href="/charlotte/concord-kannapolis" className="hover:text-white">Charlotte</Link>
@@ -101,7 +109,12 @@ export default function Footer() {
 
         <div className="flex flex-col gap-2 text-xs text-zinc-400 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} DiFiore Builders.</p>
-          <p>Family-owned, licensed &amp; insured. Serving Chadds Ford, PA, Glen Mills, PA, and the surrounding area since 2003.</p>
+          <p>
+            Family-owned, licensed &amp; insured since 2003. {CANONICAL_NAP.streetAddress}, {CANONICAL_NAP.city}, {CANONICAL_NAP.region} {CANONICAL_NAP.postalCode} •{" "}
+            <a href={`tel:${CANONICAL_NAP.phoneE164}`} className="hover:text-white">
+              {CANONICAL_NAP.phoneDisplay}
+            </a>
+          </p>
         </div>
       </div>
     </footer>

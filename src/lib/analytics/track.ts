@@ -1,6 +1,12 @@
 export type AnalyticsEventName =
   | "page_view"
   | "view_content"
+  | "cta_click"
+  | "form_start"
+  | "form_submit"
+  | "calculator_start"
+  | "calculator_complete"
+  | "scroll_depth"
   | "lead_form_view"
   | "lead_form_start"
   | "lead_form_partial"
@@ -20,6 +26,12 @@ const metaNameMap: Record<AnalyticsEventName, string> = {
   purchase: "Purchase",
   view_content: "ViewContent",
   page_view: "PageView",
+  cta_click: "CustomEvent",
+  form_start: "Lead",
+  form_submit: "Lead",
+  calculator_start: "Lead",
+  calculator_complete: "Lead",
+  scroll_depth: "CustomEvent",
   lead_form_view: "Lead",
   lead_form_start: "Lead",
   call_click: "Contact",

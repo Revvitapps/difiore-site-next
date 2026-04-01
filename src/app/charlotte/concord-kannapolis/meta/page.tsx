@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description:
     "Get a quick remodeling estimate from a licensed NC general contractor serving Concord and Kannapolis.",
   alternates: {
-    canonical: "https://difiorebuilders.com/charlotte/concord-kannapolis/meta",
+    canonical: "https://www.difiorebuilders.com/charlotte/concord-kannapolis/meta",
   },
   robots: {
     index: false,
@@ -27,6 +27,8 @@ export default function ConcordKannapolisMetaPage() {
         phoneDisplay={CHARLOTTE_PHONE_DISPLAY}
         phoneLink={CHARLOTTE_PHONE_LINK}
         serviceArea={CHARLOTTE_SERVICE_AREA}
+        serviceAreasHref="/charlotte"
+        serviceAreasLabel="Charlotte service areas"
       />
     </>
   );

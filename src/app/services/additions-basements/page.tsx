@@ -4,21 +4,39 @@ import TrustedBadges from "@/components/TrustedBadges";
 import HeroSection from "@/components/services/HeroSection";
 import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
 import ReviewHighlight from "@/components/reviews/ReviewHighlight";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "Home Additions, Finished Basements & Decks | DiFiore Builders",
   description:
     "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Second-story additions, first-floor expansions, primary suites, finished basements, and outdoor living decks completed with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
-    canonical: "https://difiorebuilders.com/services/additions-basements",
+    canonical: `${SITE_URL}/services/additions-basements`,
   },
 };
 
-const HERO = "/difiore-services-showcase-additions-playroom1.JPG";
+const HERO = "/difiore-services-showcase-additions-playroom1.webp";
 
 export default function AdditionsBasementsPage() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services" },
+    { name: "Additions and Basements", path: "/services/additions-basements" },
+  ]);
+  const serviceLd = serviceSchema({
+    name: "Home Additions and Basement Finishing",
+    description:
+      "Home additions and basement finishing services including design-build planning, framing, utility coordination, and interior finishes.",
+    path: "/services/additions-basements",
+    areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
+  });
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={serviceLd} />
       <HeroSection
         title="Additions & Basements"
         subtitle="Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003."
@@ -82,7 +100,7 @@ export default function AdditionsBasementsPage() {
           <AnimatedImageGrid
             items={[
               {
-                src: "/difiore-services-showcase-additions-playroom1.JPG",
+                src: "/difiore-services-showcase-additions-playroom1.webp",
                 alt: "Family room addition",
               },
               {
@@ -130,6 +148,22 @@ export default function AdditionsBasementsPage() {
             >
               See Projects
             </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-14">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+          <h2 className="text-2xl font-semibold text-white">Additions and basements by city</h2>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/chadds-ford/home-additions" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Chadds Ford additions</Link>
+            <Link href="/glen-mills/home-additions" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Glen Mills additions</Link>
+            <Link href="/west-chester/home-additions" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">West Chester additions</Link>
+            <Link href="/wilmington-de/home-additions" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Wilmington additions</Link>
+            <Link href="/chadds-ford/basement-finishing" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Chadds Ford basements</Link>
+            <Link href="/glen-mills/basement-finishing" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Glen Mills basements</Link>
+            <Link href="/west-chester/basement-finishing" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">West Chester basements</Link>
+            <Link href="/wilmington-de/basement-finishing" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Wilmington basements</Link>
           </div>
         </div>
       </section>

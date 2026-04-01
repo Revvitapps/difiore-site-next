@@ -3,12 +3,15 @@ import Link from "next/link";
 import TrustedBadges from "@/components/TrustedBadges";
 import HeroSection from "@/components/services/HeroSection";
 import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "New Builds & General Construction",
+  title: "New Builds and General Construction | DiFiore Builders",
   description:
     "From plans to punch list — framing, envelopes, energy-smart assemblies, and full project management.",
-  alternates: { canonical: "https://difiorebuilders.com/services/new-builds-gc" },
+  alternates: { canonical: `${SITE_URL}/services/new-builds-gc` },
 };
 
 // Use filenames you know exist in /public:
@@ -34,8 +37,22 @@ const GALLERY = [
 ];
 
 export default function NewBuildsGCPage() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services" },
+    { name: "New Builds and General Construction", path: "/services/new-builds-gc" },
+  ]);
+  const serviceLd = serviceSchema({
+    name: "New Builds and General Construction",
+    description: "General construction and new-build project management from planning through final walkthrough.",
+    path: "/services/new-builds-gc",
+    areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
+  });
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={serviceLd} />
       <HeroSection
         title="New Builds & General Construction"
         subtitle="From plans to punch list — a streamlined, accountable process covering structure, envelope, energy-smart assemblies, and coordination of licensed trades."
@@ -127,6 +144,18 @@ export default function NewBuildsGCPage() {
             >
               See Projects
             </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-14">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+          <h2 className="text-2xl font-semibold text-white">Related planning resources</h2>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/our-projects" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Our projects</Link>
+            <Link href="/service-areas" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Service areas</Link>
+            <Link href="/project-calculator" className="rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-zinc-900 hover:bg-amber-400">Project calculator</Link>
+            <Link href="/contact" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Contact us</Link>
           </div>
         </div>
       </section>

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import ProjectSelector, { PROJECT_OPTIONS } from '@/components/estimator/ProjectSelector';
 import StepDetails from '@/components/estimator/StepDetails';
 import StepAddress from '@/components/estimator/StepAddress';
@@ -491,6 +492,30 @@ export default function ProjectCalculatorClient() {
               {renderEstimateSummary('Your Estimate')}
             </>
           )}
+        </section>
+
+        <section className="rounded-xl border border-white/10 bg-[rgba(20,20,28,.55)] p-6 ring-1 ring-white/5">
+          <h2 className="text-xl font-semibold text-white">Keep planning your project</h2>
+          <p className="mt-2 text-sm text-white/70">
+            Compare services, review local pages, or contact the team directly for scope confirmation.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/services/roofing-siding" className="rounded-full border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+              Roofing & Siding
+            </Link>
+            <Link href="/services/kitchens-bathrooms" className="rounded-full border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+              Kitchens & Bathrooms
+            </Link>
+            <Link href="/services/additions-basements" className="rounded-full border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+              Additions & Basements
+            </Link>
+            <Link href="/service-areas" className="rounded-full border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+              Service Areas
+            </Link>
+            <Link href="/contact" className="rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-zinc-900 hover:bg-amber-400">
+              Contact DiFiore Builders
+            </Link>
+          </div>
         </section>
       </div>
     </main>

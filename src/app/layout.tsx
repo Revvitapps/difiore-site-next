@@ -8,24 +8,26 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import { Suspense } from "react";
+import { SITE_URL } from "@/lib/seo/constants";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "DiFiore Builders",
-    template: "%s | DiFiore Builders",
+    default: "DiFiore Builders | Home Remodeling and General Contractor in Chadds Ford, PA",
+    template: "%s",
   },
   description: "Quality work from the foundation to the roof.",
   openGraph: {
     title: "DiFiore Builders",
     description:
       "Quality craftsmanship from the foundation to the roof — serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003.",
-    url: "https://difiorebuilders.com",
+    url: SITE_URL,
     siteName: "DiFiore Builders",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "https://difiorebuilders.com/difiore-hero-spotlight-house.png",
+        url: `${SITE_URL}/difiore-hero-spotlight-house.webp`,
         width: 1920,
         height: 1080,
         alt: "DiFiore Builders custom home exterior",
@@ -41,9 +43,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <meta property="og:image" content="https://difiorebuilders.com/difiore-hero-spotlight-house.png" />
+        <meta property="og:image" content={`${SITE_URL}/difiore-hero-spotlight-house.webp`} />
         <meta property="og:image:alt" content="Exterior renovation by DiFiore Builders" />
-        <meta property="twitter:image" content="https://difiorebuilders.com/difiore-hero-spotlight-house.png" />
+        <meta property="twitter:image" content={`${SITE_URL}/difiore-hero-spotlight-house.webp`} />
         <meta name="twitter:card" content="summary_large_image" />
         {metaPixelId && (
           <>

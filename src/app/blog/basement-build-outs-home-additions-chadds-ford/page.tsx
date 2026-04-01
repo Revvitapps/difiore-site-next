@@ -1,24 +1,60 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import HeroSection from "@/components/services/HeroSection";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Basement build-outs & home additions in Chadds Ford, PA",
+  title: "Basement Build-Outs and Home Additions in Chadds Ford, PA | DiFiore Builders",
   description:
     "Thinking of finishing your basement or adding space to your home? Here is what is possible, what to plan for, and when to call DiFiore Builders in Chadds Ford, PA.",
   alternates: {
-    canonical: "https://difiorebuilders.com/blog/basement-build-outs-home-additions-chadds-ford",
+    canonical: `${SITE_URL}/blog/basement-build-outs-home-additions-chadds-ford`,
   },
 };
 
 export default function BasementAdditionsPost() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+    { name: "Basement Build-Outs and Home Additions", path: "/blog/basement-build-outs-home-additions-chadds-ford" },
+  ]);
+
+  const article = articleSchema({
+    headline: "Basement Build-Outs and Home Additions in Chadds Ford, PA",
+    description: "Planning guidance for finished basements and home additions in the Chadds Ford area.",
+    path: "/blog/basement-build-outs-home-additions-chadds-ford",
+    datePublished: "2025-12-20",
+    dateModified: "2026-03-11",
+    image: "/difiore-services-showcase-additions-playroom1.webp",
+  });
+
+  const faq = faqSchema([
+    {
+      question: "Do I need a permit to finish my basement or build an addition?",
+      answer: "Yes in most cases. We coordinate required permit and inspection steps during preconstruction.",
+    },
+    {
+      question: "Can I turn my basement into an in-law suite?",
+      answer: "Often yes, based on local code, egress, and utility considerations. We review feasibility up front.",
+    },
+    {
+      question: "How long does a typical basement build-out take?",
+      answer: "Many basement finish projects run 4-6 weeks depending on scope and inspections.",
+    },
+  ]);
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={article} />
+      <SeoJsonLd data={faq} />
       <HeroSection
         title="Finished basements & home additions in Chadds Ford, PA"
         subtitle="Basements, suites, and expansions that feel like they always belonged."
         blurb="See what you can handle yourself and when to bring in a licensed builder for structural, permitting, and system work."
-        imageSrc="/difiore-services-showcase-additions-playroom1.JPG"
+        imageSrc="/difiore-services-showcase-additions-playroom1.webp"
         chips={["Design-Build", "Permit Ready", "Seamless Tie-ins"]}
       />
 
@@ -130,6 +166,18 @@ export default function BasementAdditionsPost() {
               className="inline-flex rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-amber-400"
             >
               Schedule a consultation
+            </Link>
+            <Link
+              href="/chadds-ford/home-additions"
+              className="ml-3 inline-flex rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Chadds Ford additions page
+            </Link>
+            <Link
+              href="/project-calculator"
+              className="ml-3 inline-flex rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Estimate project cost
             </Link>
           </div>
         </section>

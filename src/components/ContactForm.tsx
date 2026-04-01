@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -276,9 +277,9 @@ export function ContactForm() {
 
         <p className="text-xs text-white/50">
           We respond within one business day. Prefer to walk through the calculator?{" "}
-          <a href="/project-calculator" className="text-amber-300 underline-offset-4 hover:underline">
+          <Link href="/project-calculator" className="text-amber-300 underline-offset-4 hover:underline">
             Head to the estimator →
-          </a>
+          </Link>
         </p>
 
         <div aria-live="polite" className="text-sm">

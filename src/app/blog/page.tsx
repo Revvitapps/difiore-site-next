@@ -1,6 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 
 const posts = [
   {
@@ -9,7 +12,7 @@ const posts = [
     summary:
       "What you can tackle yourself, what needs a pro, and how to plan a basement or addition that feels built-in from day one.",
     tag: "Basements & additions",
-    image: "/difiore-services-showcase-additions-playroom1.JPG",
+    image: "/difiore-services-showcase-additions-playroom1.webp",
   },
   {
     slug: "kitchen-remodeling-chadds-ford-pa",
@@ -25,7 +28,7 @@ const posts = [
     summary:
       "Seasonal checklists, warning signs, and honest guidance on whether your roof needs a repair or full replacement.",
     tag: "Roofing",
-    image: "/difiore-services-showcase-3style-roof.png",
+    image: "/difiore-services-showcase-3style-roof.webp",
   },
   {
     slug: "home-remodeling-diy-vs-pros-chadds-ford",
@@ -38,18 +41,35 @@ const posts = [
 ];
 
 export const metadata: Metadata = {
-  title: "Blog | DiFiore Builders",
+  title: "Remodeling Blog | DiFiore Builders",
   description:
     "Renovation insights, remodeling tips, and local project guidance from DiFiore Builders in Chadds Ford, PA, Glen Mills, West Chester, and Wilmington.",
   alternates: {
-    canonical: "https://difiorebuilders.com/blog",
+    canonical: `${SITE_URL}/blog`,
   },
 };
 
 export default function BlogPage() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+  ]);
+
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "DiFiore Builders Blog",
+    description:
+      "Remodeling tips and project guidance for homeowners in Chadds Ford, Glen Mills, West Chester, and Wilmington.",
+    url: `${SITE_URL}/blog`,
+  };
+
   return (
-    <section className="py-16">
-      <div className="mx-auto max-w-6xl px-4">
+    <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={blogSchema} />
+      <section className="py-16">
+        <div className="mx-auto max-w-6xl px-4">
         <header className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-amber-300">
             DiFiore Builders insights
@@ -92,7 +112,8 @@ export default function BlogPage() {
             </Link>
           ))}
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }

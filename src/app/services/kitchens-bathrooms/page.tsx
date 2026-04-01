@@ -4,19 +4,37 @@ import TrustedBadges from "@/components/TrustedBadges";
 import HeroSection from "@/components/services/HeroSection";
 import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
 import ReviewHighlight from "@/components/reviews/ReviewHighlight";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "Kitchen & Bathroom Remodeling | Cabinets, Tile, Layout Changes",
   description:
     "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Full kitchen gut-and-redesigns, cabinet replacements, appliance upgrades, tile showers, and custom bathrooms delivered with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
-    canonical: "https://difiorebuilders.com/services/kitchens-bathrooms",
+    canonical: `${SITE_URL}/services/kitchens-bathrooms`,
   },
 };
 
 export default function KitchensBathroomsPage() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services" },
+    { name: "Kitchens and Bathrooms", path: "/services/kitchens-bathrooms" },
+  ]);
+  const serviceLd = serviceSchema({
+    name: "Kitchen and Bathroom Remodeling",
+    description:
+      "Kitchen and bathroom remodeling services including layout changes, cabinetry, tile, fixture upgrades, and finish carpentry.",
+    path: "/services/kitchens-bathrooms",
+    areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
+  });
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={serviceLd} />
       <HeroSection
         title="Kitchens & Bathrooms"
         subtitle="Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003."
@@ -132,6 +150,22 @@ export default function KitchensBathroomsPage() {
             >
               See Projects
             </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-14">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+          <h2 className="text-2xl font-semibold text-white">Kitchen and bathroom remodeling by city</h2>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/chadds-ford/kitchen-remodeling" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Chadds Ford kitchens</Link>
+            <Link href="/glen-mills/kitchen-remodeling" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Glen Mills kitchens</Link>
+            <Link href="/west-chester/kitchen-remodeling" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">West Chester kitchens</Link>
+            <Link href="/wilmington-de/kitchen-remodeling" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Wilmington kitchens</Link>
+            <Link href="/chadds-ford/bathroom-remodeling" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Chadds Ford bathrooms</Link>
+            <Link href="/glen-mills/bathroom-remodeling" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Glen Mills bathrooms</Link>
+            <Link href="/west-chester/bathroom-remodeling" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">West Chester bathrooms</Link>
+            <Link href="/wilmington-de/bathroom-remodeling" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Wilmington bathrooms</Link>
           </div>
         </div>
       </section>

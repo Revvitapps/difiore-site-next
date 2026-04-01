@@ -1,22 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { CANONICAL_NAP, SITE_URL } from "@/lib/seo/constants";
+import { breadcrumbSchema, localBusinessSchema } from "@/lib/seo/schema";
 
-const PHONE_DISPLAY = "(610) 358-5433";
-const PHONE_LINK = "tel:+16103585433";
+const PHONE_DISPLAY = CANONICAL_NAP.phoneDisplay;
+const PHONE_LINK = `tel:${CANONICAL_NAP.phoneE164}`;
 
 export const metadata: Metadata = {
   title: "Contact Us | DiFiore Builders",
   description:
     "Ready to plan your remodel or addition? Call DiFiore Builders at (610) 358-5433 or send a message through our contact form for a same-day response.",
   alternates: {
-    canonical: "https://difiorebuilders.com/contact",
+    canonical: `${SITE_URL}/contact`,
   },
 };
 
 export default function ContactPage() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Contact", path: "/contact" },
+  ]);
+  const business = localBusinessSchema({
+    path: "/contact",
+    description:
+      "Contact DiFiore Builders for roofing, remodeling, additions, basements, and construction projects in southeastern PA and Wilmington, DE.",
+    areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
+  });
+
   return (
     <div className="bg-gradient-to-b from-zinc-900 via-zinc-950 to-black text-white">
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={business} />
       <section className="mx-auto max-w-6xl px-4 py-16 lg:py-20">
         <div className="mb-10 max-w-3xl space-y-4">
           <p className="text-sm uppercase tracking-[0.3em] text-amber-300">Contact</p>
@@ -60,14 +76,22 @@ export default function ContactPage() {
           <div className="space-y-6">
             <ContactForm />
             <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-sm text-white/70">
-              <dl className="grid gap-6 md:grid-cols-2">
+              <dl className="grid gap-6 md:grid-cols-3">
                 <div>
                   <dt className="text-white">Service area</dt>
-                  <dd>Chadds Ford, PA, Glen Mills, PA, and the surrounding area.</dd>
+                  <dd>Chadds Ford, PA, Glen Mills, PA, West Chester, PA, and Wilmington, DE.</dd>
                 </div>
                 <div>
                   <dt className="text-white">Prefer email?</dt>
                   <dd>The same inbox that powers our estimator monitors this form for a same-day response.</dd>
+                </div>
+                <div>
+                  <dt className="text-white">Office address</dt>
+                  <dd>
+                    {CANONICAL_NAP.streetAddress}
+                    <br />
+                    {CANONICAL_NAP.city}, {CANONICAL_NAP.region} {CANONICAL_NAP.postalCode}
+                  </dd>
                 </div>
               </dl>
             </div>
@@ -84,6 +108,26 @@ export default function ContactPage() {
               <li>• A follow-up call to confirm scope, timeline, and whether a site visit is needed.</li>
               <li>• Transparent pricing, schedule, and next steps laid out before we swing a hammer.</li>
             </ul>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/service-areas"
+                className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                Service areas
+              </Link>
+              <Link
+                href="/services"
+                className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                All services
+              </Link>
+              <Link
+                href="/before-and-after"
+                className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                Before-and-after gallery
+              </Link>
+            </div>
           </div>
         </div>
       </section>

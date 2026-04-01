@@ -1,20 +1,25 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
+import { CANONICAL_NAP } from "@/lib/seo/constants";
 
-const PHONE_DISPLAY = "(610) 358-5433";
-const PHONE_LINK = "tel:+16103585433";
-const SERVICE_AREA_DEFAULT = "Chadds Ford, PA, Glen Mills, PA, and the surrounding area.";
+const PHONE_DISPLAY = CANONICAL_NAP.phoneDisplay;
+const PHONE_LINK = `tel:${CANONICAL_NAP.phoneE164}`;
+const SERVICE_AREA_DEFAULT = "Chadds Ford, PA, Glen Mills, PA, West Chester, PA, and Wilmington, DE.";
 
 type HomeContactSectionProps = {
   phoneDisplay?: string;
   phoneLink?: string;
   serviceArea?: string;
+  serviceAreasHref?: string;
+  serviceAreasLabel?: string;
 };
 
 export default function HomeContactSection({
   phoneDisplay = PHONE_DISPLAY,
   phoneLink = PHONE_LINK,
   serviceArea = SERVICE_AREA_DEFAULT,
+  serviceAreasHref = "/service-areas",
+  serviceAreasLabel = "Service areas",
 }: HomeContactSectionProps) {
   return (
     <section id="contact" className="bg-gradient-to-b from-zinc-950 via-zinc-900 to-black text-white">
@@ -67,7 +72,7 @@ export default function HomeContactSection({
             <div className="space-y-6">
               <ContactForm />
               <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 text-sm text-white/70">
-                <dl className="grid gap-6 md:grid-cols-2">
+                <dl className="grid gap-6 md:grid-cols-3">
                   <div>
                     <dt className="text-white/80 font-semibold">Service area</dt>
                     <dd className="mt-1">{serviceArea}</dd>
@@ -76,6 +81,14 @@ export default function HomeContactSection({
                     <dt className="text-white/80 font-semibold">Prefer to email?</dt>
                     <dd className="mt-1">
                       The same inbox that powers the estimator monitors this form for a next business-day response.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-white/80 font-semibold">Office address</dt>
+                    <dd className="mt-1">
+                      {CANONICAL_NAP.streetAddress}
+                      <br />
+                      {CANONICAL_NAP.city}, {CANONICAL_NAP.region} {CANONICAL_NAP.postalCode}
                     </dd>
                   </div>
                 </dl>
@@ -91,6 +104,14 @@ export default function HomeContactSection({
             <li>• Follow-up to confirm scope, timeline, and whether a site visit is needed.</li>
             <li>• Transparent pricing, schedule, and next steps before we swing a hammer.</li>
           </ul>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link href={serviceAreasHref} className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+              {serviceAreasLabel}
+            </Link>
+            <Link href="/services" className="rounded-full border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+              All services
+            </Link>
+          </div>
         </div>
       </div>
     </section>

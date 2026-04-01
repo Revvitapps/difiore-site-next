@@ -1,6 +1,6 @@
 export const site = {
   name: "DiFiore Builders",
-  url: "https://difiorebuilders.com",
+  url: "https://www.difiorebuilders.com",
   nav: [
     { href: "/", label: "Home" },
     { href: "/our-story", label: "Our Story" },

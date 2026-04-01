@@ -1,24 +1,60 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import HeroSection from "@/components/services/HeroSection";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Roofing tips for Chadds Ford, PA homeowners: maintenance & when to replace",
+  title: "Roofing Tips for Chadds Ford Homeowners: Maintenance and Replacement",
   description:
     "Not sure if your roof needs repair or replacement? Discover expert roofing tips, signs of damage, and seasonal maintenance advice from DiFiore Builders.",
   alternates: {
-    canonical: "https://difiorebuilders.com/blog/roofing-tips-roof-replacement-chadds-ford",
+    canonical: `${SITE_URL}/blog/roofing-tips-roof-replacement-chadds-ford`,
   },
 };
 
 export default function RoofingPost() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+    { name: "Roofing Tips for Chadds Ford Homeowners", path: "/blog/roofing-tips-roof-replacement-chadds-ford" },
+  ]);
+
+  const article = articleSchema({
+    headline: "Roofing Tips for Chadds Ford Homeowners: Maintenance and Replacement",
+    description: "Seasonal roofing maintenance guidance and replacement signals for local homeowners.",
+    path: "/blog/roofing-tips-roof-replacement-chadds-ford",
+    datePublished: "2025-12-28",
+    dateModified: "2026-03-11",
+    image: "/difiore-services-showcase-3style-roof.webp",
+  });
+
+  const faq = faqSchema([
+    {
+      question: "How long does a new asphalt roof last?",
+      answer: "Most asphalt roof systems last around 20-25 years depending on installation quality and conditions.",
+    },
+    {
+      question: "How long does a replacement take?",
+      answer: "Many roof replacements are completed in 1-3 days based on size, weather, and complexity.",
+    },
+    {
+      question: "Can DiFiore help with storm damage claims?",
+      answer: "Yes. We can document visible issues and support homeowners during claim conversations.",
+    },
+  ]);
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={article} />
+      <SeoJsonLd data={faq} />
       <HeroSection
         title="Roofing maintenance and when to replace"
         subtitle="Protect your home with proactive inspections and honest guidance."
         blurb="Learn the signs of wear, how to handle seasonal maintenance, and when a repair is no longer enough."
-        imageSrc="/difiore-services-showcase-3style-roof.png"
+        imageSrc="/difiore-services-showcase-3style-roof.webp"
         chips={["Asphalt & Metal", "Repairs & Replacements", "Seasonal Checks"]}
       />
 
@@ -125,10 +161,22 @@ export default function RoofingPost() {
               View roofing services
             </Link>
             <Link
+              href="/chadds-ford/roofing-siding"
+              className="inline-flex rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Chadds Ford roofing page
+            </Link>
+            <Link
               href="/contact"
               className="inline-flex rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-amber-400"
             >
               Request an inspection
+            </Link>
+            <Link
+              href="/project-calculator"
+              className="inline-flex rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Estimate project cost
             </Link>
           </div>
         </section>

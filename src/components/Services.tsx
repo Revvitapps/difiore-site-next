@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 
 /* ---------- DATA: your filenames in /public ---------- */
 type Band = {
@@ -29,7 +30,7 @@ const BANDS: Band[] = [
       "Color-matched trim & accessories",
     ],
     bg: [
-      "/difiore-services-showcase-3style-roof.png",
+      "/difiore-services-showcase-3style-roof.webp",
       "/difiore-services-showcase-roofing-gutter.webp",
     ],
     ctaPrimary: { href: "/project-calculator", label: "Get a Quote" },
@@ -46,8 +47,8 @@ const BANDS: Band[] = [
       "Foundations to finishes",
     ],
     bg: [
-      "/difiore-services-showcase-additions-playroom1.JPG",
-      "/difiore-services-showcase-additions-familyroom-1.JPG",
+      "/difiore-services-showcase-additions-playroom1.webp",
+      "/difiore-services-showcase-additions-familyroom-1.webp",
       "/difiore-services-showcase-addition-showcase.jpeg",
       "/difiore-os-after-bl.jpeg",
     ],
@@ -83,7 +84,7 @@ const BANDS: Band[] = [
     ],
     bg: [
       "/difiore-services-showcase-roofing-materials-.webp",
-      "/difiore-services-showcase-3style-roof.png",
+      "/difiore-services-showcase-3style-roof.webp",
     ],
     ctaPrimary: { href: "/project-calculator", label: "Price My Build" },
     ctaSecondary: { href: "/services/new-builds-gc", label: "Learn More" },
@@ -122,11 +123,9 @@ function ServiceBand({
   );
   useEffect(() => {
     if (!nextSrc) return;
-    const img = new Image();
+    const img = new window.Image();
     img.src = nextSrc;
   }, [nextSrc]);
-
-  const bgSrc = data.bg[idx] ?? data.bg[0] ?? "";
 
   return (
     <motion.section
@@ -143,11 +142,23 @@ function ServiceBand({
       viewport={{ once: true, amount: 0.2 }}
     >
       {/* full-bleed background */}
-      <div
-        className="absolute inset-0 -z-10 bg-cover bg-center transition-opacity duration-500"
-        style={{ backgroundImage: `url('${bgSrc}')` }}
-        aria-hidden
-      />
+      <div className="absolute inset-0 -z-10" aria-hidden>
+        {data.bg.map((src, i) => (
+          <Image
+            key={`${data.id}-${src}`}
+            src={src}
+            alt=""
+            fill
+            sizes="100vw"
+            quality={62}
+            loading={index === 0 && i === 0 ? "eager" : "lazy"}
+            priority={index === 0 && i === 0}
+            className={`object-cover object-center transition-opacity duration-500 ${
+              i === idx ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
+      </div>
       {/* tint */}
       <div aria-hidden className="absolute inset-0 -z-10 bg-[rgba(8,16,28,.40)]" />
 

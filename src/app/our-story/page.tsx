@@ -1,19 +1,39 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import TrustedBadges from "@/components/TrustedBadges";
 import OurStoryHeroClient from "@/components/OurStoryHeroClient";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { SITE_URL } from "@/lib/seo/constants";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "Our Story | Family-Owned General Contractor Since 2003",
   description:
     "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. We specialize in roofing, siding, additions, kitchens, bathrooms, decks, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price.",
   alternates: {
-    canonical: "https://difiorebuilders.com/our-story",
+    canonical: `${SITE_URL}/our-story`,
   },
 };
 
 export default function OurStoryPage() {
+  const breadcrumb = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Our Story", path: "/our-story" },
+  ]);
+
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "Our Story",
+    description:
+      "Background, values, and service approach from DiFiore Builders, a family-owned general contractor serving southeastern PA and Wilmington, DE.",
+    url: `${SITE_URL}/our-story`,
+  };
+
   return (
     <>
+      <SeoJsonLd data={breadcrumb} />
+      <SeoJsonLd data={aboutSchema} />
       {/* HERO: background only + bottom pills */}
       <section className="relative isolate min-h-[50svh] overflow-hidden">
         <div
@@ -103,6 +123,27 @@ export default function OurStoryPage() {
               At <strong>DiFiore Builders</strong>, we don’t just build homes—we build
               relationships that last for generations.
             </p>
+          </div>
+
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/services"
+              className="rounded-full border border-white/40 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Explore services
+            </Link>
+            <Link
+              href="/service-areas"
+              className="rounded-full border border-white/40 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              View service areas
+            </Link>
+            <Link
+              href="/project-calculator"
+              className="rounded-full bg-amber-500 px-5 py-2.5 text-sm font-semibold text-zinc-900 hover:bg-amber-400"
+            >
+              Start cost estimator
+            </Link>
           </div>
         </div>
       </section>

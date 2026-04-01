@@ -89,7 +89,7 @@ const localBusinessJsonLd = {
   name: "DiFiore Builders Inc.",
   url: PAGE_URL,
   telephone: "+1-980-946-6791",
-  image: [OG_IMAGE_URL, "https://www.difiorebuilders.com/difiore-hero-spotlight-house.png"],
+  image: [OG_IMAGE_URL, "https://www.difiorebuilders.com/difiore-hero-spotlight-house.webp"],
   logo: "https://www.difiorebuilders.com/difiore-logo.png",
   foundingDate: "2003",
   description: PAGE_DESCRIPTION,
@@ -186,6 +186,8 @@ export default function ConcordKannapolisLandingPage() {
         phoneDisplay={CHARLOTTE_PHONE_DISPLAY}
         phoneLink={CHARLOTTE_PHONE_LINK}
         serviceArea={CHARLOTTE_SERVICE_AREA}
+        serviceAreasHref="/charlotte"
+        serviceAreasLabel="Charlotte service areas"
       />
     </>
   );
