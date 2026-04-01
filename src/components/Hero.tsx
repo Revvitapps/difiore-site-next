@@ -1,3 +1,5 @@
+"use client";
+
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,17 +21,15 @@ export default function Hero() {
         } as CSSProperties
       }
     >
-      <div className="pointer-events-none absolute inset-0 -z-20">
+      <div className="pointer-events-none fixed inset-0 -z-20">
         <div className="relative h-full w-full">
           <div className="h-full w-full max-w-full overflow-hidden">
             <Image
               src={heroBg.imageSrc}
               alt="Exterior renovation by DiFiore Builders"
               priority
-              fetchPriority="high"
-              fill
-              sizes="100vw"
-              quality={65}
+              width={1200}
+              height={800}
               className="hero-background-image h-full w-full object-cover transition-[object-position] duration-500"
             />
           </div>

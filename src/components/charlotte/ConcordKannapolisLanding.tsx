@@ -5,15 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
-import { heroBackground } from "@/lib/theme";
 import TrustedBadges from "@/components/TrustedBadges";
-
-const highlights = [
-  "20+ years of remodeling experience (since 2003)",
-  "Licensed & insured general contractor in North Carolina",
-  "Permit-ready planning and clear project timelines",
-  "Clean job sites, tight schedules, and proactive updates",
-];
+import { heroBackground } from "@/lib/theme";
 
 const expertise = [
   "Full kitchen and bath remodels",
@@ -109,85 +102,94 @@ export default function ConcordKannapolisLanding({
   const copy = VARIANT_COPY[variant];
 
   return (
-    <main
-      className="relative isolate min-h-screen text-white"
-      style={
-        {
-          "--hero-bg-mobile": heroBackground.positions.mobile,
-          "--hero-bg-md": heroBackground.positions.tablet,
-          "--hero-bg-lg": heroBackground.positions.desktop,
-        } as CSSProperties
-      }
-    >
-      <div className="pointer-events-none absolute inset-0 -z-20">
-        <div className="relative h-full w-full">
-          <Image
-            src={heroBackground.imageSrc}
-            alt="Home remodeling and roofing work by DiFiore Builders in Concord and Kannapolis, NC"
-            priority
-            fetchPriority="high"
-            fill
-            sizes="100vw"
-            quality={65}
-            className="hero-background-image h-full w-full object-cover"
-          />
-          <div aria-hidden className="absolute inset-0 bg-[rgba(6,10,20,0.12)]" />
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-b from-[#12223a]/30 via-transparent to-[#0c0f14]/35"
-          />
+    <main className="relative isolate min-h-screen text-white">
+      <section
+        className="relative isolate min-h-[72svh] md:min-h-[84svh] w-full overflow-hidden"
+        aria-label="Concord and Kannapolis Hero"
+        style={
+          {
+            "--hero-bg-mobile": heroBackground.positions.mobile,
+            "--hero-bg-md": heroBackground.positions.tablet,
+            "--hero-bg-lg": heroBackground.positions.desktop,
+          } as CSSProperties
+        }
+      >
+        <div className="pointer-events-none fixed inset-0 -z-20">
+          <div className="relative h-full w-full">
+            <div className="h-full w-full max-w-full overflow-hidden">
+              <Image
+                src={heroBackground.imageSrc}
+                alt="Home remodeling and roofing work by DiFiore Builders in Concord and Kannapolis, NC"
+                priority
+                width={1200}
+                height={800}
+                className="hero-background-image h-full w-full object-cover transition-[object-position] duration-500"
+              />
+            </div>
+            <div aria-hidden className="absolute inset-0 bg-[rgba(4,8,16,0.12)]" />
+          </div>
         </div>
-      </div>
 
-      <section className="relative flex min-h-[100svh] items-center overflow-hidden px-4 pt-16 pb-12 md:pt-20">
-        <motion.div
-          initial={baseInitial}
-          whileInView={baseAnimate}
-          transition={baseTransition(0)}
-          viewport={{ once: true, amount: 0.4 }}
-          className="mx-auto w-full max-w-5xl text-center"
-        >
-          <p className="text-xs uppercase tracking-[0.35em] text-amber-300">{copy.eyebrow}</p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-            {copy.headline}
-          </h1>
-          <p className="mt-4 mx-auto max-w-3xl text-base text-white/75 sm:text-lg">{copy.lead}</p>
-          <p className="mt-3 mx-auto max-w-3xl text-sm text-white/60">{copy.support}</p>
+        <div className="absolute top-[5vh] right-[4%] md:right-[3%] lg:right-[5%] z-10 text-right">
+          <span className="block max-w-[260px] text-[clamp(16px,3.2vw,28px)] font-semibold leading-snug text-white drop-shadow-[0_4px_16px_rgba(0,0,0,.45)] md:max-w-none md:whitespace-nowrap">
+            “Quality work from the{" "}
+            <span className="block whitespace-nowrap sm:inline">foundation to the roof”</span>
+          </span>
+        </div>
 
-          <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link
-              href="/project-calculator"
-              className="inline-flex w-full items-center justify-center rounded-md bg-amber-500 px-6 py-3 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400 sm:w-auto"
+        <div className="relative z-10 mx-auto max-w-[1200px] px-6 md:px-8">
+          <div className="grid min-h-[72svh] md:min-h-[84svh] place-items-center">
+            <motion.div
+              initial={baseInitial}
+              whileInView={baseAnimate}
+              transition={baseTransition(0)}
+              viewport={{ once: true, amount: 0.4 }}
+              className="w-full translate-y-[3vh] text-center sm:translate-y-[5vh] md:translate-y-[7vh]"
             >
-              {copy.primaryCta}
-            </Link>
-            <a
-              href={CHARLOTTE_PHONE_TEL}
-              className="inline-flex w-full items-center justify-center rounded-md border border-white/40 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 sm:w-auto"
-            >
-              {copy.secondaryCta}
-            </a>
-          </div>
+              <p className="mb-4 text-[12px] font-semibold uppercase tracking-[0.28em] text-amber-300 sm:text-[13px]">
+                {copy.eyebrow}
+              </p>
+              <h1 className="font-serif text-[clamp(40px,6vw,72px)] font-black leading-[1.04] tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,.45)]">
+                {copy.headline}
+              </h1>
 
-          <div className="mt-10 grid gap-3 text-sm text-white/70 sm:grid-cols-2">
-            {highlights.map((item, index) => (
-              <motion.div
-                key={item}
-                initial={baseInitial}
-                whileInView={baseAnimate}
-                transition={baseTransition(0.15 + index * 0.08)}
-                viewport={{ once: true, amount: 0.3 }}
-                className="rounded-xl border border-white/10 bg-black/55 px-4 py-3"
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:mt-12 sm:gap-5">
+                <Link
+                  href="/project-calculator"
+                  className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
+                >
+                  {copy.primaryCta}
+                </Link>
+                <Link
+                  href="/contact"
+                  className="rounded-md border border-white/55 bg-black/20 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
+                >
+                  Get a Quote
+                </Link>
+                <Link
+                  href="/before-and-after"
+                  className="rounded-md border border-white/55 bg-black/20 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
+                >
+                  See Projects
+                </Link>
+              </div>
+
+              <a
+                href={CHARLOTTE_PHONE_TEL}
+                className="mt-8 inline-flex items-center justify-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-amber-300/90 hover:text-amber-300 sm:mt-9 sm:text-[14px]"
               >
-                {item}
-              </motion.div>
-            ))}
+                Call now {CHARLOTTE_PHONE_DISPLAY}
+              </a>
+              <p className="mt-5 mx-auto max-w-[680px] text-[17px] font-bold leading-relaxed text-white/90 sm:text-[20px]">
+                {copy.lead}
+              </p>
+              <div className="mt-3 mx-auto max-w-[820px] text-sm leading-relaxed text-white/75 sm:text-base">
+                {copy.support}
+              </div>
+              <TrustedBadges compact className="pt-12" />
+            </motion.div>
           </div>
-
-          <div className="mt-16 md:mt-20">
-            <TrustedBadges compact className="pt-6 pb-2 md:pt-8 md:pb-3" />
-          </div>
-        </motion.div>
+        </div>
       </section>
 
       <section className="px-4 pb-6 -mt-16 md:-mt-24">
