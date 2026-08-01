@@ -29,7 +29,7 @@ const localBusinessJsonLd = {
   "@type": "GeneralContractor",
   name: "DiFiore Builders Inc.",
   url: "https://www.difiorebuilders.com/charlotte/roofing",
-  telephone: "+1-610-358-5433",
+  telephone: "+1-980-946-6791",
   areaServed: ["Charlotte, NC"],
   aggregateRating: {
     "@type": "AggregateRating",

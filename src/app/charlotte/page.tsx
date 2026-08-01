@@ -22,7 +22,7 @@ const localBusinessJsonLd = {
   "@type": "GeneralContractor",
   name: "DiFiore Builders Inc.",
   url: `${SITE_URL}/charlotte`,
-  telephone: "+1-610-358-5433",
+  telephone: "+1-980-946-6791",
   areaServed: [
     "Charlotte, NC",
     "Kannapolis, NC",
@@ -230,11 +230,11 @@ export default function CharlottePage() {
 
               <div className="mt-7 flex flex-wrap items-center gap-3 text-sm text-zinc-200">
                 <a
-                  href="tel:+16103585433"
+                  href="tel:+19809466791"
                   className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 font-semibold text-amber-200 hover:border-amber-200/40"
                 >
                   <ShieldCheck className="h-4 w-4" />
-                  Call now (610) 358-5433
+                  Call now (980) 946-6791
                 </a>
                 <div className="text-xs uppercase tracking-[0.22em] text-zinc-300">Primary markets:</div>
                 <a href="#concord" className="rounded-full border border-white/10 px-3 py-1.5 text-xs uppercase tracking-[0.18em] hover:bg-white/[0.08]">Concord</a>
