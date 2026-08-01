@@ -63,7 +63,7 @@ export default function TrustedBadges({ compact = false, className }: TrustedBad
                     BBB Accredited Business
                   </div>
                   <div className="mt-1 text-[14px] font-medium text-zinc-600">
-                    A+ Rated • Trusted Since Accreditation
+                    A+ Rated • Trusted Since 2003
                   </div>
                 </div>
               </div>

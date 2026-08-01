@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, Compass, Hammer, MapPin, ShieldCheck } from "lucide-react";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { REVIEW_SUMMARY } from "@/lib/seo/reviewSummary";
@@ -40,54 +41,96 @@ const GREATER_CHARLOTTE_AREAS = [
   {
     id: "kannapolis",
     name: "Kannapolis, NC",
-    summary:
-      "Cabarrus County homeowners call us for kitchen remodeling, roof replacement, and additions with clear scope and schedule visibility.",
+    county: "Cabarrus County",
+    coverage: "page" as const,
     href: "/charlotte/concord-kannapolis",
-    cta: "Explore Kannapolis services",
+    cta: "Explore Concord + Kannapolis",
     focus: "Kitchen remodeling, roof replacement, and full-scope additions",
-    highlights: ["Cabarrus County planning support", "Budget-first scope alignment"],
-    localServices: ["Kitchen remodeling", "Roof replacement", "Additions and structural updates"],
+    highlights: [
+      "Scope locked before pricing — the estimate you approve is the project you get",
+      "Cabarrus County permit coordination built in",
+    ],
+    localServices: ["Kitchen remodeling", "Roof replacement", "Additions & structural updates"],
     localCopy:
-      "Kannapolis homeowners usually need a contractor who can translate ideas into a disciplined scope before work starts. We focus on kitchens, roofing, additions, and broader remodel planning with tighter schedule control and cleaner communication.",
+      "Most Kannapolis calls start the same way: a homeowner with a clear idea that still needs a real scope before anyone quotes a number. We translate kitchen, roofing, and addition projects into a defined plan with tighter schedule control and cleaner day-to-day communication, so nothing gets priced on a guess.",
   },
   {
     id: "concord",
     name: "Concord, NC",
-    summary:
-      "From exterior envelope upgrades to full interior remodels, our Concord projects focus on planning-first execution and clean jobsite control.",
+    county: "Cabarrus County",
+    coverage: "page" as const,
     href: "/charlotte/concord-kannapolis",
-    cta: "Explore Concord services",
-    focus: "Exterior upgrades, remodel sequencing, and permit-aware planning",
-    highlights: ["Strong fit for complex remodels", "Built around clean schedules"],
-    localServices: ["Exterior upgrades", "Kitchen and bath remodels", "Full-scope home improvements"],
+    cta: "Explore Concord + Kannapolis",
+    focus: "Exterior + interior remodels, sequenced in the right order",
+    highlights: [
+      "Multi-scope remodels sequenced so trades don't collide",
+      "One team managing estimate through final walkthrough",
+    ],
+    localServices: ["Exterior envelope upgrades", "Kitchen & bath remodels", "Whole-home improvements"],
     localCopy:
-      "Concord projects often combine exterior work with interior remodeling, which means sequencing matters. We help homeowners scope roofing, kitchens, baths, and layout updates in the right order so the project stays efficient from estimate through final walkthrough.",
+      "Concord projects often pair exterior work with interior remodeling, so sequencing is what keeps the job efficient. We help homeowners order roofing, kitchens, baths, and layout changes so the schedule holds and the site stays clean. It's the right fit when the project is bigger than a single room and needs someone managing the whole build.",
   },
   {
     id: "mooresville",
     name: "Mooresville, NC",
-    summary:
-      "Mooresville projects often combine kitchen and bath upgrades with larger structural scopes and long-term durability requirements.",
+    county: "Lake Norman area",
+    coverage: "walkthrough" as const,
     href: "/contact",
-    cta: "Request Mooresville walkthrough",
-    focus: "Lake-area remodels, additions, and durable exterior work",
-    highlights: ["Good fit for larger footprints", "Material selections built for longevity"],
-    localServices: ["Larger remodel scopes", "Additions and expansions", "Roofing and exterior durability"],
+    cta: "Request a Mooresville walkthrough",
+    focus: "Lake-area homes, larger footprints, and exteriors built to last",
+    highlights: [
+      "Bigger footprints and multi-room scopes",
+      "Material selections weighted for long-term durability",
+    ],
+    localServices: ["Larger remodel scopes", "Additions & expansions", "Roofing & durable exteriors"],
     localCopy:
-      "Mooresville homes often need broader planning around additions, exterior protection, and upgraded interiors that can hold up over time. We approach those projects with a stronger emphasis on material durability, longer-term value, and scope clarity before construction begins.",
+      "Mooresville and the Lake Norman area lean toward larger footprints and homes that take real weather exposure, so durability and material selection matter as much as finish. We scope additions, exterior protection, and interior upgrades for long-term value before construction starts. A dedicated Mooresville page is still in the works — the fastest path today is a direct walkthrough where we scope the project with you.",
   },
   {
     id: "huntersville",
     name: "Huntersville, NC",
-    summary:
-      "Huntersville homeowners rely on our team for remodeling plans that balance modern function, quality finishes, and practical timelines.",
+    county: "North Mecklenburg",
+    coverage: "walkthrough" as const,
     href: "/contact",
-    cta: "Request Huntersville walkthrough",
-    focus: "High-function kitchen, bath, and roofing scopes with clear phasing",
-    highlights: ["Modern-family layout priorities", "Timeline-focused project management"],
-    localServices: ["Kitchen and bath remodeling", "Roofing replacement", "Family-focused layout improvements"],
+    cta: "Request a Huntersville walkthrough",
+    focus: "Function-first kitchen, bath, and roofing work with clear phasing",
+    highlights: [
+      "Family layout and everyday-function upgrades",
+      "Practical build sequence on a realistic budget",
+    ],
+    localServices: ["Kitchen & bath remodeling", "Roof replacement", "Layout improvements"],
     localCopy:
-      "Huntersville projects tend to center on functional upgrades that make everyday living easier without losing finish quality. We help homeowners prioritize kitchens, baths, roofing, and layout improvements with a realistic budget and a practical build sequence.",
+      "Huntersville projects usually center on functional upgrades that make daily life easier without giving up finish quality — the Birkdale-and-north-Mecklenburg family remodel. We help prioritize kitchens, baths, roofing, and layout changes against a realistic budget and a practical build sequence. Like Mooresville, a dedicated page is on the way; a walkthrough is the quickest way to get specific.",
+  },
+];
+
+const CHARLOTTE_SIGNALS = [
+  { label: "Charlotte-first planning", value: "Local scope reviews that start with budget, durability, and sequencing." },
+  { label: "Primary growth markets", value: "Concord, Kannapolis, Mooresville, and Huntersville." },
+  { label: "Best-fit work", value: "Kitchens, roofing, additions, and whole-home remodels." },
+];
+
+const CHARLOTTE_STATS = [
+  { label: "Core markets", value: "4" },
+  { label: "Review rating", value: `${REVIEW_SUMMARY.rating} stars` },
+  { label: "Lead options", value: "Call, estimate, walkthrough" },
+];
+
+const POPULAR_SERVICES = [
+  {
+    title: "Kitchen remodeling",
+    copy: "Layout upgrades, storage planning, and finish packages designed around everyday use.",
+    href: "/charlotte/kitchen-remodeling",
+  },
+  {
+    title: "Roofing replacement",
+    copy: "Storm-ready roofing scopes with tighter material guidance and cleaner scheduling.",
+    href: "/charlotte/roofing",
+  },
+  {
+    title: "Additions and expansions",
+    copy: "Family-room growth, second-story planning, and larger structural scopes with real sequencing.",
+    href: "/contact",
   },
 ];
 
@@ -105,8 +148,9 @@ export default function CharlottePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
       />
+
       <section
-        className="relative isolate min-h-[72svh] w-full overflow-hidden md:min-h-[84svh]"
+        className="relative isolate min-h-[100svh] w-full overflow-hidden border-b border-white/10 md:min-h-[92svh]"
         aria-label="Charlotte Hero"
         style={
           {
@@ -133,142 +177,159 @@ export default function CharlottePage() {
             <div aria-hidden className="absolute inset-0 bg-[rgba(5,10,18,0.34)]" />
             <div
               aria-hidden
-              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,20,.28)_0%,rgba(8,12,20,.45)_38%,rgba(8,12,20,.72)_100%)]"
+              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,20,.22)_0%,rgba(8,12,20,.38)_26%,rgba(8,12,20,.72)_62%,rgba(7,10,16,.96)_100%)]"
             />
           </div>
         </div>
 
-        <div className="absolute top-[5vh] right-[4%] z-10 text-right md:right-[3%] lg:right-[5%]">
-          <span className="block max-w-[260px] text-[clamp(16px,3.2vw,28px)] font-semibold leading-snug text-white drop-shadow-[0_4px_16px_rgba(0,0,0,.45)] md:max-w-none md:whitespace-nowrap">
-            “Quality work from the{" "}
-            <span className="block whitespace-nowrap sm:inline">foundation to the roof”</span>
-          </span>
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-[1200px] px-6 md:px-8">
-          <div className="grid min-h-[72svh] place-items-center md:min-h-[84svh]">
-            <div className="w-full translate-y-[3vh] text-center sm:translate-y-[5vh] md:translate-y-[7vh]">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-amber-300 sm:text-[13px]">
-                Charlotte Service Areas
-              </p>
-              <h1 className="mt-4 font-serif text-[clamp(40px,6vw,72px)] font-black leading-[1.04] tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,.45)]">
-                Concord, Kannapolis, Mooresville, and Huntersville Remodeling
+        <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl items-end px-4 py-14 sm:px-6 md:min-h-[92svh] md:px-8 md:py-20">
+          <div className="grid w-full gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,.8fr)] lg:items-end">
+            <div className="max-w-4xl rounded-[32px] border border-white/12 bg-[linear-gradient(135deg,rgba(6,10,18,.82),rgba(11,17,29,.58))] p-6 shadow-[0_24px_80px_rgba(0,0,0,.42)] backdrop-blur md:p-8 lg:p-10">
+              <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/35 bg-amber-300/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.26em] text-amber-200">
+                <MapPin className="h-3.5 w-3.5" />
+                Charlotte service hub
+              </div>
+              <h1 className="mt-5 max-w-3xl font-serif text-[clamp(38px,7vw,76px)] font-black leading-[0.95] tracking-[-0.03em] text-white">
+                Remodeling coverage for Charlotte&apos;s highest-intent suburbs.
               </h1>
-              <p className="mx-auto mt-6 max-w-[860px] text-[17px] font-bold leading-relaxed text-white/92 sm:text-[20px]">
-                A Charlotte-area microsite for homeowners comparing kitchens, bathrooms, roofing, additions, and
-                full-scope remodeling with stronger local service-area guidance.
+              <p className="mt-5 max-w-2xl text-base leading-7 text-white/82 sm:text-lg">
+                Compare kitchens, roofing, additions, and full-home remodeling for Concord, Kannapolis, Mooresville,
+                and Huntersville without digging through generic service pages.
               </p>
 
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:mt-12 sm:gap-5">
+              <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                {CHARLOTTE_STATS.map((stat) => (
+                  <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-4">
+                    <div className="text-2xl font-semibold text-white">{stat.value}</div>
+                    <div className="mt-1 text-xs uppercase tracking-[0.2em] text-zinc-300">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                   href="/project-calculator"
-                  className="rounded-md bg-amber-500 px-5 py-2.5 text-[15px] font-semibold text-zinc-900 shadow hover:bg-amber-400"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-400 px-5 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-amber-300"
                 >
                   Open Cost Estimator
-                </Link>
-                <Link
-                  href="/charlotte/concord-kannapolis"
-                  className="rounded-md border border-white/55 bg-black/20 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
-                >
-                  Explore Concord + Kannapolis
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/contact"
-                  className="rounded-md border border-white/55 bg-black/20 px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-white/10"
+                  className="inline-flex items-center justify-center rounded-full border border-white/35 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.12]"
                 >
                   Request Charlotte Walkthrough
                 </Link>
+                <Link
+                  href="/charlotte/concord-kannapolis"
+                  className="inline-flex items-center justify-center rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-zinc-200 transition hover:border-white/40 hover:bg-white/[0.08]"
+                >
+                  Explore Concord + Kannapolis
+                </Link>
               </div>
 
-              <a
-                href="tel:+16103585433"
-                className="mt-8 inline-flex items-center justify-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-amber-300/90 hover:text-amber-300 sm:mt-9 sm:text-[14px]"
-              >
-                Call now (610) 358-5433
-              </a>
-              <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-amber-300/90 sm:text-[14px]">
-                <a href="#concord" className="hover:text-amber-300">Concord NC</a>
-                <a href="#kannapolis" className="hover:text-amber-300">Kannapolis NC</a>
-                <a href="#mooresville" className="hover:text-amber-300">Mooresville NC</a>
-                <a href="#huntersville" className="hover:text-amber-300">Huntersville NC</a>
+              <div className="mt-7 flex flex-wrap items-center gap-3 text-sm text-zinc-200">
+                <a
+                  href="tel:+16103585433"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 font-semibold text-amber-200 hover:border-amber-200/40"
+                >
+                  <ShieldCheck className="h-4 w-4" />
+                  Call now (610) 358-5433
+                </a>
+                <div className="text-xs uppercase tracking-[0.22em] text-zinc-300">Primary markets:</div>
+                <a href="#concord" className="rounded-full border border-white/10 px-3 py-1.5 text-xs uppercase tracking-[0.18em] hover:bg-white/[0.08]">Concord</a>
+                <a href="#kannapolis" className="rounded-full border border-white/10 px-3 py-1.5 text-xs uppercase tracking-[0.18em] hover:bg-white/[0.08]">Kannapolis</a>
+                <a href="#mooresville" className="rounded-full border border-white/10 px-3 py-1.5 text-xs uppercase tracking-[0.18em] hover:bg-white/[0.08]">Mooresville</a>
+                <a href="#huntersville" className="rounded-full border border-white/10 px-3 py-1.5 text-xs uppercase tracking-[0.18em] hover:bg-white/[0.08]">Huntersville</a>
               </div>
 
-              <TrustedBadges compact className="pt-12" />
+              <TrustedBadges compact className="pt-8" />
             </div>
+
+            <aside className="rounded-[28px] border border-white/12 bg-[linear-gradient(180deg,rgba(10,15,24,.9),rgba(10,15,24,.64))] p-5 shadow-[0_18px_60px_rgba(0,0,0,.34)] backdrop-blur md:p-6">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-amber-300">How this page works</p>
+              <div className="mt-5 space-y-4">
+                {CHARLOTTE_SIGNALS.map((signal, index) => (
+                  <div key={signal.label} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full border border-amber-300/30 bg-amber-300/10 text-xs font-semibold text-amber-200">
+                        0{index + 1}
+                      </div>
+                      <div className="text-sm font-semibold text-white">{signal.label}</div>
+                    </div>
+                    <p className="mt-3 text-sm leading-6 text-zinc-300">{signal.value}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-5 rounded-2xl border border-dashed border-white/18 bg-black/20 p-4">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <Compass className="h-4 w-4 text-amber-300" />
+                  Start with the market closest to your project.
+                </div>
+                <p className="mt-2 text-sm leading-6 text-zinc-300">
+                  Concord and Kannapolis have the deepest local page coverage today. Mooresville and Huntersville
+                  route directly into a walkthrough while those pages expand.
+                </p>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16 md:py-20">
-        <header className="max-w-4xl">
-          <p className="text-sm uppercase tracking-[0.28em] text-amber-300">Built Like a Mini Site</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Service-area guidance for the projects Charlotte homeowners actually search for
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-zinc-300">
-            This page is structured to help homeowners in the north and northeast Charlotte suburbs compare service
-            fit, planning needs, and next steps before moving into a quote or on-site walkthrough.
-          </p>
-        </header>
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 md:px-8 md:py-20">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,.72fr)]">
+          <header className="max-w-4xl">
+            <p className="text-sm uppercase tracking-[0.28em] text-amber-300">Charlotte-area coverage</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              Pick your market and start with real local guidance
+            </h2>
+            <p className="mt-4 max-w-3xl text-base leading-relaxed text-zinc-300">
+              Every suburb below has its own project mix, budget concerns, and planning quirks. Jump to yours for a
+              straight answer on scope, timing, and next steps — no generic regional filler.
+            </p>
+          </header>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
-          {GREATER_CHARLOTTE_AREAS.map((area) => (
-            <article
-              key={area.name}
-              className="rounded-2xl border border-white/10 bg-zinc-900/40 p-6 shadow-[0_18px_50px_rgba(0,0,0,.35)]"
-            >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-amber-300">Service Area</p>
-              <h3 className="mt-3 text-2xl font-semibold text-white">{area.name}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-zinc-300">{area.summary}</p>
-              <p className="mt-4 text-sm font-medium text-white/90">{area.focus}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {area.highlights.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[12px] font-medium text-zinc-200"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-              <Link
-                href={area.href}
-                className="mt-5 inline-flex rounded-full bg-amber-400 px-4 py-2 text-sm font-semibold text-zinc-900 hover:bg-amber-300"
-              >
-                {area.cta}
-              </Link>
-            </article>
-          ))}
+          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+            <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.22em] text-amber-300">
+              <Hammer className="h-4 w-4" />
+              Best-fit project types
+            </div>
+            <ul className="mt-4 space-y-3 text-sm leading-relaxed text-zinc-300">
+              <li className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3">Kitchen remodeling with better layout planning</li>
+              <li className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3">Roofing replacement tied to material and storm durability</li>
+              <li className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3">Additions and larger remodel scopes that need sequencing</li>
+            </ul>
+          </div>
         </div>
 
-        <div className="mt-14 space-y-6">
-          <div className="max-w-4xl">
-            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Local service areas around Charlotte
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-zinc-300">
-              This page should work like a small local hub, not a generic regional placeholder. Each area below
-              reflects the project types and planning concerns we expect to discuss most often with homeowners in that
-              market.
-            </p>
-          </div>
-
+        <div className="mt-16 space-y-6">
           <div className="grid gap-6">
             {GREATER_CHARLOTTE_AREAS.map((area) => (
               <section
                 key={area.id}
                 id={area.id}
-                className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 md:p-8"
+                className="rounded-[30px] border border-white/10 bg-white/[0.04] p-6 md:p-8"
               >
-                <div className="grid gap-6 lg:grid-cols-[1.15fr_.85fr]">
+                <div className="grid gap-6 lg:grid-cols-[1.2fr_.8fr]">
                   <div>
-                    <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-amber-300">
-                      {area.name}
-                    </p>
-                    <h3 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-amber-300">
+                        {area.name} · {area.county}
+                      </p>
+                      <span
+                        className={`rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] ${
+                          area.coverage === "page"
+                            ? "border-amber-300/40 bg-amber-300/10 text-amber-200"
+                            : "border-white/20 bg-white/[0.05] text-zinc-300"
+                        }`}
+                      >
+                        {area.coverage === "page" ? "Dedicated page" : "Walkthrough"}
+                      </span>
+                    </div>
+                    <h3 className="mt-3 max-w-xl text-2xl font-semibold text-white md:text-3xl">
                       Remodeling and exterior work for {area.name}
                     </h3>
-                    <p className="mt-4 text-sm leading-relaxed text-zinc-300">{area.localCopy}</p>
+                    <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-300">{area.localCopy}</p>
                     <p className="mt-4 text-sm font-medium text-white/90">{area.focus}</p>
                     <div className="mt-5 flex flex-wrap gap-2">
                       {area.localServices.map((service) => (
@@ -282,13 +343,13 @@ export default function CharlottePage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-zinc-950/40 p-5">
+                  <div className="rounded-[26px] border border-white/10 bg-zinc-950/40 p-5">
                     <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-300">
-                      Good Fit Projects
+                      Best fit projects
                     </h4>
                     <ul className="mt-4 space-y-3 text-sm leading-relaxed text-zinc-300">
                       {area.highlights.map((item) => (
-                        <li key={item} className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                        <li key={item} className="rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3">
                           {item}
                         </li>
                       ))}
@@ -314,48 +375,43 @@ export default function CharlottePage() {
           </div>
         </div>
 
-        <div className="mt-12 rounded-2xl border border-white/10 bg-white/[0.04] p-6 md:p-8">
-          <h2 className="text-xl font-semibold text-white">Popular Charlotte services</h2>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-300">
-            We focus on high-intent projects where local permitting knowledge and disciplined project management make
-            the biggest difference for timeline and quality.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
+        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          {POPULAR_SERVICES.map((service) => (
             <Link
-              href="/charlotte/kitchen-remodeling"
-              className="rounded-full border border-white/40 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+              key={service.title}
+              href={service.href}
+              className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 transition hover:border-amber-300/30 hover:bg-white/[0.06]"
             >
-              Charlotte kitchen remodeling
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-amber-300">Popular service</p>
+              <h3 className="mt-3 text-xl font-semibold text-white">{service.title}</h3>
+              <p className="mt-3 text-sm leading-7 text-zinc-300">{service.copy}</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-amber-200">
+                Explore service
+                <ArrowRight className="h-4 w-4" />
+              </span>
             </Link>
-            <Link
-              href="/charlotte/roofing"
-              className="rounded-full border border-white/40 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
-            >
-              Charlotte roofing replacement
-            </Link>
-          </div>
+          ))}
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_.8fr]">
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 md:p-8">
-            <h2 className="text-xl font-semibold text-white">Why this Charlotte page should feel like a mini site</h2>
+            <h2 className="text-xl font-semibold text-white">Two regions, one local builder</h2>
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-              Homeowners in Concord, Kannapolis, Mooresville, and Huntersville are often evaluating project type,
-              rough cost, timeline, and whether a contractor can manage larger scopes without loose estimating. This
-              page now acts as a central index into that decision.
+              Whether you&apos;re weighing project type, a rough budget, timeline, or whether a contractor can manage a
+              larger scope without loose estimating, this page points you to the right starting place for your suburb.
             </p>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/10 bg-zinc-950/40 p-5">
                 <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-300">North Charlotte</h3>
                 <p className="mt-2 text-sm leading-relaxed text-zinc-300">
-                  Mooresville and Huntersville visitors usually need broader planning language, larger-scope examples,
-                  and clearer next-step guidance.
+                  Mooresville and Huntersville projects tend to be larger footprints and function-first family
+                  remodels — start with a walkthrough and we&apos;ll scope it with you.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-zinc-950/40 p-5">
                 <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-300">Cabarrus County</h3>
                 <p className="mt-2 text-sm leading-relaxed text-zinc-300">
-                  Concord and Kannapolis visitors respond to service pages that tie roofing, additions, and kitchen
+                  Concord and Kannapolis have the deepest coverage today, tying roofing, additions, and kitchen
                   remodeling to practical planning and execution.
                 </p>
               </div>

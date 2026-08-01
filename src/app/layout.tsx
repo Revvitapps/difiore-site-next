@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ANALYTICS_CONFIG } from "@/lib/analytics/config";
 import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import { Suspense } from "react";
 import { SITE_URL } from "@/lib/seo/constants";
@@ -98,7 +97,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <Footer />
         <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

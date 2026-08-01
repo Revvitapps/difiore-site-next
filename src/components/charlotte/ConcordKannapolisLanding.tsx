@@ -4,8 +4,8 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { motion, useReducedMotion } from "framer-motion";
 import TrustedBadges from "@/components/TrustedBadges";
+import { useReveal } from "@/lib/hooks";
 import { heroBackground } from "@/lib/theme";
 
 const expertise = [
@@ -92,14 +92,12 @@ export default function ConcordKannapolisLanding({
   variant?: LandingVariant;
   reviewUrl?: string;
 }) {
-  const prefersReducedMotion = useReducedMotion();
-  const baseInitial = prefersReducedMotion ? false : { opacity: 0, y: 28 };
-  const baseAnimate = prefersReducedMotion ? {} : { opacity: 1, y: 0 };
-  const baseTransition = (delay = 0) =>
-    prefersReducedMotion
-      ? undefined
-      : { duration: 0.75, delay };
   const copy = VARIANT_COPY[variant];
+  const expertiseRef = useReveal<HTMLDivElement>({ threshold: 0.18, rootMargin: "0px 0px -12% 0px" });
+  const servicesRef = useReveal<HTMLDivElement>({ threshold: 0.18, rootMargin: "0px 0px -12% 0px" });
+  const paRef = useReveal<HTMLDivElement>({ threshold: 0.18, rootMargin: "0px 0px -12% 0px" });
+  const stepsRef = useReveal<HTMLDivElement>({ threshold: 0.18, rootMargin: "0px 0px -12% 0px" });
+  const ctaRef = useReveal<HTMLDivElement>({ threshold: 0.18, rootMargin: "0px 0px -12% 0px" });
 
   return (
     <main className="relative isolate min-h-screen text-white">
@@ -139,13 +137,7 @@ export default function ConcordKannapolisLanding({
 
         <div className="relative z-10 mx-auto max-w-[1200px] px-6 md:px-8">
           <div className="grid min-h-[72svh] md:min-h-[84svh] place-items-center">
-            <motion.div
-              initial={baseInitial}
-              whileInView={baseAnimate}
-              transition={baseTransition(0)}
-              viewport={{ once: true, amount: 0.4 }}
-              className="w-full translate-y-[3vh] text-center sm:translate-y-[5vh] md:translate-y-[7vh]"
-            >
+            <div className="w-full translate-y-[3vh] text-center sm:translate-y-[5vh] md:translate-y-[7vh]">
               <p className="mb-4 text-[12px] font-semibold uppercase tracking-[0.28em] text-amber-300 sm:text-[13px]">
                 {copy.eyebrow}
               </p>
@@ -187,134 +179,113 @@ export default function ConcordKannapolisLanding({
                 {copy.support}
               </div>
               <TrustedBadges compact className="pt-12" />
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="px-4 pb-6 -mt-16 md:-mt-24">
-        <motion.div
-          initial={baseInitial}
-          whileInView={baseAnimate}
-          transition={baseTransition(0.2)}
-          viewport={{ once: true, amount: 0.25 }}
-          className="mx-auto w-full max-w-6xl"
-        >
+      <section className="relative z-10 px-4 pb-6 -mt-16 md:-mt-24">
+        <div className="mx-auto w-full max-w-6xl">
           <Reviews reviewUrl={reviewUrl} />
-        </motion.div>
+        </div>
       </section>
 
-      <section className="px-4 py-12">
-        <motion.div
-          initial={baseInitial}
-          whileInView={baseAnimate}
-          transition={baseTransition(0.1)}
-          viewport={{ once: true, amount: 0.3 }}
-          className="mx-auto w-full max-w-5xl text-center"
-        >
+      <section className="relative z-10 px-4 py-12">
+        <div ref={expertiseRef} className="group mx-auto w-full max-w-5xl text-center opacity-0 [transform:translateY(18px)] transition-[transform,opacity] duration-700 ease-out in:opacity-100 in:[transform:none]">
           <h2 className="text-2xl font-semibold">What we are bringing to Concord and Kannapolis</h2>
           <p className="mt-2 mx-auto max-w-2xl text-sm text-white/60">
             Expanded expertise and full-service remodeling support for the Charlotte metro.
           </p>
           <div className="mt-5 grid gap-3 text-sm text-white/70 sm:grid-cols-2">
             {expertise.map((item, index) => (
-              <motion.div
+              <div
                 key={item}
-                initial={baseInitial}
-                whileInView={baseAnimate}
-                transition={baseTransition(0.2 + index * 0.08)}
-                viewport={{ once: true, amount: 0.3 }}
-                className="rounded-xl border border-white/10 bg-white/5 px-4 py-3"
+                style={{ transitionDelay: `${index * 90}ms` }}
+                className="rounded-xl border border-white/12
+                  bg-[linear-gradient(180deg,rgba(14,22,34,.9),rgba(10,18,30,.84))]
+                  px-4 py-3 text-zinc-100 shadow-[0_10px_28px_rgba(0,0,0,.28)] backdrop-blur-sm
+                  opacity-0 [transform:translateY(18px)] transition-[transform,opacity] duration-700 ease-out
+                  group-[.in]:opacity-100 group-[.in]:[transform:none]"
               >
                 {item}
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      <section className="px-4 pb-12">
-        <motion.div
-          initial={baseInitial}
-          whileInView={baseAnimate}
-          transition={baseTransition(0.15)}
-          viewport={{ once: true, amount: 0.3 }}
-          className="mx-auto w-full max-w-5xl text-center"
-        >
+      <section className="relative z-10 px-4 pb-12">
+        <div ref={servicesRef} className="group mx-auto w-full max-w-5xl text-center opacity-0 [transform:translateY(18px)] transition-[transform,opacity] duration-700 ease-out in:opacity-100 in:[transform:none]">
           <h2 className="text-2xl font-semibold">Popular projects we handle</h2>
           <p className="mt-2 mx-auto max-w-2xl text-sm text-white/60">
             Full-service remodeling support for homeowners throughout the Concord-Kannapolis area.
           </p>
           <div className="mt-5 grid gap-3 text-sm text-white/70 sm:grid-cols-2">
             {services.map((service, index) => (
-              <motion.div
+              <div
                 key={service}
-                initial={baseInitial}
-                whileInView={baseAnimate}
-                transition={baseTransition(0.25 + index * 0.08)}
-                viewport={{ once: true, amount: 0.3 }}
-                className="rounded-xl border border-white/10 bg-white/5 px-4 py-3"
+                style={{ transitionDelay: `${index * 90}ms` }}
+                className="rounded-xl border border-white/12
+                  bg-[linear-gradient(180deg,rgba(14,22,34,.9),rgba(10,18,30,.84))]
+                  px-4 py-3 text-zinc-100 shadow-[0_10px_28px_rgba(0,0,0,.28)] backdrop-blur-sm
+                  opacity-0 [transform:translateY(18px)] transition-[transform,opacity] duration-700 ease-out
+                  group-[.in]:opacity-100 group-[.in]:[transform:none]"
               >
                 {service}
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      <section className="px-4 pb-12">
-        <motion.div
-          initial={baseInitial}
-          whileInView={baseAnimate}
-          transition={baseTransition(0.2)}
-          viewport={{ once: true, amount: 0.3 }}
-          className="mx-auto w-full max-w-5xl rounded-2xl border border-white/10 bg-white/5 p-6 text-center"
+      <section className="relative z-10 px-4 pb-12">
+        <div
+          ref={paRef}
+          className="mx-auto w-full max-w-5xl rounded-2xl border border-white/12
+            bg-[linear-gradient(180deg,rgba(14,22,34,.9),rgba(10,18,30,.84))]
+            p-6 text-center shadow-[0_10px_28px_rgba(0,0,0,.28)] backdrop-blur-sm
+            opacity-0 [transform:translateY(18px)] transition-[transform,opacity] duration-700 ease-out
+            in:opacity-100 in:[transform:none]"
         >
           <h2 className="text-xl font-semibold">Still serving Pennsylvania</h2>
           <p className="mt-2 mx-auto max-w-3xl text-sm text-white/70">
             Our original PA team remains active with the same crews and service standards. This is
             a Charlotte-area expansion, not a relocation, so both markets continue to be supported.
           </p>
-        </motion.div>
+        </div>
       </section>
 
-      <section className="px-4 pb-16">
-        <motion.div
-          initial={baseInitial}
-          whileInView={baseAnimate}
-          transition={baseTransition(0.25)}
-          viewport={{ once: true, amount: 0.3 }}
-          className="mx-auto w-full max-w-5xl text-center"
-        >
+      <section className="relative z-10 px-4 pb-16">
+        <div ref={stepsRef} className="group mx-auto w-full max-w-5xl text-center opacity-0 [transform:translateY(18px)] transition-[transform,opacity] duration-700 ease-out in:opacity-100 in:[transform:none]">
           <h2 className="text-2xl font-semibold">How it works</h2>
           <div className="mt-5 grid gap-4 text-sm text-white/70 sm:grid-cols-3">
             {steps.map((step, index) => (
-              <motion.div
+              <div
                 key={step.title}
-                initial={baseInitial}
-                whileInView={baseAnimate}
-                transition={baseTransition(0.3 + index * 0.08)}
-                viewport={{ once: true, amount: 0.3 }}
-                className="rounded-2xl border border-white/10 bg-white/5 p-5"
+                style={{ transitionDelay: `${index * 110}ms` }}
+                className="rounded-2xl border border-white/12
+                  bg-[linear-gradient(180deg,rgba(14,22,34,.9),rgba(10,18,30,.84))]
+                  p-5 shadow-[0_10px_28px_rgba(0,0,0,.28)] backdrop-blur-sm
+                  opacity-0 [transform:translateY(18px)] transition-[transform,opacity] duration-700 ease-out
+                  group-[.in]:opacity-100 group-[.in]:[transform:none]"
               >
                 <p className="text-xs uppercase tracking-[0.3em] text-amber-300">
                   Step {index + 1}
                 </p>
                 <p className="mt-2 font-semibold text-white">{step.title}</p>
                 <p className="mt-2">{step.body}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      <section className="px-4 pb-20">
-        <motion.div
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 22, scale: 0.98 }}
-          whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0, scale: 1 }}
-          transition={baseTransition(0.2)}
-          viewport={{ once: true, amount: 0.3 }}
-          className="mx-auto w-full max-w-5xl rounded-2xl border border-amber-400/20 bg-amber-500/10 p-6 text-center"
+      <section className="relative z-10 px-4 pb-20">
+        <div
+          ref={ctaRef}
+          className="mx-auto w-full max-w-5xl rounded-2xl border border-amber-400/20 bg-amber-500/10 p-6 text-center
+            opacity-0 [transform:translateY(18px)] transition-[transform,opacity] duration-700 ease-out
+            in:opacity-100 in:[transform:none]"
         >
           <h2 className="text-2xl font-semibold text-white">Ready to plan your remodel?</h2>
           <p className="mt-2 text-sm text-white/70">
@@ -335,7 +306,7 @@ export default function ConcordKannapolisLanding({
               Call Now
             </a>
           </div>
-        </motion.div>
+        </div>
       </section>
     </main>
   );
