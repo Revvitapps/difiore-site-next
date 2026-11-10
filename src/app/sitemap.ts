@@ -20,7 +20,15 @@ const coreRoutes = [
   "/services/kitchens-bathrooms",
   "/services/additions-basements",
   "/services/new-builds-gc",
+  "/charlotte",
   "/charlotte/concord-kannapolis",
+  "/charlotte/roofing",
+  "/charlotte/kitchen-remodeling",
+  "/philadelphia",
+  "/philadelphia/roofing",
+  "/philadelphia/kitchen-remodeling",
+  "/blog/bathroom-remodeling-chadds-ford-pa",
+  "/blog/siding-replacement-chadds-ford-pa",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

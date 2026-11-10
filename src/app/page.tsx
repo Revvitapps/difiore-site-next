@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 const localBusinessJsonLd = {
   "@context": "https://schema.org",
   "@type": "GeneralContractor",
+  "@id": `${SITE_URL}/#organization`,
   name: "DiFiore Builders Inc.",
   url: SITE_URL,
   telephone: CANONICAL_NAP.phoneE164,
@@ -41,12 +42,23 @@ const localBusinessJsonLd = {
   ],
 };
 
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: "DiFiore Builders",
+  publisher: { "@id": `${SITE_URL}/#organization` },
+};
+
 const localBusinessJson = JSON.stringify(localBusinessJsonLd);
+const websiteJson = JSON.stringify(websiteJsonLd);
 
 export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: localBusinessJson }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: websiteJson }} />
       <Hero />
       <section className="mt-16 mb-16 md:mt-24 md:mb-24">
         <PillarsSection />

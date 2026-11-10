@@ -9,7 +9,8 @@
     "lint": "eslint",
     "email:csv": "node scripts/send-csv-campaign.js",
     "seo:ingest": "node scripts/seo-ingest.mjs",
-    "sitemap": "next-sitemap"
+    "sitemap": "next-sitemap",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
