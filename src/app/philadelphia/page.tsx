@@ -7,7 +7,7 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Philadelphia, PA General Contractor | DiFiore Builders",
   description:
-    "Remodeling, roofing, and additions for Philadelphia-area homeowners. DiFiore Builders brings a Charlotte-first focus with established Philly crews.",
+    "Remodeling, roofing, and additions for Philadelphia-area homeowners from DiFiore Builders, a family-owned contractor with established Philly crews.",
   alternates: { canonical: "https://www.difiorebuilders.com/philadelphia" },
 };
 
@@ -90,10 +90,10 @@ export default function PhiladelphiaPage() {
           </div>
 
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <h3 className="text-xl font-semibold text-white">Still Charlotte-first</h3>
+            <h3 className="text-xl font-semibold text-white">Philadelphia and Charlotte</h3>
             <p className="mt-3 text-sm text-white/70">
-              Matt is based in Charlotte, so new builds and urgent scopes there get priority, while
-              our Philly crews keep existing clients covered without delays.
+              Our established Philly crews keep Philadelphia-area projects moving without delays,
+              while Matt leads our growing Charlotte work.
             </p>
             <div className="mt-4 text-sm text-white/70">
               Need Charlotte coverage? Visit the{" "}
