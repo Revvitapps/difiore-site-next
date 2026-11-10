@@ -38,5 +38,19 @@ export function AnalyticsListener() {
     });
   }, [pathname, searchParams]);
 
+  // Count taps on any phone link, site-wide.
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest?.('a[href^="tel:"]');
+      if (!link) return;
+      trackEvent("call_click", {
+        phone: link.getAttribute("href")?.replace("tel:", ""),
+        page_location: window.location.href,
+      });
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
+
   return null;
 }

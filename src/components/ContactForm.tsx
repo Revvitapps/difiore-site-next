@@ -149,6 +149,7 @@ export function ContactForm() {
       }
       setStatus("success");
       trackEvent("lead_form_submit", { form_id: "contact", status: "success", source: "contact-page" });
+      trackEvent("generate_lead", { form_id: "contact", source: "contact-page" });
     } catch (error) {
       setStatus("error");
       setErrorMessage(error instanceof Error ? error.message : "Unable to send your message at this time.");

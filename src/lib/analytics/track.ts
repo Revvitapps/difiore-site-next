@@ -11,6 +11,7 @@ export type AnalyticsEventName =
   | "lead_form_start"
   | "lead_form_partial"
   | "lead_form_submit"
+  | "generate_lead"
   | "call_click"
   | "sms_click"
   | "chat_start"
@@ -22,6 +23,8 @@ export type AnalyticsEventParams = Record<string, unknown>;
 
 const metaNameMap: Record<AnalyticsEventName, string> = {
   lead_form_submit: "Lead",
+  // GA4 key event; lead_form_submit already sends Meta "Lead", so don't double-count.
+  generate_lead: "CustomEvent",
   lead_form_partial: "Lead",
   purchase: "Purchase",
   view_content: "ViewContent",

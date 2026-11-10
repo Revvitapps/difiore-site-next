@@ -330,6 +330,7 @@ export default function ProjectCalculatorClient() {
         project: projectLabel,
         step: state.step,
       });
+      trackEvent('generate_lead', { form_id: 'project-calculator', project: projectLabel });
 
       setState((prev) => ({ ...prev, step: 4 }));
     } catch (error) {
