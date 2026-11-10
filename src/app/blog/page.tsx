@@ -2,59 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import SeoJsonLd from "@/components/SeoJsonLd";
-import { SITE_URL } from "@/lib/seo/constants";
+import { RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
+import { BLOG_POSTS } from "@/lib/blogPosts";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
-const posts = [
-  {
-    slug: "basement-build-outs-home-additions-chadds-ford",
-    title: "Basement build-outs & home additions in Chadds Ford, PA",
-    summary:
-      "What you can tackle yourself, what needs a pro, and how to plan a basement or addition that feels built-in from day one.",
-    tag: "Basements & additions",
-    image: "/difiore-services-showcase-additions-playroom1.webp",
-  },
-  {
-    slug: "kitchen-remodeling-chadds-ford-pa",
-    title: "Kitchen remodeling trends & tips for 2026",
-    summary:
-      "Design ideas, layout advice, and smart planning tips from DiFiore Builders for Chadds Ford, PA kitchens that live well.",
-    tag: "Kitchen remodeling",
-    image: "/difiore-services-showcase-kitchen-whole.webp",
-  },
-  {
-    slug: "roofing-tips-roof-replacement-chadds-ford",
-    title: "Roofing maintenance and when to replace",
-    summary:
-      "Seasonal checklists, warning signs, and honest guidance on whether your roof needs a repair or full replacement.",
-    tag: "Roofing",
-    image: "/difiore-services-showcase-3style-roof.webp",
-  },
-  {
-    slug: "bathroom-remodeling-chadds-ford-pa",
-    title: "Bathroom remodeling in Chadds Ford, PA: what to upgrade first",
-    summary:
-      "Smart guidance on what to prioritize first, what you can handle yourself, and which bathroom upgrades matter most long-term.",
-    tag: "Kitchens & bathrooms",
-    image: "/difiore-services-showcase-bathroom-shower-walkin-fulltile.JPG",
-  },
-  {
-    slug: "siding-replacement-chadds-ford-pa",
-    title: "Siding replacement in Chadds Ford, PA: signs it is time and what to expect",
-    summary:
-      "Learn when repair is enough, when replacement makes more sense, and what to expect during a siding project in southeastern Pennsylvania.",
-    tag: "Roofing & siding",
-    image: "/difiore-os-before-br-front.jpeg",
-  },
-  {
-    slug: "home-remodeling-diy-vs-pros-chadds-ford",
-    title: "Home remodeling: DIY vs. when to call the pros",
-    summary:
-      "A clear look at what you can handle yourself and when it is time to bring in a licensed local contractor.",
-    tag: "Remodeling",
-    image: "/difiore-services -addition-newconstruction1.JPG",
-  },
-];
+const posts = BLOG_POSTS;
 
 export const metadata: Metadata = {
   title: "Remodeling Blog | DiFiore Builders",
@@ -62,6 +14,7 @@ export const metadata: Metadata = {
     "Renovation insights, remodeling tips, and local project guidance from DiFiore Builders in Chadds Ford, PA, Glen Mills, West Chester, and Wilmington.",
   alternates: {
     canonical: `${SITE_URL}/blog`,
+    ...RSS_ALTERNATE,
   },
 };
 
@@ -74,10 +27,19 @@ export default function BlogPage() {
   const blogSchema = {
     "@context": "https://schema.org",
     "@type": "Blog",
+    "@id": `${SITE_URL}/blog#blog`,
     name: "DiFiore Builders Blog",
     description:
       "Remodeling tips and project guidance for homeowners in Chadds Ford, Glen Mills, West Chester, and Wilmington.",
     url: `${SITE_URL}/blog`,
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    blogPost: posts.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      url: `${SITE_URL}/blog/${post.slug}`,
+      datePublished: post.datePublished,
+      dateModified: post.dateModified,
+    })),
   };
 
   return (

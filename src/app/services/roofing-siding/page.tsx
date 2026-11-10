@@ -28,6 +28,7 @@ export default function RoofingSidingPage() {
     description:
       "Roofing replacement, siding upgrades, flashing, trim, and exterior weatherproofing services by DiFiore Builders.",
     path: "/services/roofing-siding",
+    image: "/difiore-services-showcase-3style-roof.webp",
     areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
   });
 

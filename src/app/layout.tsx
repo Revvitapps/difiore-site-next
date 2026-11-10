@@ -7,7 +7,7 @@ import { ANALYTICS_CONFIG } from "@/lib/analytics/config";
 import { Analytics } from '@vercel/analytics/react';
 import Script from "next/script";
 import { Suspense } from "react";
-import { SITE_URL } from "@/lib/seo/constants";
+import { RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -18,6 +18,8 @@ export const metadata: Metadata = {
     template: "%s",
   },
   description: "Quality work from the foundation to the roof.",
+  // Pages that set their own `alternates` (canonical) replace this; they re-add RSS_ALTERNATE where it matters.
+  alternates: RSS_ALTERNATE,
   openGraph: {
     title: "DiFiore Builders",
     description:

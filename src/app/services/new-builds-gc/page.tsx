@@ -46,6 +46,7 @@ export default function NewBuildsGCPage() {
     name: "New Builds and General Construction",
     description: "General construction and new-build project management from planning through final walkthrough.",
     path: "/services/new-builds-gc",
+    image: HERO,
     areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
   });
 

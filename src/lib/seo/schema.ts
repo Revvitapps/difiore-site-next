@@ -1,4 +1,11 @@
-import { BUSINESS_NAME, CANONICAL_NAP, SITE_URL } from "@/lib/seo/constants";
+import {
+  BUSINESS_NAME,
+  CANONICAL_NAP,
+  ORGANIZATION_ID,
+  OWNER_ID,
+  SITE_URL,
+  absoluteAssetUrl,
+} from "@/lib/seo/constants";
 
 export type BreadcrumbItem = {
   name: string;
@@ -23,6 +30,10 @@ export function serviceSchema(params: {
   description: string;
   path: string;
   areaServed?: string[];
+  /** Override for out-of-area lines (e.g. the Charlotte number). Defaults to the PA office. */
+  telephone?: string;
+  /** Site-relative path of the page's main photo. */
+  image?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -32,8 +43,9 @@ export function serviceSchema(params: {
     description: params.description,
     provider: {
       "@type": "GeneralContractor",
+      "@id": ORGANIZATION_ID,
       name: BUSINESS_NAME,
-      telephone: CANONICAL_NAP.phoneDisplay,
+      telephone: params.telephone ?? CANONICAL_NAP.phoneE164,
       url: SITE_URL,
     },
     areaServed:
@@ -42,6 +54,7 @@ export function serviceSchema(params: {
         name: area,
       })) ?? undefined,
     url: `${SITE_URL}${params.path}`,
+    ...(params.image ? { image: absoluteAssetUrl(params.image) } : {}),
   };
 }
 
@@ -84,10 +97,13 @@ export function articleSchema(params: {
     description: params.description,
     author: {
       "@type": "Organization",
+      "@id": ORGANIZATION_ID,
       name: BUSINESS_NAME,
+      url: SITE_URL,
     },
     publisher: {
       "@type": "Organization",
+      "@id": ORGANIZATION_ID,
       name: BUSINESS_NAME,
       logo: {
         "@type": "ImageObject",
@@ -96,8 +112,10 @@ export function articleSchema(params: {
     },
     datePublished: params.datePublished,
     dateModified: params.dateModified,
+    url: `${SITE_URL}${params.path}`,
     mainEntityOfPage: `${SITE_URL}${params.path}`,
-    image: `${SITE_URL}${params.image}`,
+    image: absoluteAssetUrl(params.image),
+    isPartOf: { "@type": "Blog", "@id": `${SITE_URL}/blog#blog` },
   };
 }
 
@@ -118,5 +136,21 @@ export function faqSchema(
         text: entry.answer,
       },
     })),
+  };
+}
+
+/**
+ * The owner, as named on /our-story ("Matt DiFiore", third-generation general contractor).
+ * Only facts stated on the site; no founder/jobTitle claims beyond that.
+ */
+export function ownerPersonSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": OWNER_ID,
+    name: "Matt DiFiore",
+    description: "Third-generation general contractor at DiFiore Builders Inc.",
+    url: `${SITE_URL}/our-story`,
+    worksFor: { "@type": "GeneralContractor", "@id": ORGANIZATION_ID, name: BUSINESS_NAME },
   };
 }

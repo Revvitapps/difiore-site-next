@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SeoJsonLd from "@/components/SeoJsonLd";
 import { REVIEW_SUMMARY } from "@/lib/seo/reviewSummary";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "Philadelphia, PA General Contractor | DiFiore Builders",
@@ -29,6 +31,12 @@ export default function PhiladelphiaPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+      />
+      <SeoJsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Philadelphia", path: "/philadelphia" },
+        ])}
       />
       <section className="px-4 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">

@@ -30,6 +30,7 @@ export default function AdditionsBasementsPage() {
     description:
       "Home additions and basement finishing services including design-build planning, framing, utility coordination, and interior finishes.",
     path: "/services/additions-basements",
+    image: HERO,
     areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
   });
 

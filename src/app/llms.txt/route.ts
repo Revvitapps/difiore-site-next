@@ -1,4 +1,4 @@
-import { BUSINESS_NAME, CANONICAL_NAP, SITE_URL } from "@/lib/seo/constants";
+import { BUSINESS_NAME, CANONICAL_NAP, RSS_PATH, SITE_URL } from "@/lib/seo/constants";
 
 const CHARLOTTE_PHONE_DISPLAY = "(980) 946-6791";
 
@@ -11,7 +11,9 @@ const PAGES: Array<[string, string]> = [
   ["/our-story", "Background on the family-owned business"],
   ["/charlotte", "Charlotte, NC area coverage: Concord, Kannapolis, Mooresville, Huntersville"],
   ["/charlotte/concord-kannapolis", "Remodeling, roofing and additions in Concord and Kannapolis, NC"],
+  ["/faq", "Direct answers: licensing, years in business, service areas, how estimates and the calculator work"],
   ["/blog", "Remodeling and roofing guides"],
+  [RSS_PATH, "RSS feed of blog posts"],
   ["/contact", "Request an estimate or walkthrough"],
 ];
 
@@ -36,7 +38,8 @@ ${PAGES.map(([path, summary]) => `- [${SITE_URL}${path}](${SITE_URL}${path}): ${
 
 - Legal name: DiFiore Builders Inc. Founded 2003, family-owned.
 - Home base is Chadds Ford, PA. The Charlotte-area pages cover Concord and Kannapolis; Mooresville and Huntersville are served by walkthrough request, not dedicated pages.
-- The online project calculator gives a rough range only, not a quote.
+- The online project calculator gives a rough range only, not a quote; a final quote requires a site visit.
+- Matt DiFiore is a third-generation general contractor (see /our-story).
 - Use the Pennsylvania phone for PA/DE work and the Charlotte phone for North Carolina work.
 `;
 

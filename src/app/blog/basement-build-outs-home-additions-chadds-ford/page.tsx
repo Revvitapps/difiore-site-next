@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import HeroSection from "@/components/services/HeroSection";
 import SeoJsonLd from "@/components/SeoJsonLd";
-import { SITE_URL } from "@/lib/seo/constants";
+import { RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     "Thinking of finishing your basement or adding space to your home? Here is what is possible, what to plan for, and when to call DiFiore Builders in Chadds Ford, PA.",
   alternates: {
     canonical: `${SITE_URL}/blog/basement-build-outs-home-additions-chadds-ford`,
+    ...RSS_ALTERNATE,
   },
 };
 

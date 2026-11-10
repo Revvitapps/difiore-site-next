@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SeoJsonLd from "@/components/SeoJsonLd";
 import { REVIEW_SUMMARY } from "@/lib/seo/reviewSummary";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "Philadelphia Roofing Replacement | DiFiore Builders",
@@ -51,6 +53,19 @@ const faqJsonLd = {
   })),
 };
 
+const breadcrumbJsonLd = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Philadelphia", path: "/philadelphia" },
+  { name: "Roofing", path: "/philadelphia/roofing" },
+]);
+
+const serviceJsonLd = serviceSchema({
+  name: "Roofing Replacement in Philadelphia, PA",
+  description: "Philadelphia roofing replacement and exterior upgrades with detailed inspections and clean job sites. DiFiore Builders delivers durable protection.",
+  path: "/philadelphia/roofing",
+  areaServed: ["Philadelphia, PA"],
+});
+
 export default function PhiladelphiaRoofingPage() {
   return (
     <>
@@ -62,6 +77,8 @@ export default function PhiladelphiaRoofingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <SeoJsonLd data={breadcrumbJsonLd} />
+      <SeoJsonLd data={serviceJsonLd} />
 
       <section className="px-4 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">

@@ -28,6 +28,7 @@ export default function KitchensBathroomsPage() {
     description:
       "Kitchen and bathroom remodeling services including layout changes, cabinetry, tile, fixture upgrades, and finish carpentry.",
     path: "/services/kitchens-bathrooms",
+    image: "/difiore-services-showcase-kitchen-whole.webp",
     areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
   });
 

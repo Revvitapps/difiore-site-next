@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import HeroSection from "@/components/services/HeroSection";
 import SeoJsonLd from "@/components/SeoJsonLd";
-import { SITE_URL } from "@/lib/seo/constants";
+import { RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     "Learn when siding repair is enough, when full replacement makes sense, and what Chadds Ford, PA homeowners should expect from a siding project.",
   alternates: {
     canonical: `${SITE_URL}/blog/siding-replacement-chadds-ford-pa`,
+    ...RSS_ALTERNATE,
   },
 };
 

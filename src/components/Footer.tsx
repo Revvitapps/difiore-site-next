@@ -103,6 +103,7 @@ export default function Footer() {
             <Link href="/blog" className="hover:text-white">Blog</Link>
             <Link href="/charlotte/concord-kannapolis" className="hover:text-white">Charlotte</Link>
             <Link href="/project-calculator" className="hover:text-white">Project Calculator</Link>
+            <Link href="/faq" className="hover:text-white">FAQ</Link>
             <Link href="/contact" className="hover:text-white">Contact</Link>
           </nav>
         </div>

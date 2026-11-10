@@ -7,7 +7,7 @@ import ServicesIntro from "@/components/ServicesIntro";
 import Services from "@/components/Services";
 import HomeContactSection from "@/components/HomeContactSection";
 import LazyReviews from "@/components/home/LazyReviews";
-import { CANONICAL_NAP, SITE_URL } from "@/lib/seo/constants";
+import { CANONICAL_NAP, RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
 
 export const metadata: Metadata = {
   title: "Remodeling, Roofing & Additions in Chadds Ford, PA | DiFiore Builders",
@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     "Family-owned, licensed and insured contractor in Chadds Ford, PA since 2003: roofing, siding, additions, kitchens, baths and renovations at an agreed-upon price.",
   alternates: {
     canonical: `${SITE_URL}/`,
+    ...RSS_ALTERNATE,
   },
 };
 

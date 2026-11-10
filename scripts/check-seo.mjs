@@ -1,4 +1,5 @@
-// Checks prerendered HTML in .next/server/app: title <= 70, description <= 165, exactly one <h1>.
+// Checks prerendered HTML in .next/server/app: title <= 70, description <= 165, exactly one <h1>,
+// an og:image, and JSON-LD blocks that parse.
 // Run after a build: npm run build && npm run check:seo
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
@@ -30,6 +31,14 @@ for (const file of files) {
   if (!desc) problems.push(`${page}: missing description`);
   else if (desc.length > 165) problems.push(`${page}: description ${desc.length} chars`);
   if (h1 !== 1) problems.push(`${page}: ${h1} <h1> tags`);
+  if (!/<meta property="og:image" content="https?:\/\/[^"]+"/.test(html)) problems.push(`${page}: missing og:image`);
+  for (const [, json] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    try {
+      JSON.parse(json);
+    } catch {
+      problems.push(`${page}: JSON-LD does not parse`);
+    }
+  }
 }
 
 console.log(`check:seo scanned ${files.length} pages`);
@@ -37,4 +46,4 @@ if (problems.length) {
   console.error(problems.join("\n"));
   process.exit(1);
 }
-console.log("All pages pass (title <= 70, description <= 165, one h1).");
+console.log("All pages pass (title <= 70, description <= 165, one h1, og:image, valid JSON-LD).");

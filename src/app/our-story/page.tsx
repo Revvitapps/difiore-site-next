@@ -4,7 +4,7 @@ import TrustedBadges from "@/components/TrustedBadges";
 import OurStoryHeroClient from "@/components/OurStoryHeroClient";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, ownerPersonSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "Our Story | Family-Owned General Contractor Since 2003",
@@ -28,12 +28,15 @@ export default function OurStoryPage() {
     description:
       "Background, values, and service approach from DiFiore Builders, a family-owned general contractor serving southeastern PA and Wilmington, DE.",
     url: `${SITE_URL}/our-story`,
+    about: { "@id": `${SITE_URL}/#organization` },
+    mentions: { "@id": `${SITE_URL}/our-story#matt-difiore` },
   };
 
   return (
     <>
       <SeoJsonLd data={breadcrumb} />
       <SeoJsonLd data={aboutSchema} />
+      <SeoJsonLd data={ownerPersonSchema()} />
       {/* HERO: background only + bottom pills */}
       <section className="relative isolate min-h-[50svh] overflow-hidden">
         <div

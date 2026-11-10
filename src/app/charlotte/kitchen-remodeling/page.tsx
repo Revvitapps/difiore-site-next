@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SeoJsonLd from "@/components/SeoJsonLd";
 import { REVIEW_SUMMARY } from "@/lib/seo/reviewSummary";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "Charlotte, NC Kitchen Remodeling | DiFiore Builders",
@@ -51,6 +53,20 @@ const faqJsonLd = {
   })),
 };
 
+const breadcrumbJsonLd = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Charlotte", path: "/charlotte" },
+  { name: "Kitchen Remodeling", path: "/charlotte/kitchen-remodeling" },
+]);
+
+const serviceJsonLd = serviceSchema({
+  name: "Kitchen Remodeling in Charlotte, NC",
+  description: "Kitchen remodeling in Charlotte, NC with design guidance, transparent pricing, and clean project management from DiFiore Builders.",
+  path: "/charlotte/kitchen-remodeling",
+  areaServed: ["Charlotte, NC"],
+  telephone: "+19809466791",
+});
+
 export default function CharlotteKitchenRemodelingPage() {
   return (
     <>
@@ -62,6 +78,8 @@ export default function CharlotteKitchenRemodelingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <SeoJsonLd data={breadcrumbJsonLd} />
+      <SeoJsonLd data={serviceJsonLd} />
 
       <section className="px-4 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">

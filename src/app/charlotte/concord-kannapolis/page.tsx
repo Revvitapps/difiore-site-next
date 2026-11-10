@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import ConcordKannapolisLanding from "@/components/charlotte/ConcordKannapolisLanding";
 import HomeContactSection from "@/components/HomeContactSection";
+import SeoJsonLd from "@/components/SeoJsonLd";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 
 const CHARLOTTE_PHONE_DISPLAY = "(980) 946-6791";
 const CHARLOTTE_PHONE_LINK = "tel:9809466791";
@@ -179,6 +181,13 @@ export default function ConcordKannapolisLandingPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <SeoJsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Charlotte", path: "/charlotte" },
+          { name: "Concord & Kannapolis", path: "/charlotte/concord-kannapolis" },
+        ])}
       />
       <ConcordKannapolisLanding reviewUrl="https://g.page/r/CabSGkj6zxcpEAI/review" />
 
