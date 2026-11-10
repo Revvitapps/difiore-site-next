@@ -11,6 +11,8 @@ import { SITE_URL } from "@/lib/seo/constants";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // Search Console ownership for difiorebuilders@gmail.com (URL-prefix property). Keep it, or the property unverifies.
+  verification: { google: "WALc55TF2LLqz5pP2g3Oj5VsEsFWXufdaaymbU99WVs" },
   title: {
     default: "DiFiore Builders | Home Remodeling and General Contractor in Chadds Ford, PA",
     template: "%s",
