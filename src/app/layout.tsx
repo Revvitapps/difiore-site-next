@@ -12,7 +12,11 @@ import { SITE_URL } from "@/lib/seo/constants";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   // Search Console ownership for difiorebuilders@gmail.com (URL-prefix property). Keep it, or the property unverifies.
-  verification: { google: "WALc55TF2LLqz5pP2g3Oj5VsEsFWXufdaaymbU99WVs" },
+  // Bing Webmaster Tools (Revvit account) uses msvalidate.01. Keep both.
+  verification: {
+    google: "WALc55TF2LLqz5pP2g3Oj5VsEsFWXufdaaymbU99WVs",
+    other: { "msvalidate.01": "D72AE20D8C70DE681DE63689D9E6A6C5" },
+  },
   title: {
     default: "DiFiore Builders | Home Remodeling and General Contractor in Chadds Ford, PA",
     template: "%s",
