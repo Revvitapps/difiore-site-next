@@ -9,7 +9,7 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Our Story | Family-Owned General Contractor Since 2003",
   description:
-    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. We specialize in roofing, siding, additions, kitchens, bathrooms, decks, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price.",
+    "Family-owned, licensed and insured general contractor serving Chadds Ford, Glen Mills, West Chester and Wilmington since 2003, at an agreed-upon price.",
   alternates: {
     canonical: `${SITE_URL}/our-story`,
   },

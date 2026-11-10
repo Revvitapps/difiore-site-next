@@ -11,7 +11,7 @@ import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Kitchen & Bathroom Remodeling | Cabinets, Tile, Layout Changes",
   description:
-    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Full kitchen gut-and-redesigns, cabinet replacements, appliance upgrades, tile showers, and custom bathrooms delivered with high-quality craftsmanship at an agreed-upon price.",
+    "Full kitchen gut-and-redesigns, cabinet replacements, tile showers and custom bathrooms from a family-owned Chadds Ford contractor since 2003.",
   alternates: {
     canonical: `${SITE_URL}/services/kitchens-bathrooms`,
   },

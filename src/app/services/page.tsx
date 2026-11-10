@@ -8,7 +8,7 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Home Remodeling and Exterior Services in PA and DE | DiFiore Builders",
   description:
-    "Explore DiFiore Builders services for roofing and siding, kitchens and bathrooms, additions and basements, and new builds across Chadds Ford, Glen Mills, West Chester, and Wilmington.",
+    "Roofing and siding, kitchens and baths, additions, basements and new builds from DiFiore Builders across Chadds Ford, Glen Mills, West Chester and Wilmington.",
   alternates: {
     canonical: `${SITE_URL}/services`,
   },

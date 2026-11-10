@@ -10,9 +10,9 @@ import LazyReviews from "@/components/home/LazyReviews";
 import { CANONICAL_NAP, SITE_URL } from "@/lib/seo/constants";
 
 export const metadata: Metadata = {
-  title: "Home Remodeling, Roofing and Additions in Chadds Ford, PA | DiFiore Builders",
+  title: "Remodeling, Roofing & Additions in Chadds Ford, PA | DiFiore Builders",
   description:
-    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, PA, and the surrounding area since 2003. Roofing, siding, decks, additions, kitchens, bathrooms, and full interior/exterior renovations with high-quality craftsmanship at an agreed-upon price.",
+    "Family-owned, licensed and insured contractor in Chadds Ford, PA since 2003: roofing, siding, additions, kitchens, baths and renovations at an agreed-upon price.",
   alternates: {
     canonical: `${SITE_URL}/`,
   },

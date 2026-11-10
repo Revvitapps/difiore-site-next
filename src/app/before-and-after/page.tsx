@@ -12,7 +12,7 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Before and After Project Gallery | DiFiore Builders",
   description:
-    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Explore roofing, siding, kitchen, bathroom, deck, and home addition transformations delivered with high-quality craftsmanship at an agreed-upon price.",
+    "Before-and-after photos of DiFiore Builders roofing, siding, kitchen, bath, deck and addition projects in Chadds Ford, Glen Mills, West Chester and Wilmington.",
   alternates: {
     canonical: `${SITE_URL}/before-and-after`,
   },

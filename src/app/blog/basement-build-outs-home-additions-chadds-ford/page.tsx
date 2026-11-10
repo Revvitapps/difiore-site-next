@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/seo/constants";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Basement Build-Outs and Home Additions in Chadds Ford, PA | DiFiore Builders",
+  title: "Basement Build-Outs & Home Additions in Chadds Ford | DiFiore Builders",
   description:
     "Thinking of finishing your basement or adding space to your home? Here is what is possible, what to plan for, and when to call DiFiore Builders in Chadds Ford, PA.",
   alternates: {

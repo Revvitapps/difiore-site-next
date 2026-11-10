@@ -11,7 +11,7 @@ import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Home Additions, Finished Basements & Decks | DiFiore Builders",
   description:
-    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Second-story additions, first-floor expansions, primary suites, finished basements, and outdoor living decks completed with high-quality craftsmanship at an agreed-upon price.",
+    "Second-story additions, first-floor expansions, primary suites, finished basements and decks from a family-owned Chadds Ford contractor since 2003.",
   alternates: {
     canonical: `${SITE_URL}/services/additions-basements`,
   },

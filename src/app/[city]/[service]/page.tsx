@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!cityConfig || !serviceConfig) return {};
 
   const title = `${serviceConfig.name} in ${cityConfig.name}, ${cityConfig.stateLabel} | DiFiore Builders`;
-  const description = `${serviceConfig.name} in ${cityConfig.name}, ${cityConfig.stateLabel}. ${serviceConfig.shortDescription} Request a clear scope, realistic timeline, and transparent pricing from DiFiore Builders.`;
+  const description = `${serviceConfig.name} in ${cityConfig.name}, ${cityConfig.stateLabel}. ${serviceConfig.shortDescription}`;
 
   return {
     title,

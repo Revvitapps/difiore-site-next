@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!cityConfig) return {};
 
   const title = `${cityConfig.name}, ${cityConfig.stateLabel} Home Remodeling and General Contractor`;
-  const description = `${cityConfig.name}, ${cityConfig.stateLabel} homeowners trust DiFiore Builders for roofing and siding, kitchen and bath remodeling, additions, and basement finishing with clear scopes and dependable execution.`;
+  const description = `${cityConfig.name}, ${cityConfig.stateLabel} roofing, siding, kitchen and bath remodeling, additions and basement finishing from DiFiore Builders, a family-owned contractor since 2003.`;
 
   return {
     title,

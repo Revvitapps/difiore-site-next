@@ -5,9 +5,9 @@ import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Project Cost Estimator for Roofing, Remodeling and Additions | DiFiore Builders",
+  title: "Project Cost Estimator: Roofing & Remodeling | DiFiore Builders",
   description:
-    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Get an instant rough cost range for roofing, siding, decks, kitchens, bathrooms, and home additions directly from a local builder — not a lead aggregator.",
+    "Get an instant rough cost range for roofing, siding, decks, kitchens, baths and additions from a local Chadds Ford builder since 2003, not a lead aggregator.",
   alternates: {
     canonical: `${SITE_URL}/project-calculator`,
   },

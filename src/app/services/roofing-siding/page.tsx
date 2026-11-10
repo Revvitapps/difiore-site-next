@@ -11,7 +11,7 @@ import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Roofing and Siding Replacement | Tear-Offs, Exterior Wraps, Gutters",
   description:
-    "Family-owned, licensed and insured general contractor serving Chadds Ford, PA, Glen Mills, West Chester, and Wilmington since 2003. Complete tear-offs, premium roofing, vinyl and fiber-cement siding, exterior wraps, gutters, fascia, and trim delivered with high-quality craftsmanship at an agreed-upon price.",
+    "Complete tear-offs, premium roofing, vinyl and fiber-cement siding, gutters, fascia and trim from a family-owned Chadds Ford contractor since 2003.",
   alternates: {
     canonical: `${SITE_URL}/services/roofing-siding`,
   },

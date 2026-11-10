@@ -6,7 +6,7 @@ const CHARLOTTE_PHONE_DISPLAY = "(980) 946-6791";
 const CHARLOTTE_PHONE_LINK = "tel:9809466791";
 const CHARLOTTE_SERVICE_AREA = "Concord, Kannapolis, and the greater Charlotte metro area.";
 const PAGE_URL = "https://www.difiorebuilders.com/charlotte/concord-kannapolis";
-const PAGE_TITLE = "Concord & Kannapolis General Contractor and Home Remodeling | DiFiore Builders";
+const PAGE_TITLE = "Concord & Kannapolis NC Remodeling Contractor | DiFiore Builders";
 const PAGE_DESCRIPTION =
   "DiFiore Builders brings proven home remodeling, roofing, additions, and custom home building to Concord and Kannapolis with a local NC team based in Cabarrus County.";
 const OG_IMAGE_URL = "https://www.difiorebuilders.com/difiore-services-showcase-newbuild.jpg";

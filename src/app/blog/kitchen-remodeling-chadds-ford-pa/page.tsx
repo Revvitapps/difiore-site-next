@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/seo/constants";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Kitchen Remodeling Trends and Tips for 2026 in Chadds Ford, PA | DiFiore Builders",
+  title: "2026 Kitchen Remodeling Trends in Chadds Ford, PA | DiFiore Builders",
   description:
     "Upgrade your kitchen with confidence. Discover remodeling trends, design ideas, and expert tips from DiFiore Builders in Chadds Ford, PA.",
   alternates: {

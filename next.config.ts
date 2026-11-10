@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    // Legacy service URLs from the first build; point them at the current pages.
+    return [
+      { source: "/services/kitchens", destination: "/services/kitchens-bathrooms", permanent: true },
+      { source: "/services/kitchens-renovations", destination: "/services/kitchens-bathrooms", permanent: true },
+      { source: "/services/roofing", destination: "/services/roofing-siding", permanent: true },
+      { source: "/services/additions", destination: "/services/additions-basements", permanent: true },
+      { source: "/services/new-builds", destination: "/services/new-builds-gc", permanent: true },
+    ];
+  },
   experimental: {
     serverActions: {}, // ✅ fixed from boolean to object
   },

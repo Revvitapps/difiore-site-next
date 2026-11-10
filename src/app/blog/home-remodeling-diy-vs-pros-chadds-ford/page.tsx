@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/seo/constants";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Home Remodeling in Chadds Ford, PA: DIY vs. Hiring a Pro | DiFiore Builders",
+  title: "Chadds Ford Home Remodeling: DIY vs. Hiring a Pro | DiFiore Builders",
   description:
     "Planning a remodel? Discover which home projects you can tackle yourself and when it is time to bring in the experts at DiFiore Builders in Chadds Ford, PA.",
   alternates: {
