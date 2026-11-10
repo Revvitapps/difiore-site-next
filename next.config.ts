@@ -10,6 +10,16 @@ const nextConfig = {
       { source: "/services/new-builds", destination: "/services/new-builds-gc", permanent: true },
     ];
   },
+  async headers() {
+    // The production deployment is also reachable at *.vercel.app; keep those copies out of search.
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "(?<sub>.+)\\.vercel\\.app" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+    ];
+  },
   experimental: {
     serverActions: {}, // ✅ fixed from boolean to object
   },

@@ -21,6 +21,10 @@ const AI_AND_SEARCH_CRAWLERS = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
+  // Preview deployments must never be crawled; only production (VERCEL_ENV=production) is public.
+  if (process.env.VERCEL_ENV && process.env.VERCEL_ENV !== "production") {
+    return { rules: [{ userAgent: "*", disallow: "/" }] };
+  }
   return {
     rules: [
       {
