@@ -36,9 +36,14 @@ const localBusinessJsonLd = {
   areaServed: ["Chadds Ford, PA", "Glen Mills, PA", "West Chester, PA", "Wilmington, DE"],
   foundingDate: "2003",
   slogan: "Quality work from the foundation to the roof",
+  hasMap: "https://maps.google.com/?cid=6537379050061718332",
   sameAs: [
+    "https://maps.google.com/?cid=6537379050061718332",
     "https://www.yelp.com/biz/difiore-builders-chadds-ford-3",
-    "https://nextdoor.com/pages/difiore-builders-inc-claymont-de/"
+    "https://nextdoor.com/pages/difiore-builders-inc-claymont-de/",
+    "https://www.houzz.com/professionals/general-contractors/difiore-builders-inc-pfvwus-pf~1479707423",
+    "https://www.bbb.org/us/pa/chadds-ford/profile/general-contractor/difiore-builders-inc-0241-191952896",
+    "https://www.instagram.com/difiorebuilders/"
   ],
 };
 
