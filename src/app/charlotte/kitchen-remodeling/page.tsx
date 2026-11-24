@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SeoJsonLd from "@/components/SeoJsonLd";
-import { REVIEW_SUMMARY } from "@/lib/seo/reviewSummary";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Charlotte, NC Kitchen Remodeling | DiFiore Builders",
   description:
     "Kitchen remodeling in Charlotte, NC with design guidance, transparent pricing, and clean project management from DiFiore Builders.",
   alternates: { canonical: "https://www.difiorebuilders.com/charlotte/kitchen-remodeling" },
-};
+});
 
 const faqs = [
   {
@@ -33,11 +33,6 @@ const localBusinessJsonLd = {
   url: "https://www.difiorebuilders.com/charlotte/kitchen-remodeling",
   telephone: "+1-980-946-6791",
   areaServed: ["Charlotte, NC"],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: REVIEW_SUMMARY.rating,
-    reviewCount: REVIEW_SUMMARY.count,
-  },
 };
 
 const faqJsonLd = {

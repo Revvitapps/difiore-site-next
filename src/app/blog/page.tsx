@@ -5,10 +5,11 @@ import SeoJsonLd from "@/components/SeoJsonLd";
 import { RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
 import { BLOG_POSTS } from "@/lib/blogPosts";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
 const posts = BLOG_POSTS;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Remodeling Blog | DiFiore Builders",
   description:
     "Renovation insights, remodeling tips, and local project guidance from DiFiore Builders in Chadds Ford, PA, Glen Mills, West Chester, and Wilmington.",
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     canonical: `${SITE_URL}/blog`,
     ...RSS_ALTERNATE,
   },
-};
+});
 
 export default function BlogPage() {
   const breadcrumb = breadcrumbSchema([

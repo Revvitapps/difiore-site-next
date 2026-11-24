@@ -4,15 +4,16 @@ import Image from "next/image";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Home Remodeling and Exterior Services in PA and DE | DiFiore Builders",
   description:
     "Roofing and siding, kitchens and baths, additions, basements and new builds from DiFiore Builders across Chadds Ford, Glen Mills, West Chester and Wilmington.",
   alternates: {
     canonical: `${SITE_URL}/services`,
   },
-};
+});
 
 export default function Page() {
   const breadcrumb = breadcrumbSchema([

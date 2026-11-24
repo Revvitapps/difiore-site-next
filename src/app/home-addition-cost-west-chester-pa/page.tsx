@@ -3,15 +3,16 @@ import CostGuidePage from "@/components/CostGuidePage";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Home Addition Cost in West Chester, PA | DiFiore Builders",
   description:
     "Review realistic home addition cost ranges in West Chester, PA, including structural, permit, and finish-level factors.",
   alternates: {
     canonical: `${SITE_URL}/home-addition-cost-west-chester-pa`,
   },
-};
+});
 
 export default function HomeAdditionCostPage() {
   return (

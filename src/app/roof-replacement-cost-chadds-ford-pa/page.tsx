@@ -3,15 +3,16 @@ import CostGuidePage from "@/components/CostGuidePage";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Roof Replacement Cost in Chadds Ford, PA | DiFiore Builders",
   description:
     "Planning roof replacement in Chadds Ford, PA? Review realistic pricing ranges, key cost drivers, and next steps from DiFiore Builders.",
   alternates: {
     canonical: `${SITE_URL}/roof-replacement-cost-chadds-ford-pa`,
   },
-};
+});
 
 export default function RoofReplacementCostPage() {
   return (

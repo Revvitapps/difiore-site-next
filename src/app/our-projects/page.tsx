@@ -3,13 +3,14 @@ import Link from "next/link";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Our Projects | Remodeling and Exterior Work by DiFiore Builders",
   description:
     "Browse featured DiFiore Builders projects across roofing, kitchens, bathrooms, additions, basements, and general construction.",
   alternates: { canonical: `${SITE_URL}/our-projects` },
-};
+});
 
 export default function Page() {
   const breadcrumb = breadcrumbSchema([

@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SeoJsonLd from "@/components/SeoJsonLd";
-import { REVIEW_SUMMARY } from "@/lib/seo/reviewSummary";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Philadelphia Kitchen Remodeling | DiFiore Builders",
   description:
     "Philadelphia kitchen remodeling with trusted crews, clear timelines, and high-end finishes. Get pricing ranges from DiFiore Builders.",
   alternates: { canonical: "https://www.difiorebuilders.com/philadelphia/kitchen-remodeling" },
-};
+});
 
 const faqs = [
   {
@@ -33,11 +33,6 @@ const localBusinessJsonLd = {
   url: "https://www.difiorebuilders.com/philadelphia/kitchen-remodeling",
   telephone: "+1-610-358-5433",
   areaServed: ["Philadelphia, PA"],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: REVIEW_SUMMARY.rating,
-    reviewCount: REVIEW_SUMMARY.count,
-  },
 };
 
 const faqJsonLd = {

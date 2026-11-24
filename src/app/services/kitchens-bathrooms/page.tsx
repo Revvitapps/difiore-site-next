@@ -7,15 +7,16 @@ import ReviewHighlight from "@/components/reviews/ReviewHighlight";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Kitchen & Bathroom Remodeling | Cabinets, Tile, Layout Changes",
+export const metadata: Metadata = withSocialMeta({
+  title: "Kitchen & Bathroom Remodeling in Chadds Ford, PA | DiFiore",
   description:
     "Full kitchen gut-and-redesigns, cabinet replacements, tile showers and custom bathrooms from a family-owned Chadds Ford contractor since 2003.",
   alternates: {
     canonical: `${SITE_URL}/services/kitchens-bathrooms`,
   },
-};
+});
 
 export default function KitchensBathroomsPage() {
   const breadcrumb = breadcrumbSchema([

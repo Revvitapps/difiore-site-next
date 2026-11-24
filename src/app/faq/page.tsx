@@ -3,18 +3,19 @@ import Link from "next/link";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { CANONICAL_NAP, SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
 const CHARLOTTE_PHONE_DISPLAY = "(980) 946-6791";
 const CHARLOTTE_PHONE_TEL = "tel:+19809466791";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Frequently Asked Questions | DiFiore Builders",
   description:
     "Straight answers about DiFiore Builders: licensed and insured, family-owned since 2003, serving PA, DE and the Charlotte, NC area, and how estimates work.",
   alternates: {
     canonical: `${SITE_URL}/faq`,
   },
-};
+});
 
 type Faq = {
   question: string;

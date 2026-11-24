@@ -8,15 +8,16 @@ import { fetchGoogleReviews } from "@/lib/googleReviews";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Before and After Project Gallery | DiFiore Builders",
   description:
     "Before-and-after photos of DiFiore Builders roofing, siding, kitchen, bath, deck and addition projects in Chadds Ford, Glen Mills, West Chester and Wilmington.",
   alternates: {
     canonical: `${SITE_URL}/before-and-after`,
   },
-};
+});
 
 type Review = { id?: string; name: string; rating: number; text: string };
 

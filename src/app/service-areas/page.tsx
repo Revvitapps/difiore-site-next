@@ -4,15 +4,16 @@ import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { CITY_PAGES } from "@/lib/seo/localPages";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Service Areas | DiFiore Builders in PA and DE",
   description:
     "Explore DiFiore Builders service areas across Chadds Ford, Glen Mills, West Chester, and Wilmington, DE for roofing, remodeling, additions, and basement finishing.",
   alternates: {
     canonical: `${SITE_URL}/service-areas`,
   },
-};
+});
 
 export default function ServiceAreasPage() {
   const breadcrumb = breadcrumbSchema([

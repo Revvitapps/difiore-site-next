@@ -8,6 +8,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Script from "next/script";
 import { Suspense } from "react";
 import { RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -28,14 +29,12 @@ export const metadata: Metadata = {
     siteName: "DiFiore Builders",
     locale: "en_US",
     type: "website",
-    images: [
-      {
-        url: `${SITE_URL}/difiore-hero-spotlight-house.webp`,
-        width: 1920,
-        height: 1080,
-        alt: "DiFiore Builders custom home exterior",
-      },
-    ],
+    images: [DEFAULT_OG_IMAGE],
+  },
+  // og:image and twitter:card come from metadata only (no hand-written <meta> tags), so they print once.
+  twitter: {
+    card: "summary_large_image",
+    images: [DEFAULT_OG_IMAGE.url],
   },
 };
 
@@ -46,10 +45,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <meta property="og:image" content={`${SITE_URL}/difiore-hero-spotlight-house.webp`} />
-        <meta property="og:image:alt" content="Exterior renovation by DiFiore Builders" />
-        <meta property="twitter:image" content={`${SITE_URL}/difiore-hero-spotlight-house.webp`} />
-        <meta name="twitter:card" content="summary_large_image" />
         {metaPixelId && (
           <>
             <Script id="fb-pixel" strategy="afterInteractive">

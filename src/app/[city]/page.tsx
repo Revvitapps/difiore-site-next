@@ -5,6 +5,7 @@ import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { CITY_PAGES, CITY_SERVICE_COMBINATIONS, CitySlug, LOCAL_SERVICES } from "@/lib/seo/localPages";
 import { breadcrumbSchema, localBusinessSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
 type Props = {
   params: { city: string };
@@ -24,13 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${cityConfig.name}, ${cityConfig.stateLabel} Home Remodeling and General Contractor`;
   const description = `${cityConfig.name}, ${cityConfig.stateLabel} roofing, siding, kitchen and bath remodeling, additions and basement finishing from DiFiore Builders, a family-owned contractor since 2003.`;
 
-  return {
+  return withSocialMeta({
     title,
     description,
     alternates: {
       canonical: `${SITE_URL}/${cityConfig.slug}`,
     },
-  };
+  });
 }
 
 export default async function CityHubPage({ params }: Props) {

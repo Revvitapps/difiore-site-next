@@ -7,15 +7,16 @@ import ReviewHighlight from "@/components/reviews/ReviewHighlight";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Roofing and Siding Replacement | Tear-Offs, Exterior Wraps, Gutters",
+export const metadata: Metadata = withSocialMeta({
+  title: "Roofing & Siding Replacement in Chadds Ford, PA | DiFiore",
   description:
     "Complete tear-offs, premium roofing, vinyl and fiber-cement siding, gutters, fascia and trim from a family-owned Chadds Ford contractor since 2003.",
   alternates: {
     canonical: `${SITE_URL}/services/roofing-siding`,
   },
-};
+});
 
 export default function RoofingSidingPage() {
   const breadcrumb = breadcrumbSchema([

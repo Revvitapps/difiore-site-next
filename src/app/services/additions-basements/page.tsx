@@ -7,15 +7,16 @@ import ReviewHighlight from "@/components/reviews/ReviewHighlight";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Home Additions, Finished Basements & Decks | DiFiore Builders",
+export const metadata: Metadata = withSocialMeta({
+  title: "Additions & Finished Basements in Chadds Ford, PA | DiFiore",
   description:
     "Second-story additions, first-floor expansions, primary suites, finished basements and decks from a family-owned Chadds Ford contractor since 2003.",
   alternates: {
     canonical: `${SITE_URL}/services/additions-basements`,
   },
-};
+});
 
 const HERO = "/difiore-services-showcase-additions-playroom1.webp";
 

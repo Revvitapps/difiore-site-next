@@ -3,15 +3,16 @@ import CostGuidePage from "@/components/CostGuidePage";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Basement Finishing Cost in Wilmington, DE | DiFiore Builders",
   description:
     "Plan basement finishing in Wilmington, DE with realistic cost ranges, moisture-control considerations, and scope planning guidance.",
   alternates: {
     canonical: `${SITE_URL}/basement-finishing-cost-wilmington-de`,
   },
-};
+});
 
 export default function BasementFinishingCostPage() {
   return (
