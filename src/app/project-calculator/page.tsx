@@ -3,15 +3,16 @@ import ProjectCalculatorClient from "@/components/ProjectCalculatorClient";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Project Cost Estimator: Roofing & Remodeling | DiFiore Builders",
   description:
     "Get an instant rough cost range for roofing, siding, decks, kitchens, baths and additions from a local Chadds Ford builder since 2003, not a lead aggregator.",
   alternates: {
     canonical: `${SITE_URL}/project-calculator`,
   },
-};
+});
 
 export default function ProjectCalculatorPage() {
   const breadcrumb = breadcrumbSchema([

@@ -3,15 +3,16 @@ import CostGuidePage from "@/components/CostGuidePage";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Kitchen Remodel Cost in Chadds Ford, PA | DiFiore Builders",
   description:
     "Explore kitchen remodeling cost ranges in Chadds Ford, PA including cabinetry, layout, and finish-level factors that shape your final budget.",
   alternates: {
     canonical: `${SITE_URL}/kitchen-remodel-cost-chadds-ford-pa`,
   },
-};
+});
 
 export default function KitchenRemodelCostPage() {
   return (

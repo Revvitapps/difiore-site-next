@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { SITE_URL, absoluteAssetUrl } from "@/lib/seo/constants";
 import { BLOG_POSTS } from "@/lib/blogPosts";
 import { CITY_PAGES, CITY_SERVICE_COMBINATIONS, COMMERCIAL_INTENT_PAGES } from "@/lib/seo/localPages";
+// Per-page dates from git history (npm run lastmod); a route missing here is listed without <lastmod>.
+import LAST_MODIFIED from "@/lib/seo/lastModified.json";
 
 const coreRoutes = [
   "/",
@@ -113,7 +115,6 @@ for (const post of BLOG_POSTS) {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
   const cityRoutes = Object.keys(CITY_PAGES).map((slug) => `/${slug}`);
   const cityServiceRoutes = CITY_SERVICE_COMBINATIONS.map((entry) => `/${entry.city}/${entry.service}`);
   const commercialRoutes = COMMERCIAL_INTENT_PAGES.map((entry) => `/${entry.slug}`);
@@ -122,9 +123,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return routes.map((route) => {
     const images = PAGE_IMAGES[route]?.map(absoluteAssetUrl);
+    const lastModified = (LAST_MODIFIED as Record<string, string>)[route];
     return {
       url: `${SITE_URL}${route}`,
-      lastModified,
+      ...(lastModified ? { lastModified } : {}),
       ...(images?.length ? { images } : {}),
     };
   });

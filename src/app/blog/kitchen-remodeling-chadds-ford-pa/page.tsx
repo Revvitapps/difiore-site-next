@@ -4,8 +4,9 @@ import HeroSection from "@/components/services/HeroSection";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "2026 Kitchen Remodeling Trends in Chadds Ford, PA | DiFiore Builders",
   description:
     "Upgrade your kitchen with confidence. Discover remodeling trends, design ideas, and expert tips from DiFiore Builders in Chadds Ford, PA.",
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
     canonical: `${SITE_URL}/blog/kitchen-remodeling-chadds-ford-pa`,
     ...RSS_ALTERNATE,
   },
-};
+});
 
 export default function KitchenTrendsPost() {
   const breadcrumb = breadcrumbSchema([

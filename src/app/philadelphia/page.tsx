@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SeoJsonLd from "@/components/SeoJsonLd";
-import { REVIEW_SUMMARY } from "@/lib/seo/reviewSummary";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Philadelphia, PA General Contractor | DiFiore Builders",
   description:
     "Remodeling, roofing, and additions for Philadelphia-area homeowners from DiFiore Builders, a family-owned contractor with established Philly crews.",
   alternates: { canonical: "https://www.difiorebuilders.com/philadelphia" },
-};
+});
 
 const localBusinessJsonLd = {
   "@context": "https://schema.org",
@@ -18,11 +18,6 @@ const localBusinessJsonLd = {
   url: "https://www.difiorebuilders.com/philadelphia",
   telephone: "+1-610-358-5433",
   areaServed: ["Philadelphia, PA"],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: REVIEW_SUMMARY.rating,
-    reviewCount: REVIEW_SUMMARY.count,
-  },
 };
 
 export default function PhiladelphiaPage() {

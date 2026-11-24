@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import ConcordKannapolisLanding from "@/components/charlotte/ConcordKannapolisLanding";
 import HomeContactSection from "@/components/HomeContactSection";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
 const CHARLOTTE_PHONE_DISPLAY = "(980) 946-6791";
 const CHARLOTTE_PHONE_LINK = "tel:9809466791";
 const CHARLOTTE_SERVICE_AREA = "Concord, Kannapolis, and the greater Charlotte metro area.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Concord-Kannapolis Remodel Estimate | DiFiore Builders",
   description:
     "Get a quick remodeling estimate from a licensed NC general contractor serving Concord and Kannapolis.",
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
     index: false,
     follow: false,
   },
-};
+});
 
 export default function ConcordKannapolisMetaPage() {
   return (

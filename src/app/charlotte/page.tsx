@@ -9,13 +9,14 @@ import { REVIEW_SUMMARY } from "@/lib/seo/reviewSummary";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import TrustedBadges from "@/components/TrustedBadges";
 import { heroBackground } from "@/lib/theme";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Charlotte, NC General Contractor | DiFiore Builders",
   description:
     "Charlotte-first remodeling, roofing, and additions from a family-owned general contractor. Get real cost ranges and local guidance from DiFiore Builders.",
   alternates: { canonical: `${SITE_URL}/charlotte` },
-};
+});
 
 const localBusinessJsonLd = {
   "@context": "https://schema.org",
@@ -30,11 +31,6 @@ const localBusinessJsonLd = {
     "Mooresville, NC",
     "Huntersville, NC",
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: REVIEW_SUMMARY.rating,
-    reviewCount: REVIEW_SUMMARY.count,
-  },
 };
 
 const GREATER_CHARLOTTE_AREAS = [

@@ -11,6 +11,7 @@ import {
   LocalServiceSlug,
 } from "@/lib/seo/localPages";
 import { breadcrumbSchema, faqSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
 type Props = {
   params: { city: string; service: string };
@@ -35,13 +36,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${serviceConfig.name} in ${cityConfig.name}, ${cityConfig.stateLabel} | DiFiore Builders`;
   const description = `${serviceConfig.name} in ${cityConfig.name}, ${cityConfig.stateLabel}. ${serviceConfig.shortDescription}`;
 
-  return {
+  return withSocialMeta({
     title,
     description,
     alternates: {
       canonical: `${SITE_URL}/${cityConfig.slug}/${serviceConfig.slug}`,
     },
-  };
+  });
 }
 
 export default async function CityServicePage({ params }: Props) {

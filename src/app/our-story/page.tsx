@@ -5,15 +5,16 @@ import OurStoryHeroClient from "@/components/OurStoryHeroClient";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, ownerPersonSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Our Story | Family-Owned General Contractor Since 2003",
   description:
     "Family-owned, licensed and insured general contractor serving Chadds Ford, Glen Mills, West Chester and Wilmington since 2003, at an agreed-upon price.",
   alternates: {
     canonical: `${SITE_URL}/our-story`,
   },
-};
+});
 
 export default function OurStoryPage() {
   const breadcrumb = breadcrumbSchema([

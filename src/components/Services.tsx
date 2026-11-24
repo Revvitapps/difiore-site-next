@@ -12,7 +12,7 @@ type Band = {
   tagline: string[];
   desc: string;
   features: string[];
-  bg: string[]; // rotating background images
+  bg: { src: string; alt: string }[]; // rotating background images
   ctaPrimary: { href: string; label: string };
   ctaSecondary?: { href: string; label: string };
 };
@@ -30,8 +30,8 @@ const BANDS: Band[] = [
       "Color-matched trim & accessories",
     ],
     bg: [
-      "/difiore-services-showcase-3style-roof.webp",
-      "/difiore-services-showcase-roofing-gutter.webp",
+      { src: "/difiore-services-showcase-3style-roof.webp", alt: "Asphalt shingle, standing-seam metal and cedar shake roofing side by side" },
+      { src: "/difiore-services-showcase-roofing-gutter.webp", alt: "Asphalt shingle roof edge with a white gutter and gutter guard" },
     ],
     ctaPrimary: { href: "/project-calculator", label: "Get a Quote" },
     ctaSecondary: { href: "/services/roofing-siding", label: "Learn More" },
@@ -47,10 +47,10 @@ const BANDS: Band[] = [
       "Foundations to finishes",
     ],
     bg: [
-      "/difiore-services-showcase-additions-playroom1.webp",
-      "/difiore-services-showcase-additions-familyroom-1.webp",
-      "/difiore-services-showcase-addition-showcase.jpeg",
-      "/difiore-os-after-bl.jpeg",
+      { src: "/difiore-services-showcase-additions-playroom1.webp", alt: "Finished basement playroom with recessed lighting and hardwood floors" },
+      { src: "/difiore-services-showcase-additions-familyroom-1.webp", alt: "Finished basement family room with blue walls, hardwood floors and a wet bar" },
+      { src: "/difiore-services-showcase-addition-showcase.jpeg", alt: "Second-story addition framed and wrapped in house wrap above a ranch home" },
+      { src: "/difiore-os-after-bl.jpeg", alt: "Backyard in-ground pool with a concrete patio and deck stairs" },
     ],
     ctaPrimary: { href: "/project-calculator", label: "Plan My Addition" },
     ctaSecondary: { href: "/services/additions-basements", label: "Learn More" },
@@ -66,8 +66,8 @@ const BANDS: Band[] = [
       "Mechanical & electrical updates",
     ],
     bg: [
-      "/difiore-services-showcase-kitchen-whole.webp",
-      "/difiore-services-showcase-kitchen-closeup.webp",
+      { src: "/difiore-services-showcase-kitchen-whole.webp", alt: "Remodeled kitchen with white shaker cabinets, a granite island and double wall ovens" },
+      { src: "/difiore-services-showcase-kitchen-closeup.webp", alt: "Granite countertop close-up with tile backsplash and stainless range hood" },
     ],
     ctaPrimary: { href: "/project-calculator", label: "Start My Remodel" },
     ctaSecondary: { href: "/services/kitchens-bathrooms", label: "Learn More" },
@@ -83,8 +83,8 @@ const BANDS: Band[] = [
       "Project management & scheduling",
     ],
     bg: [
-      "/difiore-services-showcase-roofing-materials-.webp",
-      "/difiore-services-showcase-3style-roof.webp",
+      { src: "/difiore-services-showcase-roofing-materials-.webp", alt: "Clay tile, metal, slate-style and asphalt shingle roofing materials side by side" },
+      { src: "/difiore-services-showcase-3style-roof.webp", alt: "Asphalt shingle, standing-seam metal and cedar shake roofing side by side" },
     ],
     ctaPrimary: { href: "/project-calculator", label: "Price My Build" },
     ctaSecondary: { href: "/services/new-builds-gc", label: "Learn More" },
@@ -118,7 +118,7 @@ function ServiceBand({
 
   // preload the next image so the swap looks smoother
   const nextSrc = useMemo(
-    () => (data.bg.length > 1 ? data.bg[(idx + 1) % data.bg.length] : null),
+    () => (data.bg.length > 1 ? data.bg[(idx + 1) % data.bg.length].src : null),
     [data.bg, idx]
   );
   useEffect(() => {
@@ -143,11 +143,11 @@ function ServiceBand({
     >
       {/* full-bleed background */}
       <div className="absolute inset-0 -z-10" aria-hidden>
-        {data.bg.map((src, i) => (
+        {data.bg.map(({ src, alt }, i) => (
           <Image
             key={`${data.id}-${src}`}
             src={src}
-            alt=""
+            alt={alt}
             fill
             sizes="100vw"
             quality={62}

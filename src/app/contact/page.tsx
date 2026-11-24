@@ -4,18 +4,19 @@ import { ContactForm } from "@/components/ContactForm";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { CANONICAL_NAP, SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, localBusinessSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
 const PHONE_DISPLAY = CANONICAL_NAP.phoneDisplay;
 const PHONE_LINK = `tel:${CANONICAL_NAP.phoneE164}`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Contact Us | DiFiore Builders",
   description:
     "Ready to plan your remodel or addition? Call DiFiore Builders at (610) 358-5433 or send a message through our contact form for a same-day response.",
   alternates: {
     canonical: `${SITE_URL}/contact`,
   },
-};
+});
 
 export default function ContactPage() {
   const breadcrumb = breadcrumbSchema([

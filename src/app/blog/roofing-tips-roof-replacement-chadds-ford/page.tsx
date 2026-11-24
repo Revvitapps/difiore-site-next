@@ -4,8 +4,9 @@ import HeroSection from "@/components/services/HeroSection";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Roofing Tips for Chadds Ford Homeowners: Maintenance and Replacement",
   description:
     "Not sure if your roof needs repair or replacement? Discover expert roofing tips, signs of damage, and seasonal maintenance advice from DiFiore Builders.",
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
     canonical: `${SITE_URL}/blog/roofing-tips-roof-replacement-chadds-ford`,
     ...RSS_ALTERNATE,
   },
-};
+});
 
 export default function RoofingPost() {
   const breadcrumb = breadcrumbSchema([

@@ -5,8 +5,9 @@ import HeroSection from "@/components/services/HeroSection";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { RSS_ALTERNATE, SITE_URL } from "@/lib/seo/constants";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocialMeta({
   title: "Siding replacement in Chadds Ford, PA | DiFiore Builders",
   description:
     "Learn when siding repair is enough, when full replacement makes sense, and what Chadds Ford, PA homeowners should expect from a siding project.",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     canonical: `${SITE_URL}/blog/siding-replacement-chadds-ford-pa`,
     ...RSS_ALTERNATE,
   },
-};
+});
 
 export default function SidingReplacementPost() {
   const breadcrumb = breadcrumbSchema([

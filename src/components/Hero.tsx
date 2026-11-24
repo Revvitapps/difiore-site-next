@@ -47,9 +47,12 @@ export default function Hero() {
       <div className="relative z-10 mx-auto max-w-[1200px] px-6 md:px-8">
         <div className="grid min-h-[72svh] md:min-h-[84svh] place-items-center">
           <div className="w-full translate-y-[3vh] text-center sm:translate-y-[5vh] md:translate-y-[7vh]">
-            <h1 className="font-serif text-[clamp(40px,6vw,72px)] font-black leading-[1.04] tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,.45)]">
-              The DiFiore Difference
+            <h1 className="mb-3 text-[13px] font-semibold uppercase tracking-[0.18em] text-amber-300 drop-shadow-[0_2px_8px_rgba(0,0,0,.6)] sm:mb-4 sm:text-[15px]">
+              Remodeling &amp; Roofing in Chadds Ford, PA
             </h1>
+            <p className="font-serif text-[clamp(40px,6vw,72px)] font-black leading-[1.04] tracking-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,.45)]">
+              The DiFiore Difference
+            </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:mt-12 sm:gap-5">
               <Link

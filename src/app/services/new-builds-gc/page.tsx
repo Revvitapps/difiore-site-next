@@ -6,13 +6,14 @@ import AnimatedImageGrid from "@/components/services/AnimatedImageGrid";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import { SITE_URL } from "@/lib/seo/constants";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { withSocialMeta } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "New Builds and General Construction | DiFiore Builders",
+export const metadata: Metadata = withSocialMeta({
+  title: "New Builds & General Contracting, Chadds Ford PA | DiFiore",
   description:
     "From plans to punch list — framing, envelopes, energy-smart assemblies, and full project management.",
   alternates: { canonical: `${SITE_URL}/services/new-builds-gc` },
-};
+});
 
 // Use filenames you know exist in /public:
 const HERO = "/difiore-services-showcase-newbuild.jpg";
